@@ -1,9 +1,13 @@
 import React from "react";
-import { useNavigation } from '@react-navigation/native';
-import { SafeAreaView, View, Text } from "react-native";
 import Input from "../../Components/Inputs";
 import Button from "../../Components/Button";
-import styles from "./RegisterStyles";
+import { useNavigation } from '@react-navigation/native';
+import {
+    Container,
+    ViewContainer,
+    UppercaseTitle,
+    ContainerButton
+} from "../../styles/DefaultStyles";
 
 const ScreenRegister = () => {
     const navigation = useNavigation();
@@ -13,9 +17,9 @@ const ScreenRegister = () => {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.view}>
-                <Text style={styles.title}>Faça o seu cadastro.</Text>
+        <Container>
+            <ViewContainer >
+                <UppercaseTitle>Faça o seu cadastro.</UppercaseTitle>
 
                 <Input
                     secureText={false}
@@ -36,11 +40,15 @@ const ScreenRegister = () => {
                     secureText={true}
                     text="Confirme a sua senha: "
                 />
-                <View style={styles.containerButton} >
-                    <Button text="Registrar!" onPress={returnLogin} />
-                </View>
-            </View>
-        </SafeAreaView>
+
+                <ContainerButton>
+                    <Button
+                        text="Registrar!"
+                        onPress={returnLogin}
+                    />
+                </ContainerButton>
+            </ViewContainer>
+        </Container>
     );
 }
 

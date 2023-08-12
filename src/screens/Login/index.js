@@ -1,9 +1,15 @@
 import React from "react";
-import styles from "./LoginStyles";
-import { useNavigation } from '@react-navigation/native';
-import { TouchableOpacity, View, Text, SafeAreaView } from "react-native";
 import Input from "../../Components/Inputs";
 import Button from "../../Components/Button";
+import { useNavigation } from '@react-navigation/native';
+import { TouchableOpacity } from "react-native";
+import {
+    Container,
+    ViewContainer,
+    ContainerImage,
+    ContainerButton,
+    LinkNavigators
+} from "../../styles/DefaultStyles";
 
 const ScreenLogin = () => {
     const navigation = useNavigation();
@@ -17,32 +23,30 @@ const ScreenLogin = () => {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.view}>
-                <Text style={styles.title}>Seja bem-vindo ao Struct!</Text>
-
-                <Input
-                    secureText={false}
-                    text="Informe o seu E-mail: "
+        <Container>
+            <ViewContainer>
+                <ContainerImage
+                    source={require('./image-Struct.png')}
+                    resizeMode="cover"
                 />
 
-                <Input
-                    secureText={true}
-                    text="Informe a senha: "
-                />
-                <View style={styles.block}>
+                <Input secureText={false} text="Informe o seu E-mail:" />
+                <Input secureText={true} text="Informe a senha:" />
+
+                <ContainerButton>
                     <Button text="Entrar" />
 
                     <TouchableOpacity onPress={goToForgotPassword}>
-                        <Text style={styles.navigators}>Esqueceu a senha?</Text>
+                       <LinkNavigators>Esqueceu a sua senha?</LinkNavigators>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={goToRegister}>
-                        <Text style={styles.navigators}>Não tem conta? Registre-se!</Text>
+                        <LinkNavigators>Não tem conta? Registre-se!</LinkNavigators>
                     </TouchableOpacity>
-                </View>
-            </View>
-        </SafeAreaView>
+
+                </ContainerButton>
+            </ViewContainer>
+        </Container>
     );
 }
 
