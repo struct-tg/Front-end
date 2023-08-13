@@ -27,7 +27,7 @@ const ScreenRegister = () => {
                 />
 
                 <Input
-                    secureText={true}
+                    secureText={false}
                     text="Informe o seu E-mail: "
                 />
 

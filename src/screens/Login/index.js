@@ -22,6 +22,10 @@ const ScreenLogin = () => {
         navigation.navigate('ForgotPassword');
     }
 
+    const goToApp = () => {
+        navigation.navigate('RoutesApp');
+    }
+
     return (
         <Container>
             <ViewContainer>
@@ -34,10 +38,13 @@ const ScreenLogin = () => {
                 <Input secureText={true} text="Informe a senha:" />
 
                 <ContainerButton>
-                    <Button text="Entrar" />
+                    <Button
+                        text="Entrar"
+                        onPress={goToApp}
+                    />
 
                     <TouchableOpacity onPress={goToForgotPassword}>
-                       <LinkNavigators>Esqueceu a sua senha?</LinkNavigators>
+                        <LinkNavigators>Esqueceu a sua senha?</LinkNavigators>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={goToRegister}>
