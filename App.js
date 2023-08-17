@@ -1,5 +1,9 @@
 import React from "react";
 
+/*Tem que diminuir este trecho de codigo de importação, 
+mas isso fica para um momento posterior.
+*/
+
 import ScreenLogin from "./src/screens/Login/index";
 import ScreenRegister from "./src/screens/Register/index";
 import ScreenForgotPassword from "./src/screens/ForgotPassword/index";
@@ -39,7 +43,7 @@ export default function App() {
 
 function RoutesApp() {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <Tab.Navigator screenOptions={{ headerShown: false, tabBarHideOnKeyboard: true}} >
       <Tab.Screen
         name="Home"
         component={ScreenHome}

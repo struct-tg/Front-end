@@ -1,14 +1,55 @@
-import React from "react";
-import { SafeAreaView, Text, View } from "react-native";
+import React, { useState } from "react";
+import CardTask from "../../Components/CardTask";
+import ModalComponent from "../../Components/ModalTaskForms";
+import { View, ContainerToDo, ViewSettings, ViewTasks } from "../../styles/ToDoList";
+import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
+import { Ionicons } from "@expo/vector-icons";
 
 const ToDoList = () => {
-    return (
-        <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
+    const [showModal, setShowModal] = useState(false);
+    const toggleModal = () => {
+        setShowModal(!showModal);
+    }
 
-            <View style={{ flex: 0.8, flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                <Text>ToDoList</Text>
+    const tasks = [1, 2, 3, 4, 5, 6];
+
+    return (
+        <ContainerToDo>
+            <View>
+                <ViewSettings>
+                    <TouchableOpacity >
+                        <Ionicons
+                            name={"add-circle-outline"}
+                            size={35}
+                            color={"white"}
+                            onPress={toggleModal}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <Ionicons
+                            name={"options-outline"}
+                            size={35}
+                            color={"white"}
+                        />
+                    </TouchableOpacity>
+                </ViewSettings>
+
+                <ViewTasks>
+                    <FlatList
+                        data={tasks}
+                        renderItem={() =>
+                            <CardTask />
+                        }
+                        keyExtractor={(item, index) => index.toString()}
+                    />
+                </ViewTasks>
             </View>
-        </SafeAreaView>
+
+            <ModalComponent
+                visible={showModal}
+                state={toggleModal}
+            />
+        </ContainerToDo>
     );
 }
 
