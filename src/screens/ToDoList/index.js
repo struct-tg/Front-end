@@ -1,19 +1,30 @@
-import React, { useState } from "react";
-import CardTask from "../../Components/CardTask";
-import ModalComponent from "../../Components/ModalTaskForms";
-import { View, ContainerToDo, ViewSettings, ViewTasks } from "../../styles/ToDoList";
+import React, { useEffect, useState } from "react";
+import { View, ContainerToDo, ViewSettings, ViewTasks } from "../../screens/ToDoList/StylesToDoList.js";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import CardTask from "../../Components/CardTask";
 
-const ToDoList = () => {
-    const [showModal, setShowModal] = useState(false);
-    const toggleModal = () => {
-        setShowModal(!showModal);
+const ToDoList = ({ route }) => {
+    const [tasks, setTasks] = useState([]);
+
+    useEffect(() => {
+        if (route.params && route.params.datasForm) {
+            const { datasForm } = route.params;
+            setTasks([...tasks, datasForm]);
+        }
+    }, [route.params]);
+
+    const navigation = useNavigation();
+    const goToFormsToDo = () => {
+        navigation.navigate('FormsToDo');
     }
 
-    const tasks = [1, 2, 3, 4, 5, 6];
+    const deleteTask = (item) => {
+        setTasks((tasks) => tasks.filter((task) => item.id !== task.id));
+    }
 
-    return (
+    return ( 
         <ContainerToDo>
             <View>
                 <ViewSettings>
@@ -22,7 +33,7 @@ const ToDoList = () => {
                             name={"add-circle-outline"}
                             size={35}
                             color={"white"}
-                            onPress={toggleModal}
+                            onPress={goToFormsToDo}
                         />
                     </TouchableOpacity>
                     <TouchableOpacity>
@@ -37,18 +48,14 @@ const ToDoList = () => {
                 <ViewTasks>
                     <FlatList
                         data={tasks}
-                        renderItem={() =>
-                            <CardTask />
-                        }
+                        renderItem={({ item }) => <CardTask
+                            title={item.taskName}
+                            onDelete={() => deleteTask(item)}
+                        />}
                         keyExtractor={(item, index) => index.toString()}
                     />
                 </ViewTasks>
             </View>
-
-            <ModalComponent
-                visible={showModal}
-                state={toggleModal}
-            />
         </ContainerToDo>
     );
 }

@@ -1,47 +1,34 @@
-import React, { Fragment, useState } from "react";
-import ModalComponent from "../ModalTaskForms";
+import React from "react";
 import { Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Card, TituloCard, BotaoCard, BotoesCard } from "../../styles/ToDoList";
+import { Card, TituloCard, BotaoCard, BotoesCard } from "../../Components/CardTask/StylesCardTask.js";
 
-
-const CardTask = () => {
-    const [isModalVisible, setModalVisible] = useState(false);
-    const toggleModal = () => {
-        setModalVisible(!isModalVisible);
-    };
-
+const CardTask = ({ title, onDelete }) => {
     return (
-        <Fragment>
-            <Card onPress={toggleModal}>
-                <TituloCard>
-                    <Text>Task 1</Text>
-                </TituloCard>
+        <Card>
+            <TituloCard>
+                <Text>{title}</Text>
+            </TituloCard>
 
-                <BotoesCard>
-                    <BotaoCard >
-                        <Ionicons
-                            name={"checkmark-outline"}
-                            size={30}
-                            color={"white"}
-                        />
-                    </BotaoCard>
+            <BotoesCard>
+                <BotaoCard >
+                    <Ionicons
+                        name={"checkmark-outline"}
+                        size={30}
+                        color={"white"}
+                    />
+                </BotaoCard>
 
-                    <BotaoCard>
-                        <Ionicons
-                            name={"trash-outline"}
-                            size={30}
-                            color={"white"}
-                        />
-                    </BotaoCard>
-                </BotoesCard>
-            </Card>
-
-            <ModalComponent
-                visible={isModalVisible}
-                state={toggleModal}
-            />
-        </Fragment>
+                <BotaoCard>
+                    <Ionicons
+                        name={"trash-outline"}
+                        size={30}
+                        color={"white"}
+                        onPress={onDelete}
+                    />
+                </BotaoCard>
+            </BotoesCard>
+        </Card>
     );
 }
 

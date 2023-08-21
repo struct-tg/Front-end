@@ -1,5 +1,5 @@
 import React from "react";
-import Input from "../../Components/Inputs";
+import { Input } from "../../Components/Inputs";
 import Button from "../../Components/Button";
 import {
     Container,

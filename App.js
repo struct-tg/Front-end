@@ -12,9 +12,10 @@ import ScreenRecoverPassword from "./src/screens/RecoverPassword/index";
 
 import ScreenHome from "./src/screens/Home/index";
 import ScreenToDo from "./src/screens/ToDoList/index";
-import ScreenPomodoro  from "./src/screens/Pomodoro/index";
-import ScreenGrades  from "./src/screens/Grades/index";
-import ScreenCalendar  from "./src/screens/Calendar/index";
+import ScreenPomodoro from "./src/screens/Pomodoro/index";
+import ScreenGrades from "./src/screens/Grades/index";
+import ScreenCalendar from "./src/screens/Calendar/index";
+import ScreenFormsToDo from "./src/Components/Forms/index";
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -34,6 +35,7 @@ export default function App() {
         <Stack.Screen name="ForgotPassword" component={ScreenForgotPassword} />
         <Stack.Screen name="PasswordCode" component={ScreenPasswordCode} />
         <Stack.Screen name="RecoverPassword" component={ScreenRecoverPassword} />
+        <Stack.Screen name="FormsToDo" component={ScreenFormsToDo} />
 
         <Stack.Screen name="RoutesApp" component={RoutesApp} />
       </Stack.Navigator>
@@ -43,7 +45,7 @@ export default function App() {
 
 function RoutesApp() {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false, tabBarHideOnKeyboard: true}} >
+    <Tab.Navigator screenOptions={{ headerShown: false, tabBarHideOnKeyboard: true }} >
       <Tab.Screen
         name="Home"
         component={ScreenHome}

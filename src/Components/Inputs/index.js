@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { TextInput } from 'react-native-paper';
+import React from 'react';
+import { TextInput, IconButton } from 'react-native-paper';
 import { SafeAreaView } from 'react-native';
+import { ContainerIconButton, ContainerIconInput } from "../../Components/Inputs/StylesInputs.js";
 
-const Input = ({ secureText, text, value, onChangeText }) => {
-
+export const Input = ({ secureText, text, value, onChangeText }) => {
     return (
         <SafeAreaView>
             <TextInput
@@ -15,6 +15,24 @@ const Input = ({ secureText, text, value, onChangeText }) => {
             />
         </SafeAreaView>
     );
-}
+};
 
-export default Input;
+export const InputIcon = ({ secureText, text, value, onChangeText, Icon, onButtonPress }) => {
+    return (
+        <ContainerIconButton>
+            <ContainerIconInput>
+                <TextInput
+                    label={text}
+                    mode="flat"
+                    secureTextEntry={secureText}
+                    value={value}
+                    onChangeText={onChangeText}
+                />
+            </ContainerIconInput>
+            <IconButton
+                icon={Icon}
+                onPress={onButtonPress}
+            />
+        </ContainerIconButton>
+    );
+};

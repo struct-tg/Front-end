@@ -4,10 +4,8 @@ import TextArea from "../TextArea";
 import Button from "../Button";
 import Modal from "react-native-modal";
 import { View } from "react-native";
-import {
-    FormContainer,
-    ContainerButton
-} from "../../styles/ToDoList";
+import { FormContainer } from "../../Components/Modal/StylesModal.js";
+import { ContainerButton } from "../../styles/DefaultStyles";
 
 const ModalComponent = ({ visible, state }) => {
     const [camposForm, setCamposForm] = useState({

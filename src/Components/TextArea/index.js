@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TextInput } from 'react-native-paper';
 import { View } from 'react-native';
 
 const TextArea = ({ text, value, onChangeText }) => {
-
     return (
         <View>
             <TextInput
                 label={text}
                 mode="flat"
                 multiline
-                numberOfLines={6}
+                numberOfLines={3}
                 value={value}
                 onChangeText={onChangeText}
-                style={{ minHeight: 100 }}
+                style={{ minHeight: 80 }}
             />
         </View>
     );
