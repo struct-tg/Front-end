@@ -1,6 +1,6 @@
 import React from "react";
 import { Input } from "../../Components/Inputs";
-import Button from "../../Components/Button";
+import { Button } from "../../Components/Button";
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity, View } from "react-native";
 import {

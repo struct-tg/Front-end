@@ -7,24 +7,28 @@ import CardTask from "../../Components/CardTask";
 
 const ToDoList = ({ route }) => {
     const [tasks, setTasks] = useState([]);
+    const navigation = useNavigation();
 
     useEffect(() => {
         if (route.params && route.params.datasForm) {
             const { datasForm } = route.params;
-            setTasks([...tasks, datasForm]);
+            setTasks(prevTasks => [...prevTasks, datasForm]);
         }
     }, [route.params]);
 
-    const navigation = useNavigation();
-    const goToFormsToDo = () => {
-        navigation.navigate('FormsToDo');
+    const goToAddTodo = () => {
+        navigation.navigate('AddTodo');
     }
 
     const deleteTask = (item) => {
         setTasks((tasks) => tasks.filter((task) => item.id !== task.id));
     }
 
-    return ( 
+    const goToEdit = (item) => {
+        navigation.navigate('EditTodo', { objEdit: item });
+    }
+
+    return (
         <ContainerToDo>
             <View>
                 <ViewSettings>
@@ -33,7 +37,7 @@ const ToDoList = ({ route }) => {
                             name={"add-circle-outline"}
                             size={35}
                             color={"white"}
-                            onPress={goToFormsToDo}
+                            onPress={goToAddTodo}
                         />
                     </TouchableOpacity>
                     <TouchableOpacity>
@@ -51,6 +55,7 @@ const ToDoList = ({ route }) => {
                         renderItem={({ item }) => <CardTask
                             title={item.taskName}
                             onDelete={() => deleteTask(item)}
+                            onOpen={() => goToEdit(item)}
                         />}
                         keyExtractor={(item, index) => index.toString()}
                     />

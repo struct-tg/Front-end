@@ -1,7 +1,7 @@
 import React from "react";
-import { StyledButton, ButtonText } from '../../Components/Button/StylesButton.js';
+import { StyledButton, ButtonText, StyledPomodoroButtonSettings, StyledPomodoroButtonAction } from '../../Components/Button/StylesButton.js';
 
-const Button = ({ text, onPress }) => {
+export const Button = ({ text, onPress }) => {
     return (
         <StyledButton onPress={onPress}>
             <ButtonText>{text}</ButtonText>
@@ -9,4 +9,18 @@ const Button = ({ text, onPress }) => {
     );
 };
 
-export default Button;
+export const PomodoroButtonSettings = ({ text, onPress }) => {
+    return (
+        <StyledPomodoroButtonSettings>
+            <ButtonText>{text}</ButtonText>
+        </StyledPomodoroButtonSettings>
+    );
+};
+
+export const PomodoroButtonAction = ({ icon, onPress }) => {
+    return (
+        <StyledPomodoroButtonAction>
+            {icon}
+        </StyledPomodoroButtonAction>
+    );
+};

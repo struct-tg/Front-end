@@ -2,49 +2,31 @@ import React, { useState } from 'react';
 import { Input } from '../Inputs';
 import { ContainerButton } from '../../styles/DefaultStyles';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
-import Button from '../Button';
+import { Button } from '../Button';
 import TextArea from "../TextArea";
 import ScrollBlock from '../ScrollBlock';
-import uuid from 'react-native-uuid';
 
-const FormsToDo = () => {
-    const [campos, setCampos] = useState({
-        id: uuid.v4(),
-        taskName: "",
-        startDate: "",
-        endDate: "",
-        taskDescription: ""
-    });
+const FormsToDo = ({ dadosIniciais, aoSubmitar, isEdit }) => {
+    /*Criando o state do formulario; */
+    const [formulario, setFormulario] = useState(dadosIniciais);
 
+    /*Faço a logica de captura dos dados.*/
     const capturaDados = (nomeInput, valorInput) => {
-        setCampos((dadosAnteriores) => ({
+        setFormulario((dadosAnteriores) => ({
             ...dadosAnteriores,
             [nomeInput]: valorInput
         }));
     }
 
     const handleNewSubtarefa = (inputId, inputText) => {
-        setCampos((dadosAnteriores) => ({
+        setFormulario((dadosAnteriores) => ({
             ...dadosAnteriores,
             [inputId]: inputText
         }));
     }
 
-    const cleanInputs = () => {
-        setCampos({
-            taskName: "",
-            startDate: "",
-            endDate: "",
-            taskDescription: ""
-        });
-    }
-
-    const navigate = useNavigation();
-    const addNewTask = () => {
-        console.log("Dados da nova tarefa:", campos);
-        navigate.navigate('ToDo', { datasForm: campos });
-        cleanInputs();
+    const handleSubmitFormulario = () => {
+        aoSubmitar(formulario);
     }
 
     return (
@@ -52,34 +34,36 @@ const FormsToDo = () => {
             <Input
                 text={"Nome da tarefa: "}
                 secureText={false}
-                value={campos.taskName}
+                value={formulario.taskName}
                 onChangeText={(value) => capturaDados("taskName", value)}
             />
             <Input
                 text={"Data de início: "}
                 secureText={false}
-                value={campos.startDate}
+                value={formulario.startDate}
                 onChangeText={(value) => capturaDados("startDate", value)}
             />
             <Input
                 text={"Data de término: "}
                 secureText={false}
-                value={campos.endDate}
+                value={formulario.endDate}
                 onChangeText={(value) => capturaDados("endDate", value)}
             />
 
-            <ScrollBlock onNewInputAdded={handleNewSubtarefa} />
+            <ScrollBlock
+                onNewInputAdded={handleNewSubtarefa}
+            />
 
             <TextArea
                 text={"Descricação da tarefa: "}
-                value={campos.taskDescription}
+                value={formulario.taskDescription}
                 onChangeText={(value) => capturaDados("taskDescription", value)}
             />
 
             <ContainerButton>
                 <Button
-                    text={"Adicionar nova tarefa."}
-                    onPress={addNewTask}
+                    text={isEdit ? "Editar dados" : "Adicionar nova tarefa"}
+                    onPress={handleSubmitFormulario}
                 />
             </ContainerButton>
         </SafeAreaView>

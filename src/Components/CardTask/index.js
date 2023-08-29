@@ -3,9 +3,9 @@ import { Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Card, TituloCard, BotaoCard, BotoesCard } from "../../Components/CardTask/StylesCardTask.js";
 
-const CardTask = ({ title, onDelete }) => {
+const CardTask = ({ title, onDelete, onOpen }) => {
     return (
-        <Card>
+        <Card onPress={onOpen}>
             <TituloCard>
                 <Text>{title}</Text>
             </TituloCard>
