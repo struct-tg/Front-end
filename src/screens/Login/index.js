@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Input } from "../../Components/Inputs";
 import { Button } from "../../Components/Button";
 import { useNavigation } from '@react-navigation/native';
@@ -12,19 +12,33 @@ import {
 } from "../../styles/DefaultStyles";
 
 const ScreenLogin = () => {
-    const navigation = useNavigation();
+    const initialDatas = {
+        email: "",
+        password: "",
+    };
+    const [credenciais, setCredenciais] = useState(initialDatas);
 
+    const navigation = useNavigation();
     const goToRegister = () => {
         navigation.navigate('Register');
     };
 
     const goToForgotPassword = () => {
         navigation.navigate('ForgotPassword');
-    }
+    };
 
     const goToApp = () => {
         navigation.navigate('RoutesApp');
-    }
+        console.log("Dados da tela de login: ", credenciais);
+        setCredenciais(initialDatas);
+    };
+
+    const capturaCredenciais = (nomeInput, valorInput) => {
+        setCredenciais((dadosAnteriores) => ({
+            ...dadosAnteriores,
+            [nomeInput]: valorInput
+        }))
+    };
 
     return (
         <Container>
@@ -34,8 +48,18 @@ const ScreenLogin = () => {
                     resizeMode="cover"
                 />
 
-                <Input secureText={false} text="Informe o seu E-mail:" />
-                <Input secureText={true} text="Informe a senha:" />
+                <Input
+                    secureText={false}
+                    text="Informe o seu E-mail: "
+                    value={credenciais.email}
+                    onChangeText={(value) => capturaCredenciais("email", value)}
+                />
+                <Input
+                    secureText={true}
+                    text="Informe a senha: "
+                    value={credenciais.password}
+                    onChangeText={(value) => capturaCredenciais("password", value)}
+                />
 
                 <ContainerButton>
                     <Button

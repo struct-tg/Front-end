@@ -10,14 +10,12 @@ const AddTask = () => {
     const dadosInputInicial = {
         id: uuid.v4(),
         taskName: "",
-        startDate: "",
-        endDate: "",
+        forecastDate: "",
         taskDescription: ""
     }
 
     /*Criando a funcao que captura os dados*/
     const aoSubmitarForm = (dadosFormulario) => {
-        console.log('Recebendo dados na pagina ADDTask: ', dadosFormulario);
         navigation.navigate('ToDo', { datasForm: dadosFormulario })
     }
 
@@ -25,7 +23,6 @@ const AddTask = () => {
         <FormsToDo
             dadosIniciais={dadosInputInicial}
             aoSubmitar={aoSubmitarForm}
-            /*Estou adicionando um dado.*/
             isEdit={false}
         />
     );

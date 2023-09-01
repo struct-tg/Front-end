@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Input } from "../../Components/Inputs";
 import { Button } from "../../Components/Button";
 import { useNavigation } from '@react-navigation/native';
@@ -13,10 +13,13 @@ import {
 
 
 const PasswordCode = () => {
-    const navigation = useNavigation();
+    const [code, setCode] = useState(null);
 
+    const navigation = useNavigation();
     const goToNewPassword = () => {
         navigation.navigate('RecoverPassword');
+        console.log('Os dados da tela de codigo de recuperação: ', code);
+        setCode(null);
     }
 
     return (
@@ -28,6 +31,8 @@ const PasswordCode = () => {
                     <Input
                         secureText={true}
                         text="Digite o seu código de recuperação."
+                        value={code}
+                        onChangeText={(value) => setCode(value)}
                     />
                     <TouchableOpacity>
                         <LinkNavigators>Enviar novamente?</LinkNavigators>

@@ -6,15 +6,18 @@ const EditTask = ({ route }) => {
   const navigation = useNavigation();
   const { objEdit } = route.params;
 
-  console.log(objEdit);
-
   const handleFormEdit = (dadosForm) => {
-    navigation.navigate('ToDo');
-  } 
+    const updatedData = { ...objEdit, ...dadosForm };
+    navigation.navigate('ToDo', { updatedTask: updatedData });
+  }
 
   return (
-    <FormsToDo isEdit={true} aoSubmitar={handleFormEdit} dadosIniciais={objEdit} />
+    <FormsToDo
+      dadosIniciais={objEdit}
+      aoSubmitar={handleFormEdit}
+      isEdit={true}
+    />
   )
-}
+};
 
 export default EditTask;

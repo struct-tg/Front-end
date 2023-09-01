@@ -11,7 +11,7 @@ export const Button = ({ text, onPress }) => {
 
 export const PomodoroButtonSettings = ({ text, onPress }) => {
     return (
-        <StyledPomodoroButtonSettings>
+        <StyledPomodoroButtonSettings onPress={onPress}>
             <ButtonText>{text}</ButtonText>
         </StyledPomodoroButtonSettings>
     );
@@ -19,7 +19,7 @@ export const PomodoroButtonSettings = ({ text, onPress }) => {
 
 export const PomodoroButtonAction = ({ icon, onPress }) => {
     return (
-        <StyledPomodoroButtonAction>
+        <StyledPomodoroButtonAction onPress={onPress}>
             {icon}
         </StyledPomodoroButtonAction>
     );

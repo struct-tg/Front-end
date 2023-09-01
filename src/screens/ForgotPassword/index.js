@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Input } from "../../Components/Inputs";
 import { Button } from "../../Components/Button";
 import { useNavigation } from '@react-navigation/native';
@@ -10,10 +10,13 @@ import {
 } from "../../styles/DefaultStyles";
 
 const ForgotPassword = () => {
+    const [email, setEmail] = useState(null);
     const navigation = useNavigation();
 
     const goToPasswordCode = () => {
         navigation.navigate('PasswordCode');
+        console.log('Os dados da tela de recuperação de senha [email]: ', email);
+        setEmail(null);
     }
 
     return (
@@ -24,6 +27,8 @@ const ForgotPassword = () => {
                 <Input
                     secureText={false}
                     text="Digite o seu E-mail"
+                    value={email}
+                    onChangeText={(value) => setEmail(value)}
                 />
 
                 <ContainerButton>

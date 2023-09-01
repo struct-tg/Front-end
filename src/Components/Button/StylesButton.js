@@ -17,12 +17,14 @@ export const StyledPomodoroButtonSettings = styled.TouchableOpacity`
     border-radius: 10px;
     padding-vertical: 15px;
     width: 30%;
+    background-color: #168B9D;
 `;
 
 export const StyledPomodoroButtonAction = styled.TouchableOpacity`
     border-width: 2px;
     border-radius: 10px;
     padding-vertical: 10px;
-    width: 25%;
+    width: 30%;
     align-items: center;
+    background-color: #168B9D;
 `;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input } from '../Inputs';
 import { ContainerButton } from '../../styles/DefaultStyles';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,6 +9,27 @@ import ScrollBlock from '../ScrollBlock';
 const FormsToDo = ({ dadosIniciais, aoSubmitar, isEdit }) => {
     /*Criando o state do formulario; */
     const [formulario, setFormulario] = useState(dadosIniciais);
+    const [subtasks, setSubtasks] = useState([]);
+
+    useEffect(() => {
+        setFormulario(dadosIniciais);
+        setSubtasks(dadosIniciais.subtasks || []);
+    }, [dadosIniciais]);
+
+    const handleNewSubtarefa = (inputId, inputText) => {
+        setSubtasks((prevSubtasks) => {
+            const updatedSubtasks = prevSubtasks.map((subtask) =>
+                subtask.id === inputId ? { ...subtask, text: inputText } : subtask
+            );
+            return updatedSubtasks;
+        });
+    }
+
+    const removeInput = (inputId) => {
+        setSubtasks((prevSubtasks) =>
+            prevSubtasks.filter((subtask) => subtask.id !== inputId)
+        );
+    }
 
     /*Faço a logica de captura dos dados.*/
     const capturaDados = (nomeInput, valorInput) => {
@@ -17,16 +38,18 @@ const FormsToDo = ({ dadosIniciais, aoSubmitar, isEdit }) => {
             [nomeInput]: valorInput
         }));
     }
-
-    const handleNewSubtarefa = (inputId, inputText) => {
-        setFormulario((dadosAnteriores) => ({
-            ...dadosAnteriores,
-            [inputId]: inputText
-        }));
+    
+    const handleSubmitFormulario = () => {
+        const formularioComSubtasks = { ...formulario, subtasks };
+        aoSubmitar(formularioComSubtasks);
     }
 
-    const handleSubmitFormulario = () => {
-        aoSubmitar(formulario);
+    const addNewInput = (newInputId) => {
+        const newSubtask = {
+            id: newInputId,
+            text: "",
+        };
+        setSubtasks((prevSubtasks) => [...prevSubtasks, newSubtask]);
     }
 
     return (
@@ -38,20 +61,17 @@ const FormsToDo = ({ dadosIniciais, aoSubmitar, isEdit }) => {
                 onChangeText={(value) => capturaDados("taskName", value)}
             />
             <Input
-                text={"Data de início: "}
+                text={"Data de previsão: "}
                 secureText={false}
-                value={formulario.startDate}
-                onChangeText={(value) => capturaDados("startDate", value)}
-            />
-            <Input
-                text={"Data de término: "}
-                secureText={false}
-                value={formulario.endDate}
-                onChangeText={(value) => capturaDados("endDate", value)}
+                value={formulario.forecastDate}
+                onChangeText={(value) => capturaDados("forecastDate", value)}
             />
 
             <ScrollBlock
-                onNewInputAdded={handleNewSubtarefa}
+                subtasks={subtasks}
+                onNewInputAdded={addNewInput}
+                onInputChange={handleNewSubtarefa}
+                onInputRemove={removeInput}
             />
 
             <TextArea
