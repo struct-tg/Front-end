@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Input } from '../Inputs';
-import { ContainerButton } from '../../styles/DefaultStyles';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button } from '../Button';
-import TextArea from "../TextArea";
+import { Input } from '../../../../Components/Inputs';
+import { ContainerButton } from '../../../../styles/DefaultStyles';
+import { Button } from '../../../../Components/Button';
+import TextArea from "../../../../Components/TextArea";
 import ScrollBlock from '../ScrollBlock';
 
 const FormsToDo = ({ dadosIniciais, aoSubmitar, isEdit }) => {
@@ -82,7 +82,7 @@ const FormsToDo = ({ dadosIniciais, aoSubmitar, isEdit }) => {
 
             <ContainerButton>
                 <Button
-                    text={isEdit ? "Editar dados" : "Adicionar nova tarefa"}
+                    text={"Salvar tarefa."}
                     onPress={handleSubmitFormulario}
                 />
             </ContainerButton>

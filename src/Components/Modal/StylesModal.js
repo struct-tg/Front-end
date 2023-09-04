@@ -1,10 +1,10 @@
 import styled from 'styled-components/native';
 
-export const FormContainer = styled.View`
-    flex: 1;
-    justify-content: space-evenly;
+export default ContainerModal = styled.View`
+    flex: 0.9;
+    justify-content: space-between;
     background-color: white;
+    padding: 12px 24px;
     border-radius: 20px;
-    padding: 0 20px;
     backgroundColor: #40aab8;
 `;

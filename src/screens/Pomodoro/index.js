@@ -1,84 +1,113 @@
 import React, { useState, useEffect } from "react";
-import { Text, View } from "react-native";
+import ModalPomodoroSettings from "./components/PomodoroSettings";
 import { PomodoroButtonAction, PomodoroButtonSettings } from "../../Components/Button";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import { SectionCycles, SectionRow, TitleCycles, SectionClock, CircleClock, NumberClock } from "./StylesPomodoro";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { useNavigation } from "@react-navigation/native";
 import { Audio } from 'expo-av';
+import {
+    SectionCycles,
+    SectionRow,
+    TitleCycles,
+    SectionClock,
+    CircleClock,
+    NumberClock,
+} from "./StylesPomodoro";
 
 const Pomodoro = () => {
-    const [minutes, setMinutes] = useState(25);
-    const [seconds, setSeconds] = useState(0);
-    const [isRunning, setIsRunning] = useState(false);
-    const navigation = useNavigation();
+    const [modalVisible, setModalVisible] = useState(false);
 
-    const soundObject = new Audio.Sound();
-    const loadAudio = async () => {
+    const [hours, setHours] = useState(0);
+    const [minutes, setMinutes] = useState(0);
+    const [seconds, setSeconds] = useState(10);
+    const [controlaPomodoro, setControlaPomodoro] = useState(false);
+
+    const [som, setSom] = useState(null);
+    const [somNotification, setSomNotification] = useState(false);
+
+    async function fnLoadAudio() {
+        const audio = new Audio.Sound()
         try {
-            await soundObject.loadAsync(require('../../../assets/audios/notification.mp3'));
+            await audio.loadAsync(require('./notification.mp3'))
+            setSom(audio);
         } catch (error) {
             console.log('Erro ao carregar a notificação por áudio: ', error);
         }
-    }
+    };
 
-    const playNotificationSound = async () => {
-        try {
-            await soundObject.replayAsync();
-        } catch (error) {
-            console.error('Erro ao reproduzir o som:', error);
+    async function fnPlayNotificationSound() {
+        if (som) {
+            try {
+                setSomNotification(true)
+                await som.playAsync()
+            } catch (error) {
+                console.error('Erro ao reproduzir o som:', error);
+            }
         }
     };
 
-    const stopNotificationSound = async () => {
-        try {
-            await soundObject.stopAsync();
-        } catch (error) {
-            console.error('Erro ao parar o som:', error);
+    async function fnStopNotificationSound() {
+        if (som) {
+            try {
+                setSomNotification(false)
+                await som.stopAsync()
+            } catch (error) {
+                console.error('Erro ao parar o som:', error);
+            }
+        }
+    };
+
+    const ativaPomodoro = () => {
+        setControlaPomodoro(true);
+    }
+
+    const desativaPomodoro = () => {
+        setControlaPomodoro(false);
+        if (somNotification) {
+            fnStopNotificationSound();
         }
     }
 
     useEffect(() => {
-        loadAudio();
-        return () => {
-            soundObject.unloadAsync();
-        };
+        fnLoadAudio()
     }, []);
 
-    const goToPomodoroSettings = () => {
-        navigation.navigate('PomodoroSettings');
-    }
+    useEffect(() => {
+        let tempo;
+
+        if (controlaPomodoro) {
+            tempo = setInterval(() => {
+                if (seconds > 0) {
+                    setSeconds(seconds - 1);
+                } else if (minutes > 0) {
+                    setMinutes(minutes - 1);
+                    setSeconds(59);
+                } else if (hours > 0) {
+                    setHours(hours - 1);
+                    setMinutes(59);
+                    setSeconds(59);
+                } else {
+                    fnPlayNotificationSound()
+                }
+            }, 1000);
+        } else {
+            clearInterval(tempo);
+        }
+        return () => {
+            clearInterval(tempo);
+        };
+    }, [controlaPomodoro, hours, minutes, seconds]);
+
 
     return (
         <SafeAreaView style={{ flexGrow: 1, paddingHorizontal: 24, justifyContent: "center", backgroundColor: "#2aabbf" }}>
             <SectionRow>
                 <SectionCycles>
-                    <TitleCycles>Ciclos</TitleCycles>
+                    <TitleCycles>Ciclos:</TitleCycles>
                     <Ionicons
                         name="time-outline"
                         size={30}
-                        color="black"
-                    />
-                    <Ionicons
-                        name="time-outline"
-                        size={30}
-                        color="black"
-                    />
-                    <Ionicons
-                        name="time-outline"
-                        size={30}
-                        color="black"
-                    />
-                    <Ionicons
-                        name="time-outline"
-                        size={30}
-                        color="black"
-                    />
-                    <Ionicons
-                        name="time-outline"
-                        size={30}
-                        color="black"
+                        color="#11BBC6"
                     />
                 </SectionCycles>
 
@@ -87,7 +116,7 @@ const Pomodoro = () => {
                         name="options-outline"
                         size={35}
                         color={"white"}
-                        onPress={goToPomodoroSettings}
+                        onPress={() => setModalVisible(true)}
                     />
                 </TouchableOpacity>
             </SectionRow>
@@ -106,7 +135,7 @@ const Pomodoro = () => {
 
             <SectionClock>
                 <CircleClock>
-                    <NumberClock>05:39</NumberClock>
+                    <NumberClock>{`${hours}:${minutes}:${seconds}`}</NumberClock>
                 </CircleClock>
             </SectionClock>
 
@@ -129,7 +158,7 @@ const Pomodoro = () => {
                             color={"white"}
                         />
                     )}
-                    onPress={playNotificationSound}
+                    onPress={ativaPomodoro}
                 />
                 <PomodoroButtonAction
                     icon={(
@@ -139,9 +168,13 @@ const Pomodoro = () => {
                             color={"white"}
                         />
                     )}
-                    onPress={stopNotificationSound}
+                    onPress={desativaPomodoro}
                 />
             </SectionRow>
+            <ModalPomodoroSettings
+                state={modalVisible}
+                setModalVisible={setModalVisible}
+            />
         </SafeAreaView>
     );
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { InputIcon } from "../Inputs";
-import ContainerScroll from "../../Components/ScrollBlock/StylesScrollBlock.js";
+import { InputIcon } from "../../../../Components/Inputs";
+import ContainerScroll from "./StylesScrollBlock.js";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import uuid from 'react-native-uuid';
@@ -24,7 +24,7 @@ const ScrollBlock = ({ subtasks, onNewInputAdded, onInputChange, onInputRemove }
             
             <ContainerScroll>
                 {subtasks.map((subtask) => (
-                    <View key={subtask.id}>
+                    <View key={subtask.id} style={{marginBottom: 2}}>
                         <InputIcon
                             text={"Nome da subtarefa: "}
                             secureText={false}

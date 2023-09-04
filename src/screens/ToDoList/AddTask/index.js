@@ -1,7 +1,7 @@
 import React from 'react'
-import FormsToDo from "../../../Components/Forms";
-import uuid from 'react-native-uuid';
 import { useNavigation } from '@react-navigation/native';
+import FormsToDo from "../components/Forms";
+import uuid from 'react-native-uuid';
 
 const AddTask = () => {
     const navigation = useNavigation();

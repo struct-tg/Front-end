@@ -1,5 +1,9 @@
 import styled from 'styled-components/native';
 
+/* #02f78d */
+/* #ed1354 */
+/* #eef205 */
+
 export const Card = styled.TouchableOpacity`
     display: flex;
     flex-direction: row;

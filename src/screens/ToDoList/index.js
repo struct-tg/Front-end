@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { View, ContainerToDo, ViewSettings, ViewTasks } from "../../screens/ToDoList/StylesToDoList.js";
+import React, { Fragment, useEffect, useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { View, ContainerToDo, ViewSettings, ViewTasks, TitleToDo } from "../../screens/ToDoList/StylesToDoList.js";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -34,7 +35,7 @@ const ToDoList = ({ route }) => {
     }, [route.params]);
 
     return (
-        <ContainerToDo>
+        <SafeAreaView style={{ flexGrow: 1, paddingHorizontal: 24, justifyContent: "space-between", backgroundColor: "#2aabbf" }}>
             <View>
                 <ViewSettings>
                     <TouchableOpacity >
@@ -54,15 +55,17 @@ const ToDoList = ({ route }) => {
                     </TouchableOpacity>
                 </ViewSettings>
 
-
                 {tasks.length <= 0 ? (
-                    <View style={{ flex: 0.9, justifyContent: 'center', alignItems: 'center' }}>
-                        <Image
-                            source={require('./Home-Students.png')}
-                            style={{ width: "100%", height: "50%" }}
-                            resizeMode="cover"
-                        />
-                    </View>
+                    <Fragment>
+                        <TitleToDo>Adicione novas tarefas!</TitleToDo>
+                        <View style={{ flex: 0.9, justifyContent: 'center', alignItems: 'center' }}>
+                            <Image
+                                source={require('./Home-Students.png')}
+                                style={{ width: "100%", height: "50%" }}
+                                resizeMode="cover"
+                            />
+                        </View>
+                    </Fragment>
                 ) : (
                     <ViewTasks>
                         <FlatList
@@ -78,7 +81,7 @@ const ToDoList = ({ route }) => {
                 )
                 }
             </View>
-        </ContainerToDo>
+        </SafeAreaView>
     );
 }
 

@@ -1,20 +1,27 @@
-import React from 'react'
+import React from 'react';
 
+/*Telas externas ao APP*/
 import ScreenLogin from './screens/Login/index';
 import ScreenRegister from "./screens/Register/index";
 import ScreenForgotPassword from "./screens/ForgotPassword/index";
 import ScreenPasswordCode from "./screens/PasswordCode/index";
 import ScreenRecoverPassword from "./screens/RecoverPassword/index";
 
+/*Telas internas ao APP: Home*/
 import ScreenHome from "./screens/Home/index";
 
+/*Telas internas ao APP: ToDo*/
 import ScreenToDo from "./screens/ToDoList/index";
 import ScreenAddTodo from "./screens/ToDoList/AddTask/index";
 import ScreenEditTodo from "./screens/ToDoList/EditTask/index";
 
+/*Telas internas ao APP: Pomodoro*/
 import ScreenPomodoro from "./screens/Pomodoro/index";
-import ScreenPomodorSettings from "./screens/Pomodoro/PomodoroSettings/index";
+
+/*Telas internas ao APP: Disciplinas*/
 import ScreenGrades from "./screens/Grades/index";
+
+/*Telas internas ao APP: Calendario*/
 import ScreenCalendar from "./screens/Calendar/index";
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -39,7 +46,6 @@ const Routes = () => {
                 <Stack.Screen name="AddTodo" component={ScreenAddTodo} />
                 <Stack.Screen name="EditTodo" component={ScreenEditTodo} />
 
-                <Stack.Screen name="PomodoroSettings" component={ScreenPomodorSettings} />
                 <Stack.Screen name="RoutesApp" component={RoutesApp} />
             </Stack.Navigator>
         </NavigationContainer>

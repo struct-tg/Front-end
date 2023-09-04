@@ -21,3 +21,10 @@ export const ViewSettings = styled.View`
 export const ViewTasks = styled.View`
     flex: 1;
 `;
+
+export const TitleToDo = styled.Text`
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+`

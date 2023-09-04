@@ -1,5 +1,5 @@
 import React from 'react'
-import FormsToDo from "../../../Components/Forms";
+import FormsToDo from "../components/Forms";
 import { useNavigation } from '@react-navigation/native';
 
 const EditTask = ({ route }) => {
