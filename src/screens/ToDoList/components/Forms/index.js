@@ -31,6 +31,16 @@ const FormsToDo = ({ dadosIniciais, aoSubmitar, isEdit }) => {
         );
     }
 
+    const finishTask = (inputId, item) => {
+        setSubtasks((prevSubtasks) => {
+            const updatedSubtasks = prevSubtasks.map((subtask) =>
+                subtask.id === inputId ? { ...subtask, status: !subtask.status } : subtask
+            );
+            return updatedSubtasks;
+        });
+        console.log(`O id clicado: ${inputId} e o dados do input: ${item}`);
+    }
+
     /*Faço a logica de captura dos dados.*/
     const capturaDados = (nomeInput, valorInput) => {
         setFormulario((dadosAnteriores) => ({
@@ -38,7 +48,7 @@ const FormsToDo = ({ dadosIniciais, aoSubmitar, isEdit }) => {
             [nomeInput]: valorInput
         }));
     }
-    
+
     const handleSubmitFormulario = () => {
         const formularioComSubtasks = { ...formulario, subtasks };
         aoSubmitar(formularioComSubtasks);
@@ -48,6 +58,7 @@ const FormsToDo = ({ dadosIniciais, aoSubmitar, isEdit }) => {
         const newSubtask = {
             id: newInputId,
             text: "",
+            status: false
         };
         setSubtasks((prevSubtasks) => [...prevSubtasks, newSubtask]);
     }
@@ -72,6 +83,7 @@ const FormsToDo = ({ dadosIniciais, aoSubmitar, isEdit }) => {
                 onNewInputAdded={addNewInput}
                 onInputChange={handleNewSubtarefa}
                 onInputRemove={removeInput}
+                onInputFinish={finishTask}
             />
 
             <TextArea

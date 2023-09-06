@@ -9,6 +9,7 @@ const EditTask = ({ route }) => {
   const handleFormEdit = (dadosForm) => {
     const updatedData = { ...objEdit, ...dadosForm };
     navigation.navigate('ToDo', { updatedTask: updatedData });
+    console.log('Os dados editados: ', updatedData);
   }
 
   return (

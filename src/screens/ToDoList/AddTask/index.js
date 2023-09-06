@@ -17,6 +17,7 @@ const AddTask = () => {
     /*Criando a funcao que captura os dados*/
     const aoSubmitarForm = (dadosFormulario) => {
         navigation.navigate('ToDo', { datasForm: dadosFormulario })
+        console.log('Os dados adicionados: ', dadosFormulario);
     }
 
     return (

@@ -26,7 +26,7 @@ const ToDoList = ({ route }) => {
     useEffect(() => {
         if (route.params && route.params.datasForm) {
             const { datasForm } = route.params;
-            setTasks(prevTasks => [...prevTasks, { ...datasForm, subtasks: datasForm.subtasks.map(subtask => ({ id: subtask.id, text: subtask.text })) }]);
+            setTasks(prevTasks => [...prevTasks, { ...datasForm, subtasks: datasForm.subtasks.map(subtask => ({ id: subtask.id, text: subtask.text, status: subtask.status })) }]);
         }
         if (route.params && route.params.updatedTask) {
             const { updatedTask } = route.params;

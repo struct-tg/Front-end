@@ -49,8 +49,8 @@ const Pomodoro = () => {
     async function fnStopNotificationSound() {
         if (som) {
             try {
-                setSomNotification(false)
                 await som.stopAsync()
+                setSomNotification(false)
             } catch (error) {
                 console.error('Erro ao parar o som:', error);
             }

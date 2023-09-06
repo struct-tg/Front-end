@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInput, IconButton } from 'react-native-paper';
 import { SafeAreaView } from 'react-native';
-import { ContainerIconButton, ContainerIconInput } from "../../Components/Inputs/StylesInputs.js";
+import { ContainerIconButton, ContainerIconInput, ContainerIcons } from "../../Components/Inputs/StylesInputs.js";
 
 export const Input = ({ secureText, text, value, onChangeText }) => {
     return (
@@ -17,22 +17,29 @@ export const Input = ({ secureText, text, value, onChangeText }) => {
     );
 };
 
-export const InputIcon = ({ secureText, text, value, onChangeText, Icon, onButtonPress }) => {
+export const InputIcon = ({ text, value, textBlock, onChangeText, iconTrash, iconCheck, onButtonPress }) => {
+    
     return (
         <ContainerIconButton>
             <ContainerIconInput>
                 <TextInput
                     label={text}
                     mode="flat"
-                    secureTextEntry={secureText}
                     value={value}
+                    disabled={textBlock}
                     onChangeText={onChangeText}
                 />
             </ContainerIconInput>
-            <IconButton
-                icon={Icon}
-                onPress={onButtonPress}
-            />
+            <ContainerIcons>
+                <IconButton
+                    icon={iconCheck}
+                    onPress={onButtonPress}
+                />
+                <IconButton
+                    icon={iconTrash}
+                    onPress={onButtonPress}
+                />
+            </ContainerIcons>
         </ContainerIconButton>
     );
 };

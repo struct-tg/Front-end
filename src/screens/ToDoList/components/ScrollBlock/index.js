@@ -1,12 +1,13 @@
-import React from "react";
-import { View, Text } from "react-native";
+import React, { useState } from "react";
+import { View } from "react-native";
 import { InputIcon } from "../../../../Components/Inputs";
 import ContainerScroll from "./StylesScrollBlock.js";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import uuid from 'react-native-uuid';
 
-const ScrollBlock = ({ subtasks, onNewInputAdded, onInputChange, onInputRemove }) => {
+const ScrollBlock = ({ subtasks, onNewInputAdded, onInputChange, onInputRemove, onInputFinish }) => {
+
     const addNewInput = () => {
         const newInputId = uuid.v4();
         onNewInputAdded(newInputId);
@@ -21,21 +22,33 @@ const ScrollBlock = ({ subtasks, onNewInputAdded, onInputChange, onInputRemove }
                     color={"white"}
                 />
             </TouchableOpacity>
-            
+
             <ContainerScroll>
                 {subtasks.map((subtask) => (
-                    <View key={subtask.id} style={{marginBottom: 2}}>
+                    <View key={subtask.id} style={{ marginBottom: 2 }}>
                         <InputIcon
                             text={"Nome da subtarefa: "}
-                            secureText={false}
                             value={subtask.text}
+                            textBlock={subtask.status}
                             onChangeText={(newText) => onInputChange(subtask.id, newText)}
-                            Icon={() => (
+                            iconCheck={() => (
+                                <Ionicons
+                                    name="checkmark-outline"
+                                    size={35}
+                                    color={subtask.status === true ? "green" : "white"}
+                                    onPress={() => {
+                                        onInputFinish(subtask.id, subtask.status);
+                                    }}
+                                />
+                            )}
+                            iconTrash={() => (
                                 <Ionicons
                                     name="trash-outline"
                                     size={35}
                                     color={"white"}
-                                    onPress={() => onInputRemove(subtask.id)}
+                                    onPress={() =>
+                                        onInputRemove(subtask.id)
+                                    }
                                 />
                             )}
                         />
