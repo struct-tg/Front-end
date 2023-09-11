@@ -6,7 +6,7 @@ import {
     ViewContainer,
     UppercaseTitle,
     ContainerButton,
-} from "../../styles/DefaultStyles";
+} from "../../Styles/DefaultStyles";
 
 const RecoverPassword = () => {
     const initialDatas = {

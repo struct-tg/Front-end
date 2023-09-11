@@ -18,6 +18,11 @@ export const ViewSettings = styled.View`
     align-items: flex-end;
 `;
 
+export const ViewBlock = styled.View`
+    flex-direction: row;
+    justify-content: flex-end;
+`;
+
 export const ViewTasks = styled.View`
     flex: 1;
 `;

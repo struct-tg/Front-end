@@ -1,44 +1,64 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, ContainerToDo, ViewSettings, ViewTasks, TitleToDo } from "../../screens/ToDoList/StylesToDoList.js";
+import { View, ViewSettings, ViewTasks, TitleToDo, ViewBlock } from "./StylesToDoList.js";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { Image } from "react-native";
+import { getAllTasks, deleteTask, getTaskById } from "../../Services/Requisicoes/Tasks";
+import { AutenticacaoContext } from "../../Contexts/UserContext.js";
+import ModalComponent from "./ComponentsToDo/ModalInformationsToDo";
 import CardTask from "../../Components/CardTask";
 
 const ToDoList = ({ route }) => {
     const [tasks, setTasks] = useState([]);
+    const [modalInformation, setModalInformation] = useState(false);
+    const { tokenJWT } = useContext(AutenticacaoContext);
     const navigation = useNavigation();
+    const isFocused = useIsFocused();
+
+    useEffect(() => {
+        async function fetchTasks(tokenJWT) {
+            try {
+                const result = await getAllTasks(tokenJWT);
+                setTasks(result);
+            } catch (error) {
+                console.log('Erro ao obter tarefas: ', error);
+            }
+        }
+
+        if (isFocused) {
+            fetchTasks(tokenJWT);
+        }
+    }, [isFocused]);
+
+    const fnDeleteTask = async (idTask) => {
+        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== idTask))
+        await deleteTask(idTask, tokenJWT);
+    }
+
+    const fnGoToEdit = async (idTask) => {
+        const result = await getTaskById(idTask, tokenJWT);
+        if (result) {
+            navigation.navigate('EditTodo', { objEdit: result })
+        } else {
+            console.log('Algo deu errado');
+        }
+    }
 
     const goToAddTodo = () => {
         navigation.navigate('AddTodo');
     }
 
-    const goToEdit = (item) => {
-        navigation.navigate('EditTodo', { objEdit: item });
+    const goToFiltersTodo = () => {
+        navigation.navigate('FiltersTodo');
     }
-
-    const deleteTask = (item) => {
-        setTasks((tasks) => tasks.filter((task) => item.id !== task.id));
-    }
-
-    useEffect(() => {
-        if (route.params && route.params.datasForm) {
-            const { datasForm } = route.params;
-            setTasks(prevTasks => [...prevTasks, { ...datasForm, subtasks: datasForm.subtasks.map(subtask => ({ id: subtask.id, text: subtask.text, status: subtask.status })) }]);
-        }
-        if (route.params && route.params.updatedTask) {
-            const { updatedTask } = route.params;
-            setTasks(prevTasks => prevTasks.map(task => (task.id === updatedTask.id ? updatedTask : task)));
-        }
-    }, [route.params]);
 
     return (
         <SafeAreaView style={{ flexGrow: 1, paddingHorizontal: 24, justifyContent: "space-between", backgroundColor: "#2aabbf" }}>
             <View>
                 <ViewSettings>
-                    <TouchableOpacity >
+                    <TouchableOpacity>
                         <Ionicons
                             name={"add-circle-outline"}
                             size={35}
@@ -46,13 +66,25 @@ const ToDoList = ({ route }) => {
                             onPress={goToAddTodo}
                         />
                     </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Ionicons
-                            name={"options-outline"}
-                            size={35}
-                            color={"white"}
-                        />
-                    </TouchableOpacity>
+                    <ViewBlock>
+                        <TouchableOpacity>
+                            <Ionicons
+                                name={"help-circle-outline"}
+                                size={35}
+                                color={"white"}
+                                onPress={() => setModalInformation(true)}
+                            />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity>
+                            <Ionicons
+                                name={"search-circle-outline"}
+                                size={35}
+                                color={"white"}
+                                onPress={goToFiltersTodo}
+                            />
+                        </TouchableOpacity>
+                    </ViewBlock>
                 </ViewSettings>
 
                 {tasks.length <= 0 ? (
@@ -71,16 +103,21 @@ const ToDoList = ({ route }) => {
                         <FlatList
                             data={tasks}
                             renderItem={({ item }) => <CardTask
-                                title={item.taskName}
-                                onDelete={() => deleteTask(item)}
-                                onOpen={() => goToEdit(item)}
-                            />}
+                                title={item.name}
+                                onDelete={() => fnDeleteTask(item.id)}
+                                onOpen={() => fnGoToEdit(item.id)}
+                            />
+                            }
                             keyExtractor={(item, index) => index.toString()}
                         />
                     </ViewTasks>
                 )
                 }
             </View>
+            <ModalComponent
+                state={modalInformation}
+                setModalInformation={setModalInformation}
+            />
         </SafeAreaView>
     );
 }

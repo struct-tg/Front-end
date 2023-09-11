@@ -9,6 +9,7 @@ const ToastComponent = ({ ToastType, Title, Description }) => {
             text2: Description
         })
     }, [])
+    return null;
 }
 
 export default ToastComponent;

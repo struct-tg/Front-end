@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import ModalPomodoroSettings from "./components/PomodoroSettings";
 import { PomodoroButtonAction, PomodoroButtonSettings } from "../../Components/Button";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
@@ -13,11 +12,11 @@ import {
     CircleClock,
     NumberClock,
 } from "./StylesPomodoro";
+import ModalPomodoroSettings from "./Components/ModalSettingsPomodoro";
 
 const Pomodoro = () => {
     const [modalVisible, setModalVisible] = useState(false);
 
-    const [hours, setHours] = useState(0);
     const [minutes, setMinutes] = useState(0);
     const [seconds, setSeconds] = useState(10);
     const [controlaPomodoro, setControlaPomodoro] = useState(false);
@@ -68,6 +67,11 @@ const Pomodoro = () => {
         }
     }
 
+    const reloadTime = () => {
+        setMinutes(0);
+        setSeconds(10);
+    }
+
     useEffect(() => {
         fnLoadAudio()
     }, []);
@@ -82,10 +86,6 @@ const Pomodoro = () => {
                 } else if (minutes > 0) {
                     setMinutes(minutes - 1);
                     setSeconds(59);
-                } else if (hours > 0) {
-                    setHours(hours - 1);
-                    setMinutes(59);
-                    setSeconds(59);
                 } else {
                     fnPlayNotificationSound()
                 }
@@ -96,7 +96,7 @@ const Pomodoro = () => {
         return () => {
             clearInterval(tempo);
         };
-    }, [controlaPomodoro, hours, minutes, seconds]);
+    }, [controlaPomodoro, minutes, seconds]);
 
 
     return (
@@ -135,7 +135,7 @@ const Pomodoro = () => {
 
             <SectionClock>
                 <CircleClock>
-                    <NumberClock>{`${hours}:${minutes}:${seconds}`}</NumberClock>
+                    <NumberClock>{`${minutes}:${seconds}`}</NumberClock>
                 </CircleClock>
             </SectionClock>
 
@@ -148,6 +148,7 @@ const Pomodoro = () => {
                             color={"white"}
                         />
                     )}
+                    onPress={reloadTime}
                 />
 
                 <PomodoroButtonAction

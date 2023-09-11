@@ -7,7 +7,7 @@ const toastConfig = {
             contentContainerStyle={{ paddingHorizontal: 15 }}
             text1Style={{
                 fontSize: 18,
-                fontWeight: 'bold'
+                fontWeight: '400'
             }}
             text2Style={{
                 fontSize: 16,

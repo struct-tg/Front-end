@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import { InputIcon } from "../../../../Components/Inputs";
 import ContainerScroll from "./StylesScrollBlock.js";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import uuid from 'react-native-uuid';
+import { Title } from "../../../../Styles/DefaultStyles";
 
 const ScrollBlock = ({ subtasks, onNewInputAdded, onInputChange, onInputRemove, onInputFinish }) => {
 
