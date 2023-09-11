@@ -9,7 +9,7 @@ import { AutenticacaoContext } from "../../../../Contexts/UserContext";
 import ModalComponent from "../../../../Components/Modal";
 
 const ModalPerfilSettings = ({ state, setModalPerfilSettings }) => {
-    const { logout } = useContext(AutenticacaoContext);
+    const { logout, username } = useContext(AutenticacaoContext);
     const navigation = useNavigation();
 
     const userOff = () => {
@@ -19,7 +19,7 @@ const ModalPerfilSettings = ({ state, setModalPerfilSettings }) => {
 
     return (
         <ModalComponent visible={state} setModalVisible={setModalPerfilSettings} upKeyboard={true}>
-            <UppercaseTitle>Yuri Alberto.</UppercaseTitle>
+            <UppercaseTitle>{`${username}`}</UppercaseTitle>
 
             <Input
                 text={"Senha: "}

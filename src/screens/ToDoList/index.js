@@ -8,12 +8,12 @@ import { Image } from "react-native";
 import { getAllTasks, deleteTask, getTaskById } from "../../Services/Requisicoes/Tasks";
 import { AutenticacaoContext } from "../../Contexts/UserContext.js";
 import ModalComponent from "./ComponentsToDo/ModalInformationsToDo";
-import CardTask from "../../Components/CardTask";
+import CardTaskToDo from "./ComponentsToDo/CardTaskToDo";
 
-const ToDoList = ({ route }) => {
+const ToDoList = () => {
     const [tasks, setTasks] = useState([]);
     const [modalInformation, setModalInformation] = useState(false);
-    const { tokenJWT } = useContext(AutenticacaoContext);
+    const { tokenJWT, username } = useContext(AutenticacaoContext);
     const navigation = useNavigation();
     const isFocused = useIsFocused();
 
@@ -89,10 +89,10 @@ const ToDoList = ({ route }) => {
 
                 {tasks.length <= 0 ? (
                     <Fragment>
-                        <TitleToDo>Adicione novas tarefas!</TitleToDo>
+                        <TitleToDo>{`Adicione novas tarefas, ${username}!`}</TitleToDo>
                         <View style={{ flex: 0.9, justifyContent: 'center', alignItems: 'center' }}>
                             <Image
-                                source={require('./Home-Students.png')}
+                                source={require('./ToDo-Image.png')}
                                 style={{ width: "100%", height: "50%" }}
                                 resizeMode="cover"
                             />
@@ -102,7 +102,7 @@ const ToDoList = ({ route }) => {
                     <ViewTasks>
                         <FlatList
                             data={tasks}
-                            renderItem={({ item }) => <CardTask
+                            renderItem={({ item }) => <CardTaskToDo
                                 title={item.name}
                                 onDelete={() => fnDeleteTask(item.id)}
                                 onOpen={() => fnGoToEdit(item.id)}

@@ -9,7 +9,7 @@ import ModalPerfilSettings from "./Components/ModalPerfilHome";
 const Home = () => {
     const [modalPerfilSettings, setModalPerfilSettings] = useState(false);
     const { tokenJWT } = useContext(AutenticacaoContext);
-    
+
     return (
         <SafeAreaView style={{ flexGrow: 1, paddingHorizontal: 24, justifyContent: "space-between", backgroundColor: "#2aabbf" }}>
             <TouchableOpacity>
@@ -24,7 +24,7 @@ const Home = () => {
                 <Text style={{ alignSelf: "center" }}>{tokenJWT}</Text>
             </View>
             <View style={{ width: "100%", height: "25%", borderColor: "white", borderStyle: "solid", borderWidth: 3, borderRadius: 20 }}>
-                <Text style={{ alignSelf: "center" }}>Matérias</Text>
+                <Text style={{ alignSelf: "center" }}></Text>
             </View>
             <View style={{ width: "100%", height: "25%", borderColor: "white", borderStyle: "solid", borderWidth: 3, borderRadius: 20 }}>
                 <Text style={{ alignSelf: "center" }}>Calendario</Text>

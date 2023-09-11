@@ -21,6 +21,7 @@ import ScreenPomodoro from "./Screens/Pomodoro/index.js";
 
 /*Telas internas ao APP: Disciplinas*/
 import ScreenGrades from "./Screens/Grades/index.js";
+import ScreenAddGrade from "./Screens/Grades/ScreensGrades/AddGrade/index.js";
 
 /*Telas internas ao APP: Calendario*/
 import ScreenCalendar from "./Screens/Calendar/index.js";
@@ -47,6 +48,8 @@ const Routes = () => {
                 <Stack.Screen name="AddTodo" component={ScreenAddTodo} />
                 <Stack.Screen name="EditTodo" component={ScreenEditTodo} />
                 <Stack.Screen name="FiltersTodo" component={ScreenFiltersTodo} />
+
+                <Stack.Screen name='AddGrade' component={ScreenAddGrade} />
 
                 <Stack.Screen name="RoutesApp" component={RoutesApp} />
             </Stack.Navigator>

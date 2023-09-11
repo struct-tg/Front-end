@@ -1,19 +1,24 @@
 import React from "react";
 import { createContext, useState } from "react";
-import { realizaLogin } from "../Services/Requisicoes/Users";
+import { realizaLogin, getUserName } from "../Services/Requisicoes/Users";
 
 export const AutenticacaoContext = createContext();
 
 export function AutenticacaoProvider({ children }) {
     const [tokenJWT, setTokenJWT] = useState(null);
+    const [username, setUserName] = useState(null);
 
     const login = async (credenciais) => {
         try {
             const hashToken = await realizaLogin(credenciais);
-            console.log('O tokenJWT do usuario: ', hashToken);
+            const user = await getUserName(hashToken);
 
-            if (hashToken) {
+            console.log('O tokenJWT do usuario: ', hashToken);
+            console.log('O nome do usuario: ', user);
+
+            if (hashToken && user) {
                 setTokenJWT(hashToken);
+                setUserName(user);
                 return true;
             } else {
                 return false;
@@ -29,7 +34,7 @@ export function AutenticacaoProvider({ children }) {
     };
 
     return (
-        <AutenticacaoContext.Provider value={{ tokenJWT, login, logout }}>
+        <AutenticacaoContext.Provider value={{ tokenJWT, username, login, logout }}>
             {children}
         </AutenticacaoContext.Provider>
     );

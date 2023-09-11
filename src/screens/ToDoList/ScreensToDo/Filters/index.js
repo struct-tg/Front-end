@@ -7,12 +7,12 @@ import { AutenticacaoContext } from "../../../../Contexts/UserContext.js";
 import { getAllTasks } from "../../../../Services/Requisicoes/Tasks/index.js";
 import SearchBarComponent from '../../../../Components/SearchBar/index.js';
 import RadioButtonComponent from '../../../../Components/RadioButton/index.js';
-import CardTask from "../../../../Components/CardTask/index.js";
+import CardTaskToDo from "../../ComponentsToDo/CardTaskToDo";
 
 const FiltersTasks = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [allTasks, setAllTasks] = useState([]);
-    const { tokenJWT } = useContext(AutenticacaoContext);
+    const { tokenJWT, username } = useContext(AutenticacaoContext);
     const isFocused = useIsFocused(false);
 
     useEffect(() => {
@@ -34,10 +34,10 @@ const FiltersTasks = () => {
 
             {allTasks.length <= 0 ? (
                 <Fragment>
-                    <TitleToDo>Cadastre novas tarefas, Estudante!</TitleToDo>
+                    <TitleToDo>{`Cadastre novas tarefas, ${username}!`}</TitleToDo>
                     <View style={{ flex: 0.9, justifyContent: 'center', alignItems: 'center' }}>
                         <Image
-                            source={require('./Filter-Teacher.png')}
+                            source={require('./Filter-Image.png')}
                             style={{ width: "70%", height: "50%" }}
                             resizeMode="cover"
                         />
@@ -47,7 +47,7 @@ const FiltersTasks = () => {
                 <ViewTasks>
                     <FlatList
                         data={allTasks}
-                        renderItem={({ item }) => <CardTask
+                        renderItem={({ item }) => <CardTaskToDo
                             title={item.name}
                         />
                         }
