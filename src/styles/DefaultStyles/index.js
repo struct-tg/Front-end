@@ -20,6 +20,12 @@ export const UppercaseTitle = styled.Text`
     text-transform: uppercase;
 `;
 
+export const Title = styled.Text`
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+`;
+
 export const ContainerImage = styled.Image`   
     flex: 0.4;
     width: 80%;
