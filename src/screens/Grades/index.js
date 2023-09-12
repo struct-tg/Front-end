@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Image } from 'react-native'
 import { View, ViewSettings } from "./StylesGrades";
 import { Ionicons } from "@expo/vector-icons";
+
 import CardGrades from "./ComponentsGrades/CardGradeGrades";
 
 const Grades = () => {
@@ -26,6 +27,14 @@ const Grades = () => {
                             size={35}
                             color={"white"}
                             onPress={goToAddGrade}
+                        />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity>
+                        <Ionicons
+                            name={"search-circle-outline"}
+                            size={35}
+                            color={"white"}
                         />
                     </TouchableOpacity>
                 </ViewSettings>

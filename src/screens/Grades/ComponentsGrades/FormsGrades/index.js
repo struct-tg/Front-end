@@ -2,10 +2,11 @@ import React from 'react';
 import { View } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { Input } from "../../../../Components/Inputs";
-import { Button } from "../../../../Components/Button";
+import { Button, LargestButton } from "../../../../Components/Button";
 import { ContainerButton } from "../../../../Styles/DefaultStyles";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import HelperTextComponent from "../../../../Components/HelperText";
+import BlockRadioButton from '../BlockRadioButtonGrades';
 
 const FormsGrades = () => {
     const { control, handleSubmit, formState: { errors } } = useForm({ mode: "onChange" });
@@ -16,7 +17,6 @@ const FormsGrades = () => {
 
     return (
         <SafeAreaView style={{ backgroundColor: '#40aab8', flexGrow: 1, justifyContent: 'space-evenly', paddingHorizontal: 20 }}>
-
             <Controller
                 control={control}
                 name='disciplina'
@@ -76,6 +76,10 @@ const FormsGrades = () => {
                     </View>
                 )}
             />
+
+            <LargestButton />
+
+            <BlockRadioButton />
 
             <ContainerButton>
                 <Button

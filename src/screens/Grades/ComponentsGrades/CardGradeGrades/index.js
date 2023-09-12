@@ -3,23 +3,21 @@ import {
     Card,
     ViewText,
     CardTitle,
-    CardSubTitle,
     CardBlockNote,
-    CardTextNote,
+    CardTextStatus,
     CardButton
 } from "./StylesCardGrades.js";
 import { Ionicons } from "@expo/vector-icons";
 
-const CardGrades = ({ titleGrades, status, note }) => {
+const CardGrades = ({ titleGrades, status }) => {
     return (
         <Card>
             <ViewText>
                 <CardTitle>{titleGrades}</CardTitle>
-                <CardSubTitle>{status}</CardSubTitle>
             </ViewText>
 
             <CardBlockNote>
-                <CardTextNote>{`Nota: ${note}`}</CardTextNote>
+                <CardTextStatus>{status}</CardTextStatus>
             </CardBlockNote>
 
             <CardButton>

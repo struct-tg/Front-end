@@ -1,17 +1,19 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import { InputIcon } from "../../../../Components/Inputs";
-import ContainerScroll from "./StylesScrollBlock.js";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useForm, Controller } from "react-hook-form";
 import uuid from 'react-native-uuid';
-import { Title } from "../../../../Styles/DefaultStyles";
+import ContainerScroll from "./StylesScrollBlock.js";
+import HelperTextComponent from "../../../../Components/HelperText";
 
-const ScrollBlock = ({ subtasks, onNewInputAdded, onInputChange, onInputRemove, onInputFinish }) => {
+const ScrollBlock = ({ state, addInput, removeInput, finishInput, changeInput }) => {
+    const { control, formState: { errors } } = useForm({ mode: "onChange" });
 
     const addNewInput = () => {
         const newInputId = uuid.v4();
-        onNewInputAdded(newInputId);
+        addInput(newInputId);
     }
 
     return (
@@ -25,35 +27,46 @@ const ScrollBlock = ({ subtasks, onNewInputAdded, onInputChange, onInputRemove, 
             </TouchableOpacity>
 
             <ContainerScroll>
-                {subtasks.map((subtask) => (
-                    <View key={subtask.id} style={{ marginBottom: 2 }}>
-                        <InputIcon
-                            text={"Nome da subtarefa: "}
-                            value={subtask.text}
-                            textBlock={subtask.status}
-                            onChangeText={(newText) => onInputChange(subtask.id, newText)}
-                            iconCheck={() => (
-                                <Ionicons
-                                    name="checkmark-outline"
-                                    size={35}
-                                    color={subtask.status === true ? "green" : "white"}
-                                    onPress={() => {
-                                        onInputFinish(subtask.id, subtask.status);
-                                    }}
+                {state.map((subtask, index) => (
+                    <Controller
+                        key={subtask.id}
+                        control={control}
+                        name={`subtasks[${index}].text`}
+                        rules={{ required: "Campo obrigatório" }}
+                        render={({ field }) => (
+                            <View>
+                                <InputIcon
+                                    text={"Adicione uma subtarefa: "}
+
+                                    onChangeText={(newText) => changeInput(subtask.id, newText)}
+                                    textBlock={subtask.status}
+                                    iconCheck={() => (
+                                        <Ionicons
+                                            name="checkmark-outline"
+                                            size={35}
+                                            color={subtask.status === true ? "green" : "white"}
+                                            onPress={() => {
+                                                finishInput(subtask.id, subtask.status);
+                                            }}
+                                        />
+                                    )}
+                                    iconTrash={() => (
+                                        <Ionicons
+                                            name="trash-outline"
+                                            size={35}
+                                            color={"white"}
+                                            onPress={() =>
+                                                removeInput(subtask.id)
+                                            }
+                                        />
+                                    )}
                                 />
-                            )}
-                            iconTrash={() => (
-                                <Ionicons
-                                    name="trash-outline"
-                                    size={35}
-                                    color={"white"}
-                                    onPress={() =>
-                                        onInputRemove(subtask.id)
-                                    }
-                                />
-                            )}
-                        />
-                    </View>
+                                {errors.subtasks && errors.subtasks[index] && (
+                                    <HelperTextComponent helperType={"error"} helperText={errors.subtasks[index].message} />
+                                )}
+                            </View>
+                        )}
+                    />
                 ))}
             </ContainerScroll>
         </View>

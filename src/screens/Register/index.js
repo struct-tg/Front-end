@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View } from "react-native";
-import { Input } from "../../Components/Inputs";
+import { Input, InputPassword } from "../../Components/Inputs";
 import { Button } from "../../Components/Button";
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
@@ -110,8 +110,7 @@ const ScreenRegister = () => {
                     defaultValue=""
                     render={({ field }) => (
                         <View>
-                            <Input
-                                secureText={true}
+                            <InputPassword
                                 text="Informe a sua senha: "
                                 value={field.value}
                                 onChangeText={field.onChange}

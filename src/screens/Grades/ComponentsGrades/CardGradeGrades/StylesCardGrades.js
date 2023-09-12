@@ -24,13 +24,6 @@ export const CardTitle = styled.Text`
     color: white;
 `;
 
-export const CardSubTitle = styled.Text`
-    font-size: 18px;
-    text-transform: uppercase;
-    font-weight: bold;
-    color: white;
-`;
-
 export const CardBlockNote = styled.View`
     width: 35%;
     height: 47%;
@@ -41,7 +34,7 @@ export const CardBlockNote = styled.View`
     border-radius: 5px;
 `;
 
-export const CardTextNote = styled.Text`
+export const CardTextStatus = styled.Text`
     font-size: 18px;
     font-weight: bold;
 `;
