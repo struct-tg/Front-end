@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TextInput, IconButton } from 'react-native-paper';
 import { SafeAreaView } from 'react-native';
 import { ContainerIconButton, ContainerIconInput, ContainerIcons } from "../../Components/Inputs/StylesInputs.js";
@@ -17,8 +17,23 @@ export const Input = ({ secureText, text, value, onChangeText }) => {
     );
 };
 
+export const InputPassword = ({ text, value, onChangeText }) => {
+    const [passwordVisible, setPasswordVisible] = useState(true);
+
+    return (
+        <TextInput
+            label={text}
+            mode="flat"
+            secureTextEntry={passwordVisible}
+            value={value}
+            onChangeText={onChangeText}
+            right={<TextInput.Icon icon="eye" onPress={() => setPasswordVisible(!passwordVisible)} />}
+        />
+    )
+}
+
 export const InputIcon = ({ text, value, textBlock, onChangeText, iconTrash, iconCheck, onButtonPress }) => {
-    
+
     return (
         <ContainerIconButton>
             <ContainerIconInput>

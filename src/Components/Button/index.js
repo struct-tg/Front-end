@@ -1,5 +1,5 @@
 import React from "react";
-import { StyledButton, ButtonText, StyledPomodoroButtonSettings, StyledPomodoroButtonAction } from '../../Components/Button/StylesButton.js';
+import { StyledButton, ButtonText, StyledPomodoroButtonSettings, StyledPomodoroButtonAction, StyledLargestButton } from '../../Components/Button/StylesButton.js';
 
 export const Button = ({ text, onPress }) => {
     return (
@@ -7,6 +7,14 @@ export const Button = ({ text, onPress }) => {
             <ButtonText>{text}</ButtonText>
         </StyledButton>
     );
+};
+
+export const LargestButton = ({text, onPress}) => {
+    return (
+        <StyledLargestButton>
+            <ButtonText>Ver minhas atividades avaliativas</ButtonText>
+        </StyledLargestButton>
+    );  
 };
 
 export const PomodoroButtonSettings = ({ text, onPress }) => {

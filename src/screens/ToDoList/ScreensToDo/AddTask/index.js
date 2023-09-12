@@ -10,17 +10,15 @@ const AddTask = () => {
     const { tokenJWT } = useContext(AutenticacaoContext);
     const navigation = useNavigation();
 
-    const aoSubmitarForm = (dadosFormulario) => {
-        insertNewTask(dadosFormulario, tokenJWT)
-            .then((result) => {
-                if (result) {
-                    setToastVisible(true);
-                    navigation.navigate('ToDo', { newTasks: dadosFormulario });
-                }
-            })
-            .catch((error) => {
-                console.log('Algo deu errado: ', error);
-            });
+    const aoSubmitarForm = async (dadosFormulario) => {
+        console.log('OS DADOS DO CONSOLE.LOG: ', dadosFormulario)
+        const result = await insertNewTask(dadosFormulario, tokenJWT)
+        if (result) {
+            setToastVisible(true);
+            navigation.navigate('ToDo', { newTasks: dadosFormulario });
+        } else {
+            console.log('Algo deu errado em cadastrar tarefa: ');
+        }
     }
 
     return (

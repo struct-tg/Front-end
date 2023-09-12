@@ -10,13 +10,34 @@ import ScrollBlock from '../ScrollBlockToDo';
 import HelperTextComponent from "../../../../Components/HelperText";
 
 const FormsToDo = ({ aoSubmitar, initialValues }) => {
-    const { control, handleSubmit, formState: { errors } } = useForm({ mode: "onChange", defaultValues: initialValues });
+    const { control, handleSubmit, formState: { errors }, } = useForm({ mode: "onChange", defaultValues: initialValues });
     const [subtasks, setSubtasks] = useState([]);
 
-    useEffect(() => {
-    }, [subtasks]);
+    const fnAddNewInput = (ID) => {
+        const newSubtask = {
+            id: ID,
+            description: "",
+            status: false,
+        }
+        setSubtasks((prevSubtasks) => [...prevSubtasks, newSubtask]);
+    };
 
-    const handleNewSubtarefa = (inputId, inputText) => {
+    const fnRemoveInput = (inputId) => {
+        setSubtasks((prevSubtasks) =>
+            prevSubtasks.filter((subtask) => subtask.id !== inputId)
+        );
+    };
+
+    const fnFinishTask = (inputId, item) => {
+        setSubtasks((prevSubtasks) => {
+            const updatedSubtasks = prevSubtasks.map((subtask) =>
+                subtask.id === inputId ? { ...subtask, status: !subtask.status } : subtask
+            );
+            return updatedSubtasks;
+        });
+    };
+
+    const fnChangeText = (inputId, inputText) => {
         setSubtasks((prevSubtasks) => {
             const updatedSubtasks = prevSubtasks.map((subtask) =>
                 subtask.id === inputId ? { ...subtask, text: inputText } : subtask
@@ -25,29 +46,14 @@ const FormsToDo = ({ aoSubmitar, initialValues }) => {
         });
     }
 
-    const removeInput = (inputId) => {
-        setSubtasks((prevSubtasks) =>
-            prevSubtasks.filter((subtask) => subtask.id !== inputId)
-        );
-    }
+    const fnSubmit = (data) => {
+        /*const subtaskData = subtasks.map((subtask) => ({
+            description: subtask.text,
+            status: subtask.status,
+        }));
 
-    const finishTask = (inputId, item) => {
-        setSubtasks((prevSubtasks) => {
-            const updatedSubtasks = prevSubtasks.map((subtask) =>
-                subtask.id === inputId ? { ...subtask, status: !subtask.status } : subtask
-            );
-            return updatedSubtasks;
-        });
-        console.log(`O id clicado: ${inputId} e o dados do input: ${item}`);
-    }
-
-    const addNewInput = (newInputId) => {
-        const newSubtask = {
-            id: newInputId,
-            text: "",
-            status: false
-        };
-        setSubtasks((prevSubtasks) => [...prevSubtasks, newSubtask]);
+        const objEnvio = { ...data, SubTask: subtaskData };       */
+        aoSubmitar(data)
     }
 
     return (
@@ -89,11 +95,12 @@ const FormsToDo = ({ aoSubmitar, initialValues }) => {
             />
 
             <ScrollBlock
-                subtasks={subtasks}
-                onNewInputAdded={addNewInput}
-                onInputChange={handleNewSubtarefa}
-                onInputRemove={removeInput}
-                onInputFinish={finishTask}
+                state={subtasks}
+                setState={setSubtasks}
+                addInput={fnAddNewInput}
+                removeInput={fnRemoveInput}
+                finishInput={fnFinishTask}
+                changeInput={fnChangeText}
             />
 
             <Controller
@@ -116,7 +123,7 @@ const FormsToDo = ({ aoSubmitar, initialValues }) => {
             <ContainerButton>
                 <Button
                     text={"Salvar tarefa."}
-                    onPress={handleSubmit(aoSubmitar)}
+                    onPress={handleSubmit(fnSubmit)}
                 />
             </ContainerButton>
         </SafeAreaView>
