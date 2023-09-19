@@ -1,17 +1,25 @@
 import React, { useState, useEffect } from 'react';
+import { DateTime } from 'luxon';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useForm, Controller } from 'react-hook-form';
 import { Input } from '../../../../Components/Inputs';
 import { ContainerButton } from '../../../../Styles/DefaultStyles';
 import { Button } from '../../../../Components/Button';
+import convertDateISO8601 from '../../../../Utils/Date/index';
+import ToastComponent from "../../../../Components/Toast";
 import TextArea from "../../../../Components/TextArea";
 import ScrollBlock from '../ScrollBlockToDo';
 import HelperTextComponent from "../../../../Components/HelperText";
+import Calendar from '../CalendarToDo';
 
-const FormsToDo = ({ aoSubmitar, initialValues }) => {
-    const { control, handleSubmit, formState: { errors }, } = useForm({ mode: "onChange", defaultValues: initialValues });
-    const [subtasks, setSubtasks] = useState([]);
+const FormsToDo = ({ aoSubmitar, initialValues, isEdit }) => {
+    const { control, handleSubmit, formState: { errors } } = useForm({ mode: "onChange", defaultValues: initialValues });
+    const [subTasks, setSubtasks] = useState(isEdit ? initialValues.subTasks || [] : [] || initialValues.subTasks);
+    const [calendarVisible, setCalendarVisible] = useState(false);
+    const [dateError, setDateError] = useState(false);
+    const [currentDate, setCurrentDate] = useState(convertDateISO8601(DateTime.now()));
+    const [toastVisible, setToastVisible] = useState(false);
 
     const fnAddNewInput = (ID) => {
         const newSubtask = {
@@ -40,20 +48,25 @@ const FormsToDo = ({ aoSubmitar, initialValues }) => {
     const fnChangeText = (inputId, inputText) => {
         setSubtasks((prevSubtasks) => {
             const updatedSubtasks = prevSubtasks.map((subtask) =>
-                subtask.id === inputId ? { ...subtask, text: inputText } : subtask
+                subtask.id === inputId ? { ...subtask, description: inputText } : subtask
             );
             return updatedSubtasks;
         });
     }
 
     const fnSubmit = (data) => {
-        /*const subtaskData = subtasks.map((subtask) => ({
-            description: subtask.text,
-            status: subtask.status,
-        }));
+        const subTasksWithoutId = subTasks.map(({ id, ...rest }) => rest);
+        const objEnvio = { ...data, subTasks: subTasksWithoutId };
 
-        const objEnvio = { ...data, SubTask: subtaskData };       */
-        aoSubmitar(data)
+        const selectedDate = convertDateISO8601((data.dateWishEnd));
+        if (selectedDate < currentDate) {
+            setDateError(true);
+            setToastVisible(true);
+
+            setToastVisible(false);
+        } else {
+            aoSubmitar(objEnvio);
+        }
     }
 
     return (
@@ -79,15 +92,15 @@ const FormsToDo = ({ aoSubmitar, initialValues }) => {
             <Controller
                 control={control}
                 name='dateWishEnd'
-                defaultValue=""
+                defaultValue={""}
                 rules={{ required: ' Campo obrigatório! ' }}
                 render={({ field }) => (
                     <View>
-                        <Input
-                            text={"Data de previsão: "}
-                            secureText={false}
-                            value={field.value}
-                            onChangeText={field.onChange}
+                        <Calendar
+                            state={calendarVisible}
+                            setCalendarVisible={setCalendarVisible}
+                            data={isEdit ? convertDateISO8601(field.value) : field.value}
+                            setData={(newValue) => field.onChange(newValue)}
                         />
                         {errors.dateWishEnd && (<HelperTextComponent helperType={'error'} helperText={errors.dateWishEnd.message} />)}
                     </View>
@@ -95,7 +108,7 @@ const FormsToDo = ({ aoSubmitar, initialValues }) => {
             />
 
             <ScrollBlock
-                state={subtasks}
+                state={subTasks}
                 setState={setSubtasks}
                 addInput={fnAddNewInput}
                 removeInput={fnRemoveInput}
@@ -119,13 +132,20 @@ const FormsToDo = ({ aoSubmitar, initialValues }) => {
                     </View>
                 )}
             />
-
             <ContainerButton>
                 <Button
                     text={"Salvar tarefa."}
                     onPress={handleSubmit(fnSubmit)}
                 />
             </ContainerButton>
+
+            {toastVisible && (
+                <ToastComponent
+                    ToastType={'error'}
+                    Title={'Data inválida!'}
+                    Description={'Insira uma data valida, Estudante!'}
+                />
+            )}
         </SafeAreaView>
     );
 };

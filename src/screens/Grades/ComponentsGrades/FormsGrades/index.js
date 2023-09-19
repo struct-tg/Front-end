@@ -16,7 +16,7 @@ const FormsGrades = () => {
     }
 
     return (
-        <SafeAreaView style={{ backgroundColor: '#40aab8', flexGrow: 1, justifyContent: 'space-evenly', paddingHorizontal: 20 }}>
+        <SafeAreaView style={{ backgroundColor: '#40aab8', flexGrow: 1, justifyContent: 'space-around', paddingHorizontal: 20 }}>
             <Controller
                 control={control}
                 name='disciplina'
@@ -83,7 +83,7 @@ const FormsGrades = () => {
 
             <ContainerButton>
                 <Button
-                    text={'Salvar avaliação.'}
+                    text={'Salvar disciplina.'}
                     onPress={handleSubmit(onSubmit)}
                 />
             </ContainerButton>

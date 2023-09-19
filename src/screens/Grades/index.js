@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Image } from 'react-native'
 import { View, ViewSettings } from "./StylesGrades";
 import { Ionicons } from "@expo/vector-icons";
-
+import CardActivies from "./ComponentsGrades/CardActiviesGrades";
 import CardGrades from "./ComponentsGrades/CardGradeGrades";
 
 const Grades = () => {
@@ -39,19 +39,13 @@ const Grades = () => {
                     </TouchableOpacity>
                 </ViewSettings>
 
-                <CardGrades
-                    titleGrades={'DISCIPLINA'}
-                    status={'APROVADO'}
-                    note={'9.50'}
-                />
-
                 <View style={{ flex: 0.9, justifyContent: 'center', alignItems: 'center' }}>
                     <Image
                         source={require('./Grade-Image.png')}
                         style={{ width: "100%", height: "55%" }}
                         resizeMode="cover"
                     />
-                </View>
+                </View> 
             </View>
         </SafeAreaView>
     );

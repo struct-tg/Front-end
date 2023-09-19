@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Input } from "../../../../Components/Inputs";
+import { Input, InputPassword } from "../../../../Components/Inputs";
 import { Button } from "../../../../Components/Button";
 import { useNavigation } from '@react-navigation/native';
 import { ContainerButton, LinkNavigators, UppercaseTitle } from "../../../../Styles/DefaultStyles";
@@ -21,9 +21,11 @@ const ModalPerfilSettings = ({ state, setModalPerfilSettings }) => {
         <ModalComponent visible={state} setModalVisible={setModalPerfilSettings} upKeyboard={true}>
             <UppercaseTitle>{`${username}`}</UppercaseTitle>
 
-            <Input
-                text={"Senha: "}
+            <InputPassword
+                text={'Digite a sua senha: '}
+                secureText={true}
             />
+            
             <Input
                 text={"Confirme sua senha: "}
                 secureText={true}

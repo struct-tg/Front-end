@@ -14,7 +14,7 @@ import ScreenHome from "./Screens/Home/index.js";
 import ScreenToDo from "./Screens/ToDoList/index.js";
 import ScreenAddTodo from "./Screens/ToDoList/ScreensToDo/AddTask/index.js";
 import ScreenEditTodo from "./Screens/ToDoList/ScreensToDo/EditTask/index.js";
-import ScreenFiltersTodo from "./Screens/ToDoList/ScreensToDo/Filters/index.js";
+import ScreenFiltersTodo from "./Screens/ToDoList/ScreensToDo/FiltersTask/index.js";
 
 /*Telas internas ao APP: Pomodoro*/
 import ScreenPomodoro from "./Screens/Pomodoro/index.js";

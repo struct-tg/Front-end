@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { Button } from "../../../../Components/Button";
 import { Input } from "../../../../Components/Inputs";
 import { ContainerButton, UppercaseTitle } from "../../../../Styles/DefaultStyles";
+import { createPomodoro } from "../../../../Services/Requisicoes/Pomodoro";
+import { AutenticacaoContext } from "../../../../Contexts/UserContext";
 import {
     ModalSectionInput,
     ModalSectionRow,
@@ -18,10 +20,21 @@ import ModalComponent from "../../../../Components/Modal";
 
 const ModalPomodoroSettings = ({ state, setModalVisible }) => {
     const { control, handleSubmit, formState: { errors } } = useForm({ mode: "onChange" });
+    const { tokenJWT } = useContext(AutenticacaoContext);
 
-    const onSubmit = (data) => {
-        console.log(data);
-        setModalVisible(false);
+    const onSubmit = async (data) => {
+        data.timer = parseInt(data.timer);
+        data.timerPauseShort = parseInt(data.timerPauseShort);
+        data.timerPauseLong = parseInt(data.timerPauseLong);
+        data.quantityPauseLong = parseInt(data.quantityPauseLong);
+
+        const result = await createPomodoro(data, tokenJWT);
+        if (result) {
+            setModalVisible(false);
+            console.log('DADOS ENVIADOS: ', data);
+        } else {
+            console.log('deu erro truta');
+        }
     }
 
     return (
@@ -33,7 +46,7 @@ const ModalPomodoroSettings = ({ state, setModalVisible }) => {
                     <ModalTitleInput>Pomodoro</ModalTitleInput>
                     <Controller
                         control={control}
-                        name="timePomodoro"
+                        name="timer"
                         rules={{ required: 'Campo obrigatório' }}
                         defaultValue=""
                         render={({ field }) => (
@@ -42,7 +55,7 @@ const ModalPomodoroSettings = ({ state, setModalVisible }) => {
                                     value={String(field.value)}
                                     onChangeText={field.onChange}
                                 />
-                                {errors.timePomodoro && (<HelperTextComponent helperType="error" helperText={errors.timePomodoro.message} />)}
+                                {errors.timer && (<HelperTextComponent helperType="error" helperText={errors.timer.message} />)}
                             </View>
                         )}
                     />
@@ -52,7 +65,7 @@ const ModalPomodoroSettings = ({ state, setModalVisible }) => {
                     <ModalTitleInput>Pausa curta</ModalTitleInput>
                     <Controller
                         control={control}
-                        name="pausaCurta"
+                        name="timerPauseShort"
                         rules={{ required: 'Campo obrigatório' }}
                         defaultValue=""
                         render={({ field }) => (
@@ -61,7 +74,7 @@ const ModalPomodoroSettings = ({ state, setModalVisible }) => {
                                     value={String(field.value)}
                                     onChangeText={field.onChange}
                                 />
-                                {errors.pausaCurta && (<HelperTextComponent helperType="error" helperText={errors.pausaCurta.message} />)}
+                                {errors.timerPauseShort && (<HelperTextComponent helperType="error" helperText={errors.timerPauseShort.message} />)}
                             </View>
                         )}
                     />
@@ -71,7 +84,7 @@ const ModalPomodoroSettings = ({ state, setModalVisible }) => {
                     <ModalTitleInput>Pausa longa</ModalTitleInput>
                     <Controller
                         control={control}
-                        name="pausaLonga"
+                        name="timerPauseLong"
                         rules={{ required: 'Campo obrigatório' }}
                         defaultValue=""
                         render={({ field }) => (
@@ -80,7 +93,7 @@ const ModalPomodoroSettings = ({ state, setModalVisible }) => {
                                     value={String(field.value)}
                                     onChangeText={field.onChange}
                                 />
-                                {errors.pausaLonga && (<HelperTextComponent helperType="error" helperText={errors.pausaLonga.message} />)}
+                                {errors.timerPauseLong && (<HelperTextComponent helperType="error" helperText={errors.timerPauseLong.message} />)}
                             </View>
                         )}
                     />
@@ -91,7 +104,7 @@ const ModalPomodoroSettings = ({ state, setModalVisible }) => {
                 <ModalTextPomodoroSettings>Iniciar automaticamente as pausas</ModalTextPomodoroSettings>
                 <Controller
                     control={control}
-                    name="iniciarAutoticamentePausas"
+                    name="startAutomaticPause"
                     defaultValue={false}
                     render={({ field }) => (
                         <SwitchComponent
@@ -106,7 +119,7 @@ const ModalPomodoroSettings = ({ state, setModalVisible }) => {
                 <ModalTextPomodoroSettings>Iniciar automaticamente o pomodoro</ModalTextPomodoroSettings>
                 <Controller
                     control={control}
-                    name="iniciarAutoticamentePomodoro"
+                    name="startAutomaticTimer"
                     defaultValue={false}
                     render={({ field }) => (
                         <SwitchComponent
@@ -122,7 +135,7 @@ const ModalPomodoroSettings = ({ state, setModalVisible }) => {
                 <ModalInputRow>
                     <Controller
                         control={control}
-                        name="qtdePausasLongas"
+                        name="quantityPauseLong"
                         rules={{ required: 'Campo obrigatório' }}
                         defaultValue=""
                         render={({ field }) => (
@@ -131,7 +144,7 @@ const ModalPomodoroSettings = ({ state, setModalVisible }) => {
                                     value={String(field.value)}
                                     onChangeText={field.onChange}
                                 />
-                                {errors.qtdePausasLongas && (<HelperTextComponent helperType="error" helperText={errors.qtdePausasLongas.message} />)}
+                                {errors.quantityPauseLong && (<HelperTextComponent helperType="error" helperText={errors.quantityPauseLong.message} />)}
                             </View>
                         )}
                     />

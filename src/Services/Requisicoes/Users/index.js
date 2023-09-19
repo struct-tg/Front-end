@@ -13,8 +13,6 @@ export async function cadastraUsuario(objRegistro) {
 export async function realizaLogin(objLogin) {
     try {
         const result = await api.post('/user/auth', objLogin);
-        console.log(JSON.stringify(result));
-
         return result.data.token;
     }
     catch (error) {

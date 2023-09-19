@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { PomodoroButtonAction, PomodoroButtonSettings } from "../../Components/Button";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
@@ -12,17 +12,35 @@ import {
     CircleClock,
     NumberClock,
 } from "./StylesPomodoro";
+import { AutenticacaoContext } from "../../Contexts/UserContext";
+import { getAllPomodoro } from "../../Services/Requisicoes/Pomodoro";
 import ModalPomodoroSettings from "./Components/ModalSettingsPomodoro";
 
 const Pomodoro = () => {
+    const [datas, setDatas] = useState({});
     const [modalVisible, setModalVisible] = useState(false);
 
     const [minutes, setMinutes] = useState(0);
-    const [seconds, setSeconds] = useState(10);
+    const [seconds, setSeconds] = useState(0);
     const [controlaPomodoro, setControlaPomodoro] = useState(false);
 
     const [som, setSom] = useState(null);
     const [somNotification, setSomNotification] = useState(false);
+
+    const { tokenJWT } = useContext(AutenticacaoContext);
+
+    useEffect(() => {
+        async function fetchData() {
+            const result = await getAllPomodoro(tokenJWT);
+            if (result) {
+                setDatas(result);
+                console.log('OS DADOS DE DATAS', datas[0].timer);
+            } else {
+                console.log('algo deu errado');
+            }
+        }
+        fetchData();
+    }, []);
 
     async function fnLoadAudio() {
         const audio = new Audio.Sound()
@@ -68,8 +86,7 @@ const Pomodoro = () => {
     }
 
     const reloadTime = () => {
-        setMinutes(0);
-        setSeconds(10);
+        setMinutes(datas[0].timer);
     }
 
     useEffect(() => {
@@ -124,12 +141,15 @@ const Pomodoro = () => {
             <SectionRow>
                 <PomodoroButtonSettings
                     text={"Intervalo longo"}
+                    onPress={() => setMinutes(datas[0].timerPauseLong)}
                 />
                 <PomodoroButtonSettings
                     text={"Pomodoro"}
+                    onPress={() => setMinutes(datas[0].timer)}
                 />
                 <PomodoroButtonSettings
                     text={"Intervalo curto"}
+                    onPress={() => setMinutes(datas[0].timerPauseShort)}
                 />
             </SectionRow>
 

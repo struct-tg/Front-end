@@ -1,10 +1,10 @@
 import styled from 'styled-components/native';
 
-/* #02f78d - concluidas */
-/* #ed1354 - atrasadas */
-/* #eef205 - pendente */
-/* #0521f7 - pendente */
-/* #35effc - pendente */
+export const BlockInformation = styled.View`
+    width: auto;
+    justify-content: center;
+    align-items: center;
+`;
 
 export const Card = styled.TouchableOpacity`
     display: flex;
@@ -25,14 +25,32 @@ export const TituloCard = styled.Text`
     text-transform: uppercase;
     color: white;
 `;
+export const DateCard = styled.Text`
+    font-size: 13px;
+    color: white;
+`;
 
-export const BotoesCard = styled.View`
-    display: flex;
+export const InlineBlock = styled.View`
     flex-direction: row;
-    width: 25%;
+    flex-grow: 1;
     justify-content: space-between;
+`;
+
+export const BlockGradeInformation = styled.View`
+    width: 20%;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #000;
+    border-radius: 5px;
+    background-color: white;
+`;
+
+export const TextBlockGradeInformation = styled.Text`
+    font-size: 13px;
+    font-weight: bold;
 `;
 
 export const BotaoCard = styled.TouchableOpacity`
     display: flex;
+    justify-content: center;
 `;
