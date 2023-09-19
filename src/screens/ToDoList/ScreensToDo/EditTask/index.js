@@ -4,6 +4,7 @@ import { updateTask } from "../../../../Services/Requisicoes/Tasks";
 import { AutenticacaoContext } from "../../../../Contexts/UserContext";
 import FormsToDo from "../../ComponentsToDo/FormsToDo";
 import ToastComponent from "../../../../Components/Toast";
+import convertDateISO8601 from '../../../../Utils/Date';
 
 const EditTask = ({ route }) => {
   const [toastVisible, setToastVisible] = useState(false);
@@ -12,16 +13,24 @@ const EditTask = ({ route }) => {
   const navigation = useNavigation();
 
   const fnEditSubmitForm = async (datasForm) => {
-    await updateTask(datasForm.id, datasForm, tokenJWT);
-    navigation.navigate('ToDo', { updateTask: datasForm });
+    const { id, userId, ...cleanObj } = datasForm;
+
+    const updatedSubTasks = cleanObj.subTasks.map(({ taskId, ...objLimpo }) => objLimpo);
+
+    cleanObj.subTasks = updatedSubTasks;
+    cleanObj.dateWishEnd = convertDateISO8601(cleanObj.dateWishEnd);
+
+    await updateTask(id, cleanObj, tokenJWT);
+    navigation.navigate('ToDo', { updateTask: cleanObj });
     setToastVisible(true);
-  }
+  };
 
   return (
     <Fragment>
       <FormsToDo
         aoSubmitar={fnEditSubmitForm}
         initialValues={objEdit}
+        isEdit={true}
       />
       {toastVisible && (
         <ToastComponent

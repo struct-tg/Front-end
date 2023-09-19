@@ -5,14 +5,16 @@ import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { Image } from "react-native";
-import { getAllTasks, deleteTask, getTaskById } from "../../Services/Requisicoes/Tasks";
+import { getAllTasks, deleteTask, getTaskById, finishTask } from "../../Services/Requisicoes/Tasks";
 import { AutenticacaoContext } from "../../Contexts/UserContext.js";
+import convertDateISO8601 from "../../Utils/Date/index";
 import ModalComponent from "./ComponentsToDo/ModalInformationsToDo";
 import CardTaskToDo from "./ComponentsToDo/CardTaskToDo";
 
 const ToDoList = () => {
     const [tasks, setTasks] = useState([]);
     const [modalInformation, setModalInformation] = useState(false);
+    const [dialogInformation, setDialogInformation] = useState(true);
     const { tokenJWT, username } = useContext(AutenticacaoContext);
     const navigation = useNavigation();
     const isFocused = useIsFocused();
@@ -26,7 +28,6 @@ const ToDoList = () => {
                 console.log('Erro ao obter tarefas: ', error);
             }
         }
-
         if (isFocused) {
             fetchTasks(tokenJWT);
         }
@@ -43,6 +44,14 @@ const ToDoList = () => {
             navigation.navigate('EditTodo', { objEdit: result })
         } else {
             console.log('Algo deu errado');
+        }
+    }
+
+    const fnFinishTask = async (idTask) => {
+        const result = await finishTask(idTask, tokenJWT);
+        if (result) {
+            const updateDatas = await getAllTasks(tokenJWT);
+            setTasks(updateDatas);
         }
     }
 
@@ -104,16 +113,26 @@ const ToDoList = () => {
                             data={tasks}
                             renderItem={({ item }) => <CardTaskToDo
                                 title={item.name}
+                                state={item.dateEnd === null
+                                    ? 0
+                                    : item.dateEnd !== null
+                                        ? convertDateISO8601(item.dateEnd) > convertDateISO8601(item.dateWishEnd)
+                                            ? 3
+                                            : 1
+                                        : null}
                                 onDelete={() => fnDeleteTask(item.id)}
                                 onOpen={() => fnGoToEdit(item.id)}
+                                onFinish={() => fnFinishTask(item.id)}
                             />
                             }
+                            showsVerticalScrollIndicator={false}
                             keyExtractor={(item, index) => index.toString()}
                         />
                     </ViewTasks>
                 )
                 }
             </View>
+
             <ModalComponent
                 state={modalInformation}
                 setModalInformation={setModalInformation}

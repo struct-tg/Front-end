@@ -12,10 +12,6 @@ export function AutenticacaoProvider({ children }) {
         try {
             const hashToken = await realizaLogin(credenciais);
             const user = await getUserName(hashToken);
-
-            console.log('O tokenJWT do usuario: ', hashToken);
-            console.log('O nome do usuario: ', user);
-
             if (hashToken && user) {
                 setTokenJWT(hashToken);
                 setUserName(user);

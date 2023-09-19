@@ -28,45 +28,34 @@ const ScrollBlock = ({ state, addInput, removeInput, finishInput, changeInput })
 
             <ContainerScroll>
                 {state.map((subtask, index) => (
-                    <Controller
-                        key={subtask.id}
-                        control={control}
-                        name={`subtasks[${index}].text`}
-                        rules={{ required: "Campo obrigatório" }}
-                        render={({ field }) => (
-                            <View>
-                                <InputIcon
-                                    text={"Adicione uma subtarefa: "}
-
-                                    onChangeText={(newText) => changeInput(subtask.id, newText)}
-                                    textBlock={subtask.status}
-                                    iconCheck={() => (
-                                        <Ionicons
-                                            name="checkmark-outline"
-                                            size={35}
-                                            color={subtask.status === true ? "green" : "white"}
-                                            onPress={() => {
-                                                finishInput(subtask.id, subtask.status);
-                                            }}
-                                        />
-                                    )}
-                                    iconTrash={() => (
-                                        <Ionicons
-                                            name="trash-outline"
-                                            size={35}
-                                            color={"white"}
-                                            onPress={() =>
-                                                removeInput(subtask.id)
-                                            }
-                                        />
-                                    )}
+                    <View key={subtask.id} style={{ marginBottom: 15 }}>
+                        <InputIcon
+                            text={"Adicione uma subtarefa: "}
+                            value={subtask.description}
+                            onChangeText={(newText) => changeInput(subtask.id, newText)}
+                            textBlock={subtask.status}
+                            iconCheck={() => (
+                                <Ionicons
+                                    name="checkmark-outline"
+                                    size={35}
+                                    color={subtask.status === true ? "green" : "white"}
+                                    onPress={() => {
+                                        finishInput(subtask.id, subtask.status);
+                                    }}
                                 />
-                                {errors.subtasks && errors.subtasks[index] && (
-                                    <HelperTextComponent helperType={"error"} helperText={errors.subtasks[index].message} />
-                                )}
-                            </View>
-                        )}
-                    />
+                            )}
+                            iconTrash={() => (
+                                <Ionicons
+                                    name="trash-outline"
+                                    size={35}
+                                    color={"white"}
+                                    onPress={() =>
+                                        removeInput(subtask.id)
+                                    }
+                                />
+                            )}
+                        />
+                    </View>
                 ))}
             </ContainerScroll>
         </View>

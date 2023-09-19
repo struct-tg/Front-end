@@ -1,16 +1,17 @@
 {
   "expo": {
     "name": "struct",
-    "permissions": ["INTERNET"],
+    "permissions": [
+      "INTERNET"
+    ],
     "slug": "struct",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "icon": "./assets/adaptive-icon.png",
+    "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/struct.png",
+      "resizeMode": "cover"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -20,8 +21,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/adaptive-icon.png"
       }
     },
     "web": {

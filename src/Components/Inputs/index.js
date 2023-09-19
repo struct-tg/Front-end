@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { TextInput, IconButton } from 'react-native-paper';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, TouchableOpacity, View } from 'react-native';
 import { ContainerIconButton, ContainerIconInput, ContainerIcons } from "../../Components/Inputs/StylesInputs.js";
 
 export const Input = ({ secureText, text, value, onChangeText }) => {
@@ -28,6 +28,18 @@ export const InputPassword = ({ text, value, onChangeText }) => {
             value={value}
             onChangeText={onChangeText}
             right={<TextInput.Icon icon="eye" onPress={() => setPasswordVisible(!passwordVisible)} />}
+        />
+    )
+}
+
+export const DataInput = ({ text, edit, value, fnModal }) => {
+    return (
+        <TextInput
+            label={text}
+            mode="flat"
+            editable={edit}
+            value={value}
+            right={<TextInput.Icon icon="calendar" color={"gray"} onPress={fnModal} />}
         />
     )
 }

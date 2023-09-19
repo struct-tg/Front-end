@@ -15,7 +15,21 @@ export async function getAllTasks(tokenJWT) {
         console.log('O erro de captura: ', JSON.stringify(error));
         return [];
     }
-}
+};
+
+export async function finishTask(idTask, tokenJWT) {
+    try {
+        await api.patch(`/task/onoff/${idTask}`, null, {
+            headers: {
+                Authorization: `Bearer ${tokenJWT}`,
+            }
+        });
+        return true;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+};
 
 export async function insertNewTask(objTask, tokenJWT) {
     try {
@@ -46,7 +60,7 @@ export async function getTaskById(idTask, tokenJWT) {
         console.log('O erro no get de uma task: ', error)
         return [];
     }
-}
+};
 
 export async function updateTask(idTask, objData, tokenJWT) {
     try {

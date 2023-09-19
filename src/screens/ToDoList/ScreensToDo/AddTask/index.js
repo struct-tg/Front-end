@@ -11,7 +11,6 @@ const AddTask = () => {
     const navigation = useNavigation();
 
     const aoSubmitarForm = async (dadosFormulario) => {
-        console.log('OS DADOS DO CONSOLE.LOG: ', dadosFormulario)
         const result = await insertNewTask(dadosFormulario, tokenJWT)
         if (result) {
             setToastVisible(true);
@@ -25,6 +24,7 @@ const AddTask = () => {
         <Fragment>
             <FormsToDo
                 aoSubmitar={aoSubmitarForm}
+                isEdit={false}
             />
             {toastVisible && (
                 <ToastComponent
