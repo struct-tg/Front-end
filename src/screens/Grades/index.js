@@ -45,7 +45,7 @@ const Grades = () => {
                         style={{ width: "100%", height: "55%" }}
                         resizeMode="cover"
                     />
-                </View> 
+                </View>
             </View>
         </SafeAreaView>
     );

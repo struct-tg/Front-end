@@ -27,16 +27,18 @@ const Pomodoro = () => {
     const [som, setSom] = useState(null);
     const [somNotification, setSomNotification] = useState(false);
 
+    const [currentTimerType, setCurrentTimerType] = useState("Pomodoro");
+
     const { tokenJWT } = useContext(AutenticacaoContext);
 
     useEffect(() => {
         async function fetchData() {
             const result = await getAllPomodoro(tokenJWT);
             if (result) {
-                setDatas(result);
-                console.log('OS DADOS DE DATAS', datas[0].timer);
+                console.log(result)
+                setDatas(result)
             } else {
-                console.log('algo deu errado');
+                console.log('algo deu errado na captura dos dados')
             }
         }
         fetchData();
@@ -86,7 +88,20 @@ const Pomodoro = () => {
     }
 
     const reloadTime = () => {
-        setMinutes(datas[0].timer);
+        setSeconds(0);
+        switch (currentTimerType) {
+            case "Intervalo Longo":
+                setMinutes(datas.timerPauseLong);
+                break;
+            case "Pomodoro":
+                setMinutes(datas.timer);
+                break;
+            case "Intervalo Curto":
+                setMinutes(datas.timerPauseShort);
+                break;
+            default:
+                break;
+        }
     }
 
     useEffect(() => {
@@ -96,7 +111,7 @@ const Pomodoro = () => {
     useEffect(() => {
         let tempo;
 
-        if (controlaPomodoro) {
+        if (datas.startAutomaticTimer || datas.startAutomaticPause) {
             tempo = setInterval(() => {
                 if (seconds > 0) {
                     setSeconds(seconds - 1);
@@ -115,6 +130,24 @@ const Pomodoro = () => {
         };
     }, [controlaPomodoro, minutes, seconds]);
 
+
+    const buttonPauseLong = () => {
+        setSeconds(0);
+        setMinutes(datas.timerPauseLong);
+        setCurrentTimerType("Intervalo Longo");
+    }
+
+    const buttonPomodoro = () => {
+        setSeconds(0);
+        setMinutes(datas.timer);
+        setCurrentTimerType("Pomodoro");
+    }
+
+    const buttonPauseShort = () => {
+        setSeconds(0);
+        setMinutes(datas.timerPauseShort);
+        setCurrentTimerType("Intervalo Curto");
+    }
 
     return (
         <SafeAreaView style={{ flexGrow: 1, paddingHorizontal: 24, justifyContent: "center", backgroundColor: "#2aabbf" }}>
@@ -141,15 +174,15 @@ const Pomodoro = () => {
             <SectionRow>
                 <PomodoroButtonSettings
                     text={"Intervalo longo"}
-                    onPress={() => setMinutes(datas[0].timerPauseLong)}
+                    onPress={buttonPauseLong}
                 />
                 <PomodoroButtonSettings
                     text={"Pomodoro"}
-                    onPress={() => setMinutes(datas[0].timer)}
+                    onPress={buttonPomodoro}
                 />
                 <PomodoroButtonSettings
                     text={"Intervalo curto"}
-                    onPress={() => setMinutes(datas[0].timerPauseShort)}
+                    onPress={buttonPauseShort}
                 />
             </SectionRow>
 

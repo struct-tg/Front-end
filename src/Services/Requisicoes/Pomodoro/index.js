@@ -21,7 +21,10 @@ export async function getAllPomodoro(tokenJWT) {
                 Authorization: `Bearer ${tokenJWT}`
             }
         });
-        return result.data.data;
+        const objData = result.data;
+        const objRetorno = objData.data;
+
+        return objRetorno[0];
     } catch (error) {
         console.log('ERRO NA CAPTURA DE TODOS POMODOROS POR USUARIO');
         return [];

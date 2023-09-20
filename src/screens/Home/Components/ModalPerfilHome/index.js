@@ -42,6 +42,9 @@ const ModalPerfilSettings = ({ state, setModalPerfilSettings }) => {
                 <TouchableOpacity>
                     <LinkNavigators>Sair</LinkNavigators>
                 </TouchableOpacity>
+                <TouchableOpacity>
+                    <LinkNavigators>Excluir a conta!</LinkNavigators>
+                </TouchableOpacity>
             </View>
         </ModalComponent>
     )
