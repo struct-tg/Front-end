@@ -1,9 +1,9 @@
 import React from "react";
 import { Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Card, TituloCard, BotaoCard, BotoesCard } from "./StylesCardTask.js";
+import { Card, TituloCard, BotaoCard, BotoesCard, DateInformation } from "./StylesCardTask.js";
 
-const CardTask = ({ title, state, onDelete, onOpen, onFinish }) => {
+const CardTask = ({ title, date, state, onDelete, onOpen, onFinish, isModify }) => {
     let borderColorStyle = {};
 
     if (state === 1) {
@@ -23,7 +23,7 @@ const CardTask = ({ title, state, onDelete, onOpen, onFinish }) => {
                 <Text>{title}</Text>
             </TituloCard>
 
-            <BotoesCard>
+            {isModify ? <BotoesCard>
                 <BotaoCard >
                     <Ionicons
                         name={"checkmark-outline"}
@@ -41,7 +41,8 @@ const CardTask = ({ title, state, onDelete, onOpen, onFinish }) => {
                         onPress={onDelete}
                     />
                 </BotaoCard>
-            </BotoesCard>
+            </BotoesCard> : <DateInformation>{date}</DateInformation>
+            }
         </Card>
     );
 }

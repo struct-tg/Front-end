@@ -1,8 +1,12 @@
 import styled from 'styled-components/native';
 
-export default TitleBlockViewRadioButton = styled.Text`
+export const TitleGrades = styled.Text`
     text-align: center;
+    font-size: 30px;
     font-weight: bold;
-    font-size: 18px;
     color: white;
+`;
+
+export const View = styled.View`
+flex: 0.9;
 `;

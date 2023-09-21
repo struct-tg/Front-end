@@ -36,3 +36,9 @@ export const BotoesCard = styled.View`
 export const BotaoCard = styled.TouchableOpacity`
     display: flex;
 `;
+
+export const DateInformation = styled.Text`
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+`;

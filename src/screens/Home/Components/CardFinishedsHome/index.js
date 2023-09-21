@@ -1,18 +1,20 @@
 import React from 'react';
-import { CardFinishedHome, CardTitle, BotaoCard } from "./StylesCardFinishedsHome.js";
+import { CardFinishedHome, CardTitle, BotaoCard, NoteCard } from "./StylesCardFinishedsHome.js";
 import { Ionicons } from "@expo/vector-icons";
 
-const CardFinished = ({ name }) => {
+const CardFinished = ({ name, note, onOpen, isTask }) => {
     return (
-        <CardFinishedHome>
+        <CardFinishedHome onPress={onOpen}>
             <CardTitle>{name}</CardTitle>
-            <BotaoCard>
+            {isTask ? <BotaoCard>
                 <Ionicons
-                    name={"checkmark-circle-outline"}
+                    name={"time-outline"}
                     size={30}
-                    color={"#02f78d"}
+                    color={"white"}
                 />
-            </BotaoCard>
+            </BotaoCard> :
+                <NoteCard>{`Nota: ${note}`}</NoteCard>
+            }
         </CardFinishedHome>
     )
 }

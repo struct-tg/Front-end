@@ -1,26 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { Input } from "../../../../Components/Inputs";
-import { Button, LargestButton } from "../../../../Components/Button";
+import { Button } from "../../../../Components/Button";
 import { ContainerButton } from "../../../../Styles/DefaultStyles";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import RadioButtonComponent from "../../../../Components/RadioButton";
 import HelperTextComponent from "../../../../Components/HelperText";
-import BlockRadioButton from '../BlockRadioButtonGrades';
+import TitleNote from "./StylesFormsGrades";
 
 const FormsGrades = () => {
-    const { control, handleSubmit, formState: { errors } } = useForm({ mode: "onChange" });
+    const [selectedRadio, setSelectedRadio] = useState('media');
+    const { control, handleSubmit, formState: { errors } } = useForm({
+        mode: "onChange", defaultValues: {
+            disciplina: "",
+            nomeProfessor: "",
+            notaMinima: "",
+        }
+    });
 
     const onSubmit = (data) => {
-        console.log('Os dados capturados: ', data);
+        const formData = {
+            ...data,
+            calculoNota: selectedRadio,
+        };
+        console.log('Os dados capturados: ', formData);
     }
+
+    const handleRadioSelect = (radioId) => {
+        setSelectedRadio(radioId);
+    };
 
     return (
         <SafeAreaView style={{ backgroundColor: '#40aab8', flexGrow: 1, justifyContent: 'space-around', paddingHorizontal: 20 }}>
             <Controller
                 control={control}
                 name='disciplina'
-                defaultValue={""}
+
                 rules={{ required: "Campo obrigatório!" }}
                 render={({ field }) => (
                     <View>
@@ -40,7 +56,7 @@ const FormsGrades = () => {
             <Controller
                 control={control}
                 name='nomeProfessor'
-                defaultValue={""}
+
                 rules={{ required: "Campo obrigatório!" }}
                 render={({ field }) => (
                     <View>
@@ -60,7 +76,7 @@ const FormsGrades = () => {
             <Controller
                 control={control}
                 name='notaMinima'
-                defaultValue={""}
+
                 rules={{ required: "Campo obrigatório!" }}
                 render={({ field }) => (
                     <View>
@@ -77,9 +93,20 @@ const FormsGrades = () => {
                 )}
             />
 
-            <LargestButton />
+            <TitleNote>Como deseja calcular sua nota?</TitleNote>
+            <RadioButtonComponent
+                title={'Média aritmética'}
+                id={'media'}
+                selected={selectedRadio === 'media'}
+                onSelect={() => setSelectedRadio('media')}
+            />
 
-            <BlockRadioButton />
+            <RadioButtonComponent
+                title={'Média ponderada'}
+                id={'ponderada'}
+                selected={selectedRadio === 'ponderada'}
+                onSelect={() => setSelectedRadio('ponderada')}
+            />
 
             <ContainerButton>
                 <Button

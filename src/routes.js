@@ -9,6 +9,7 @@ import ScreenRecoverPassword from "./Screens/RecoverPassword/index.js";
 
 /*Telas internas ao APP: Home*/
 import ScreenHome from "./Screens/Home/index.js";
+import ScreenChartHome from "./Screens/Home/ScreensHome/ChartHome/index.js";
 
 /*Telas internas ao APP: ToDo*/
 import ScreenToDo from "./Screens/ToDoList/index.js";
@@ -22,6 +23,9 @@ import ScreenPomodoro from "./Screens/Pomodoro/index.js";
 /*Telas internas ao APP: Disciplinas*/
 import ScreenGrades from "./Screens/Grades/index.js";
 import ScreenAddGrade from "./Screens/Grades/ScreensGrades/AddGrade/index.js";
+import ScreenEvaluativeActivity from "./Screens/Grades/ScreensGrades/EvaluativeActivity/index.js";
+import ScreenActivityFilters from "./Screens/Grades/ScreensGrades/ActivityFilters/index.js";
+
 
 /*Telas internas ao APP: Calendario*/
 import ScreenCalendar from "./Screens/Calendar/index.js";
@@ -45,11 +49,15 @@ const Routes = () => {
                 <Stack.Screen name="PasswordCode" component={ScreenPasswordCode} />
                 <Stack.Screen name="RecoverPassword" component={ScreenRecoverPassword} />
 
+                <Stack.Screen name="ChartHome" component={ScreenChartHome} />
+
                 <Stack.Screen name="AddTodo" component={ScreenAddTodo} />
                 <Stack.Screen name="EditTodo" component={ScreenEditTodo} />
                 <Stack.Screen name="FiltersTodo" component={ScreenFiltersTodo} />
 
                 <Stack.Screen name='AddGrade' component={ScreenAddGrade} />
+                <Stack.Screen name='EvaluativeActivity' component={ScreenEvaluativeActivity} />
+                <Stack.Screen name='ActivityFilters' component={ScreenActivityFilters} />
 
                 <Stack.Screen name="RoutesApp" component={RoutesApp} />
             </Stack.Navigator>

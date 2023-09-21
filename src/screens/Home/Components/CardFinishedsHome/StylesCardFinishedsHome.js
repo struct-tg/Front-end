@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 
-export const CardFinishedHome = styled.View`
+export const CardFinishedHome = styled.TouchableOpacity`
     display: flex;
     flex-direction: row;
     border-radius: 10px;
@@ -22,4 +22,10 @@ export const CardTitle = styled.Text`
 
 export const BotaoCard = styled.TouchableOpacity`
     display: flex;
+`;
+
+export const NoteCard = styled.Text`
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
 `;

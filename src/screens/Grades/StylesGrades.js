@@ -5,8 +5,18 @@ export const View = styled.View`
 `;
 
 export const ViewSettings = styled.View`
-    flex: 0.06;
     flex-direction: row;
     justify-content: space-between;
-    align-items: flex-end;
+`;
+
+export const TitleGrades = styled.Text`
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+`;
+
+export const ViewBlock = styled.View`
+    flex-direction: row;
+    justify-content: flex-end;
 `;

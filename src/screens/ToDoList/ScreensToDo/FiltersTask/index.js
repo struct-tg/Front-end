@@ -2,9 +2,9 @@ import React, { Fragment, useState, useEffect, useContext } from 'react';
 import { View, FlatList, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TitleToDo, ViewTasks } from "../../StylesToDoList";
-import { useIsFocused } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { AutenticacaoContext } from "../../../../Contexts/UserContext.js";
-import { getAllTasks } from "../../../../Services/Requisicoes/Tasks/index.js";
+import { getAllTasks, getTaskById } from "../../../../Services/Requisicoes/Tasks/index.js";
 import convertDateISO8601 from "../../../../Utils/Date/index";
 import SearchBarComponent from '../../../../Components/SearchBar/index.js';
 import RadioButtonComponent from '../../../../Components/RadioButton/index.js';
@@ -14,8 +14,9 @@ const FiltersTasks = () => {
     const [allTasks, setAllTasks] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedRadio, setSelectedRadio] = useState('');
-    const isFocused = useIsFocused(false);
     const { tokenJWT, username } = useContext(AutenticacaoContext);
+    const isFocused = useIsFocused(false);
+    const navigation = useNavigation();
 
     const loadTasks = async (tokenJWT) => {
         try {
@@ -59,11 +60,20 @@ const FiltersTasks = () => {
         setSelectedRadio(radioId);
     };
 
+    const fnGoToEdit = async (idTask) => {
+        const result = await getTaskById(idTask, tokenJWT);
+        if (result) {
+            navigation.navigate('EditTodo', { objEdit: result })
+        } else {
+            console.log('Algo deu errado');
+        }
+    }
+
     return (
         <SafeAreaView style={{ flexGrow: 1, padding: 24, justifyContent: "space-between", backgroundColor: "#2aabbf" }}>
             {allTasks.length <= 0 ? (
                 <Fragment>
-                    <TitleToDo>{`Cadastre novas tarefas, ${username}!`}</TitleToDo>
+                    <TitleToDo>{`Cadastre novas tarefas para filtrar, ${username}!`}</TitleToDo>
                     <View style={{ flex: 0.9, justifyContent: 'center', alignItems: 'center' }}>
                         <Image
                             source={require('./Filter-Image.png')}
@@ -117,6 +127,9 @@ const FiltersTasks = () => {
                                         ? 3
                                         : 1
                                     : null}
+                            isModify={false}
+                            onOpen={() => fnGoToEdit(item.id)}
+                            date={convertDateISO8601(item.dateWishEnd)}
                         />
                         }
                         keyExtractor={(item, index) => index.toString()}

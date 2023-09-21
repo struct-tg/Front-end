@@ -34,3 +34,18 @@ export async function getUserName(tokenJWT) {
         return null;
     }
 }
+
+export async function deleteUser(tokenJWT) {
+    try {
+        await api.delete('/user', {
+            headers: {
+                Authorization: `Bearer ${tokenJWT}`
+            }
+        })
+
+        return true;
+    } catch (error) {
+        console.log(JSON.stringify(error));
+        return false;
+    }
+}

@@ -10,11 +10,17 @@ import { AutenticacaoContext } from "../../Contexts/UserContext.js";
 import convertDateISO8601 from "../../Utils/Date/index";
 import ModalComponent from "./ComponentsToDo/ModalInformationsToDo";
 import CardTaskToDo from "./ComponentsToDo/CardTaskToDo";
+import AlertComponent from "../../Components/Alert/index";
 
 const ToDoList = () => {
     const [tasks, setTasks] = useState([]);
     const [modalInformation, setModalInformation] = useState(false);
-    const [dialogInformation, setDialogInformation] = useState(true);
+    const [alertInformation, setAlertInformation] = useState(false);
+    const [selectedTaskId, setSelectedTaskId] = useState(null);
+
+    const [alertTitle, setAlertTitle] = useState('');
+    const [alertMessage, setAlertMessage] = useState('');
+
     const { tokenJWT, username } = useContext(AutenticacaoContext);
     const navigation = useNavigation();
     const isFocused = useIsFocused();
@@ -33,9 +39,25 @@ const ToDoList = () => {
         }
     }, [isFocused]);
 
-    const fnDeleteTask = async (idTask) => {
-        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== idTask))
-        await deleteTask(idTask, tokenJWT);
+    const showDeleteAlert = (idTask) => {
+        setAlertTitle('Deseja mesmo excluir sua tarefa?');
+        setAlertMessage('Essa ação é irreversível e não terá como você desfazer após a confirmação.');
+        setSelectedTaskId(idTask);
+        setAlertInformation(true);
+    }
+
+    const handleConfirmDelete = async () => {
+        if (selectedTaskId !== null) {
+            setTasks((prevTasks) => prevTasks.filter((task) => task.id !== selectedTaskId));
+            await deleteTask(selectedTaskId, tokenJWT);
+            setSelectedTaskId(null);
+        }
+        setAlertInformation(false);
+    }
+
+    const handleCancelDelete = () => {
+        setSelectedTaskId(null);
+        setAlertInformation(false);
     }
 
     const fnGoToEdit = async (idTask) => {
@@ -87,7 +109,7 @@ const ToDoList = () => {
 
                         <TouchableOpacity>
                             <Ionicons
-                                name={"search-circle-outline"}
+                                name={"options-outline"}
                                 size={35}
                                 color={"white"}
                                 onPress={goToFiltersTodo}
@@ -120,9 +142,10 @@ const ToDoList = () => {
                                             ? 3
                                             : 1
                                         : null}
-                                onDelete={() => fnDeleteTask(item.id)}
+                                onDelete={() => showDeleteAlert(item.id)}
                                 onOpen={() => fnGoToEdit(item.id)}
                                 onFinish={() => fnFinishTask(item.id)}
+                                isModify={true}
                             />
                             }
                             showsVerticalScrollIndicator={false}
@@ -136,6 +159,15 @@ const ToDoList = () => {
             <ModalComponent
                 state={modalInformation}
                 setModalInformation={setModalInformation}
+            />
+
+            <AlertComponent
+                state={alertInformation}
+                setVisible={setAlertInformation}
+                title={alertTitle}
+                message={alertMessage}
+                onConfirm={handleConfirmDelete}
+                onCancel={handleCancelDelete}
             />
         </SafeAreaView>
     );

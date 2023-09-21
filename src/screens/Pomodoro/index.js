@@ -159,6 +159,26 @@ const Pomodoro = () => {
                         size={30}
                         color="#11BBC6"
                     />
+                    <Ionicons
+                        name="time-outline"
+                        size={30}
+                        color="#11BBC6"
+                    />
+                    <Ionicons
+                        name="time-outline"
+                        size={30}
+                        color="black"
+                    />
+                    <Ionicons
+                        name="time-outline"
+                        size={30}
+                        color="black"
+                    />
+                    <Ionicons
+                        name="time-outline"
+                        size={30}
+                        color="black"
+                    />
                 </SectionCycles>
 
                 <TouchableOpacity>
