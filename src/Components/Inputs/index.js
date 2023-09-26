@@ -1,19 +1,29 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import { TextInput, IconButton } from 'react-native-paper';
-import { SafeAreaView, TouchableOpacity, View } from 'react-native';
-import { ContainerIconButton, ContainerIconInput, ContainerIcons } from "../../Components/Inputs/StylesInputs.js";
+import { ContainerIconButton, ContainerIconInput, ContainerIcons, StyledInput } from "../../Components/Inputs/StylesInputs.js";
 
 export const Input = ({ secureText, text, value, onChangeText }) => {
     return (
-        <SafeAreaView>
-            <TextInput
-                label={text}
-                mode="flat"
-                secureTextEntry={secureText}
-                value={value}
-                onChangeText={onChangeText}
-            />
-        </SafeAreaView>
+        <TextInput
+            label={text}
+            mode="flat"
+            secureTextEntry={secureText}
+            value={value}
+            onChangeText={onChangeText}
+        />
+    );
+};
+
+export const InputForm = ({ secureText, text, value, onChangeText, disabled }) => {
+    return (
+        <StyledInput
+            label={text}
+            mode="flat"
+            secureTextEntry={secureText}
+            value={value}
+            onChangeText={onChangeText}
+            disabled={disabled}
+        />
     );
 };
 
@@ -32,24 +42,40 @@ export const InputPassword = ({ text, value, onChangeText }) => {
     )
 }
 
-export const DataInput = ({ text, edit, value, fnModal }) => {
+export const InputPencil = ({ text, value, onChangeText }) => {
+    const [passwordVisible, setPasswordVisible] = useState(true);
+
     return (
         <TextInput
             label={text}
             mode="flat"
-            editable={edit}
+            secureTextEntry={passwordVisible}
             value={value}
-            right={<TextInput.Icon icon="calendar" color={"gray"} onPress={fnModal} />}
+            onChangeText={onChangeText}
+            right={<TextInput.Icon icon="pencil" onPress={() => setPasswordVisible(!passwordVisible)} />}
         />
     )
 }
 
-export const InputIcon = ({ text, value, textBlock, onChangeText, iconTrash, iconCheck, onButtonPress }) => {
+export const DataInput = ({ text, edit, value, disabled, fnModal }) => {
+    return (
+        <StyledInput
+            label={text}
+            mode="flat"
+            editable={edit}
+            disabled={disabled}
+            value={value}
+            right={<StyledInput.Icon icon="calendar" color={"gray"} onPress={fnModal} />}
+        />
+    )
+}
+
+export const InputIcon = ({ text, value, textBlock, onChangeText, iconTwo, iconOne, onButtonPress }) => {
 
     return (
         <ContainerIconButton>
             <ContainerIconInput>
-                <TextInput
+                <StyledInput
                     label={text}
                     mode="flat"
                     value={value}
@@ -58,14 +84,23 @@ export const InputIcon = ({ text, value, textBlock, onChangeText, iconTrash, ico
                 />
             </ContainerIconInput>
             <ContainerIcons>
-                <IconButton
-                    icon={iconCheck}
-                    onPress={onButtonPress}
-                />
-                <IconButton
-                    icon={iconTrash}
-                    onPress={onButtonPress}
-                />
+                {iconOne
+                    &&
+                    (<IconButton
+                        icon={iconOne}
+                        onPress={onButtonPress}
+                    />
+                    )
+                }
+                {iconTwo
+                    && (
+                        <IconButton
+                            icon={iconTwo}
+                            onPress={onButtonPress}
+                        />
+                    )
+
+                }
             </ContainerIcons>
         </ContainerIconButton>
     );

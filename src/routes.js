@@ -1,34 +1,34 @@
 import React from 'react';
 
 /*Telas externas ao APP*/
-import ScreenLogin from './Screens/Login/index.js';
-import ScreenRegister from "./Screens/Register/index.js";
-import ScreenForgotPassword from "./Screens/ForgotPassword/index.js";
-import ScreenPasswordCode from "./Screens/PasswordCode/index.js";
-import ScreenRecoverPassword from "./Screens/RecoverPassword/index.js";
+import ScreenLogin from './Screens/OutsideAPP/Login/index.js';
+import ScreenRegister from "./Screens/OutsideAPP/Register/index.js";
+import ScreenForgotPassword from "./Screens/OutsideAPP/ForgotPassword/index.js";
+import ScreenPasswordCode from "./Screens/OutsideAPP/PasswordCode/index.js";
+import ScreenRecoverPassword from "./Screens/OutsideAPP/RecoverPassword/index.js";
 
 /*Telas internas ao APP: Home*/
-import ScreenHome from "./Screens/Home/index.js";
-import ScreenChartHome from "./Screens/Home/ScreensHome/ChartHome/index.js";
+import ScreenHome from "./Screens/InsideAPP/Home/index.js";
+import ScreenChartHome from "./Screens/InsideAPP/Home/ScreensHome/ChartHome/index.js";
 
 /*Telas internas ao APP: ToDo*/
-import ScreenToDo from "./Screens/ToDoList/index.js";
-import ScreenAddTodo from "./Screens/ToDoList/ScreensToDo/AddTask/index.js";
-import ScreenEditTodo from "./Screens/ToDoList/ScreensToDo/EditTask/index.js";
-import ScreenFiltersTodo from "./Screens/ToDoList/ScreensToDo/FiltersTask/index.js";
+import ScreenToDo from "./Screens/InsideAPP/ToDoList/index.js";
+import ScreenAddTodo from "./Screens/InsideAPP/ToDoList/ScreensToDo/AddTask/index.js";
+import ScreenEditTodo from "./Screens/InsideAPP/ToDoList/ScreensToDo/EditTask/index.js";
+import ScreenFiltersTodo from "./Screens/InsideAPP/ToDoList/ScreensToDo/FiltersTask/index.js";
 
 /*Telas internas ao APP: Pomodoro*/
-import ScreenPomodoro from "./Screens/Pomodoro/index.js";
+import ScreenPomodoro from "./Screens/InsideAPP/Pomodoro/index.js";
 
 /*Telas internas ao APP: Disciplinas*/
-import ScreenGrades from "./Screens/Grades/index.js";
-import ScreenAddGrade from "./Screens/Grades/ScreensGrades/AddGrade/index.js";
-import ScreenEvaluativeActivity from "./Screens/Grades/ScreensGrades/EvaluativeActivity/index.js";
-import ScreenActivityFilters from "./Screens/Grades/ScreensGrades/ActivityFilters/index.js";
+import ScreenGrades from "./Screens/InsideAPP/Grades/index.js";
+import ScreenAddGrade from "./Screens/InsideAPP/Grades/ScreensGrades/AddGrade/index.js";
+import ScreenEvaluativeActivity from "./Screens/InsideAPP/Grades/ScreensGrades/EvaluativeActivity/index.js";
+import ScreenActivityFilters from "./Screens/InsideAPP/Grades/ScreensGrades/ActivityFilters/index.js";
 
 
 /*Telas internas ao APP: Calendario*/
-import ScreenCalendar from "./Screens/Calendar/index.js";
+import ScreenCalendar from "./Screens/InsideAPP/Calendar/index.js";
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';

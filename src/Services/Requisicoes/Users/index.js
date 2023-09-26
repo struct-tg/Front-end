@@ -8,7 +8,7 @@ export async function cadastraUsuario(objRegistro) {
         console.log(error);
         return false;
     }
-}
+};
 
 export async function realizaLogin(objLogin) {
     try {
@@ -19,7 +19,7 @@ export async function realizaLogin(objLogin) {
         console.log(JSON.stringify(error));
         return false;
     }
-}
+};
 
 export async function getUserName(tokenJWT) {
     try {
@@ -33,7 +33,21 @@ export async function getUserName(tokenJWT) {
         console.log(JSON.stringify(error));
         return null;
     }
-}
+};
+
+export async function updateUser(tokenJWT, objData) {
+    try {
+        await api.put('/user', objData, {
+            headers: {
+                Authorization: `Bearer ${tokenJWT}`
+            }
+        });
+        return true;
+    } catch (error) {
+        console.log(JSON.stringify(error));
+        return null;
+    }
+};
 
 export async function deleteUser(tokenJWT) {
     try {
@@ -48,4 +62,4 @@ export async function deleteUser(tokenJWT) {
         console.log(JSON.stringify(error));
         return false;
     }
-}
+};

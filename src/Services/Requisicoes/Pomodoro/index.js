@@ -12,7 +12,7 @@ export async function createPomodoro(objPomodoro, tokenJWT) {
         console.log('ERRO NA CRIACAO DE POMODORO', JSON.stringify(error.response.data));
         return false;
     }
-}
+};
 
 export async function getAllPomodoro(tokenJWT) {
     try {
@@ -29,7 +29,7 @@ export async function getAllPomodoro(tokenJWT) {
         console.log('ERRO NA CAPTURA DE TODOS POMODOROS POR USUARIO');
         return [];
     }
-}
+};
 
 export async function getPomodoroByID(idPomodoro, tokenJWT) {
     try {
@@ -43,4 +43,33 @@ export async function getPomodoroByID(idPomodoro, tokenJWT) {
         console.log('ERRO NA CAPTURA DO POMODORO');
         return false;
     }
-}
+};
+
+export async function updatePomodoro(idPomodoro, objPomodoro, tokenJWT) {
+    try {
+        await api.put(`/pomodoro/${idPomodoro}`, objPomodoro, {
+            headers: {
+                Authorization: `Bearer ${tokenJWT}`
+            }
+        })
+        return true;
+    } catch (error) {
+        console.log(JSON.stringify(error));
+        return false;
+    }
+};
+
+export async function deletePomdooro(idPomodoro, tokenJWT) {
+    try {
+        await api.delete(`/pomodoro/${idPomodoro}`, {
+            headers: {
+                Authorization: `Bearer ${tokenJWT}`
+            }
+        })
+
+        return true;
+    } catch (error) {
+        console.log(JSON.stringify(error));
+        return false;
+    }
+};
