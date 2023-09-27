@@ -45,7 +45,7 @@ export async function updateUser(tokenJWT, objData) {
         return true;
     } catch (error) {
         console.log(JSON.stringify(error));
-        return null;
+        return false;
     }
 };
 

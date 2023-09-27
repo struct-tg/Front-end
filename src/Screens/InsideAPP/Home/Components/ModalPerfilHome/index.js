@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ContainerButton, LinkNavigators, UppercaseTitle } from "../../../../../Styles/DefaultStyles";
 import { View, TouchableOpacity } from 'react-native';
 import { AutenticacaoContext } from "../../../../../Contexts/UserContext";
-import { deleteUser } from "../../../../../Services/Requisicoes/Users";
+import { deleteUser, updateUser } from "../../../../../Services/Requisicoes/Users";
 import { Ionicons } from '@expo/vector-icons';
 import { Controller, useForm } from "react-hook-form";
 import ModalComponent from "../../../../../Components/Modal";
@@ -49,9 +49,19 @@ const ModalPerfilSettings = ({ state, setModalPerfilSettings }) => {
         logout();
     }
 
-
-    const handleEditInformation = (data) => {
-        console.log(data);
+    const handleEditInformation = async (objEnvio) => {
+        const { confirmPassword, username, ...data } = objEnvio;
+        console.log(data)
+        try {
+            const result = await updateUser(tokenJWT, data);
+            if (result) {
+                navigation.navigate('Login');
+            } else {
+                console.log('deu ruim mano')
+            }
+        } catch (error) {
+            console.log(JSON.stringify(error))
+        }
     }
 
     return (
@@ -61,7 +71,7 @@ const ModalPerfilSettings = ({ state, setModalPerfilSettings }) => {
                     ?
                     (<Controller
                         control={control}
-                        name='username'
+                        name='name'
                         defaultValue={username}
                         rules={{ required: ' Campo obrigatório! ' }}
                         render={({ field }) => (
@@ -79,7 +89,7 @@ const ModalPerfilSettings = ({ state, setModalPerfilSettings }) => {
                                         />
                                     )}
                                 />
-                                {errors.username && (<HelperTextComponent helperType={'error'} helperText={errors.username.message} />)}
+                                {errors.name && (<HelperTextComponent helperType={'error'} helperText={errors.name.message} />)}
                             </View>
                         )}
                     />
@@ -101,30 +111,46 @@ const ModalPerfilSettings = ({ state, setModalPerfilSettings }) => {
                 <Controller
                     control={control}
                     name={'password'}
-                    rules={{ required: "Campo obrigatório" }}
+                    rules={{
+                        required: "Campo obrigatório", min: {
+                            value: 8,
+                            message: "Senha deve ter mais 8"
+                        }
+                    }}
                     defaultValue={""}
                     render={({ field }) => (
-                        <InputPassword
-                            text={'Digite a sua senha: '}
-                            secureText={true}
-                            value={field.value}
-                            onChangeText={field.onChange}
-                        />
+                        <View>
+                            <InputPassword
+                                text={'Digite a sua senha: '}
+                                secureText={true}
+                                value={field.value}
+                                onChangeText={field.onChange}
+                            />
+                            {errors.password && (<HelperTextComponent helperType={'error'} helperText={errors.password.message} />)}
+                        </View>
                     )}
                 />
 
                 <Controller
                     control={control}
                     name={'confirmPassword'}
-                    rules={{ required: "Campo obrigatório" }}
+                    rules={{
+                        required: "Campo obrigatório", min: {
+                            value: 8,
+                            message: "Senha deve ter mais 8"
+                        }
+                    }}
                     defaultValue={""}
                     render={({ field }) => (
-                        <Input
-                            text={'Digite a sua senha: '}
-                            secureText={true}
-                            value={field.value}
-                            onChangeText={field.onChange}
-                        />
+                        <View>
+                            <Input
+                                text={'Digite a sua senha: '}
+                                secureText={true}
+                                value={field.value}
+                                onChangeText={field.onChange}
+                            />
+                            {errors.confirmPassword && (<HelperTextComponent helperType={'error'} helperText={errors.confirmPassword.message} />)}
+                        </View>
                     )}
                 />
 

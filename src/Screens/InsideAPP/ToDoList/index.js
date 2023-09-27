@@ -31,7 +31,7 @@ const ToDoList = () => {
     const [alertMessages, setAlertMessages] = useState([
         { titulo: 'Deseja mesmo excluir sua tarefa?', descricao: 'Essa ação é irreversível e não terá como você desfazer após a confirmação.' },
         { titulo: `Parabéns, ${username}`, descricao: 'Você finalizou mais uma tarefa. Continue estudando, estamos você na sua jornada.' },
-        { titulo: 'Deseja reabrir esta tarefa ?', descricao: `Ao reabrir esta tarefa todas as suas subtarefas permaneceram finalizadas quando você concluir esta ação. Deseja mesmo continuar, ${username}?` },
+        { titulo: 'Deseja reabrir esta tarefa ?', descricao: `Ao reabrir esta tarefa todas as suas subtarefas permanecerão finalizadas. Deseja mesmo continuar, ${username}?` },
     ]);
 
     useEffect(() => {

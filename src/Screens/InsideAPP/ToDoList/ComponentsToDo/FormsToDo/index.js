@@ -104,7 +104,7 @@ const FormsToDo = ({ aoSubmitar, initialValues, isEdit }) => {
                     </View>
                 )}
             />
-
+            
             <Controller
                 control={control}
                 name='dateWishEnd'
@@ -124,15 +124,6 @@ const FormsToDo = ({ aoSubmitar, initialValues, isEdit }) => {
                 )}
             />
 
-            <ScrollBlock
-                state={subTasks}
-                setState={setSubtasks}
-                addInput={fnAddNewInput}
-                removeInput={fnRemoveInput}
-                finishInput={fnFinishTask}
-                changeInput={fnChangeText}
-            />
-
             <Controller
                 control={control}
                 name='description'
@@ -150,6 +141,17 @@ const FormsToDo = ({ aoSubmitar, initialValues, isEdit }) => {
                     </View>
                 )}
             />
+
+            <ScrollBlock
+                state={subTasks}
+                setState={setSubtasks}
+                addInput={fnAddNewInput}
+                removeInput={fnRemoveInput}
+                finishInput={fnFinishTask}
+                changeInput={fnChangeText}
+            />
+
+
             <ContainerButton>
                 <Button
                     text={"Salvar tarefa."}
