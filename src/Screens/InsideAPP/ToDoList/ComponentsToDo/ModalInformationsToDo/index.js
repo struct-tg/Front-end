@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
-import { TextTitle, TextModal, TextColorsModal } from "./StylesModalInformations.js";
-import { UppercaseTitle } from "../../../../../Styles/DefaultStyles";
+import { TextTitle, TextColorsModal } from "./StylesModalInformations.js";
+import { UppercaseTitle, TextModal } from "../../../../../Styles/DefaultStyles";
 import { Image } from 'react-native';
 import { AutenticacaoContext } from '../../../../../Contexts/UserContext.js';
 import ModalComponent from "../../../../../Components/Modal";

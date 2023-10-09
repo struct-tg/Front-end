@@ -1,5 +1,10 @@
 import React from "react";
-import { StyledButton, ButtonText, StyledPomodoroButtonSettings, StyledPomodoroButtonAction, StyledLargestButton } from '../../Components/Button/StylesButton.js';
+import {
+    StyledButton,
+    ButtonText,
+    StyledPomodoroButtonSettings,
+    StyledPomodoroButtonAction
+} from '../../Components/Button/StylesButton.js';
 
 export const Button = ({ text, onPress }) => {
     return (
@@ -9,25 +14,17 @@ export const Button = ({ text, onPress }) => {
     );
 };
 
-export const LargestButton = ({text, onPress}) => {
+export const PomodoroButtonSettings = ({ text, onPress, disabled }) => {
     return (
-        <StyledLargestButton>
-            <ButtonText>Ver minhas atividades avaliativas</ButtonText>
-        </StyledLargestButton>
-    );  
-};
-
-export const PomodoroButtonSettings = ({ text, onPress }) => {
-    return (
-        <StyledPomodoroButtonSettings onPress={onPress}>
-            <ButtonText>{text}</ButtonText>
+        <StyledPomodoroButtonSettings onPress={disabled ? null : onPress} disabled={disabled}>
+            <ButtonText style={{ color: disabled ? "white" : "black" }}>{text}</ButtonText>
         </StyledPomodoroButtonSettings>
     );
 };
 
-export const PomodoroButtonAction = ({ icon, onPress }) => {
+export const PomodoroButtonAction = ({ icon, onPress, disabled }) => {
     return (
-        <StyledPomodoroButtonAction onPress={onPress}>
+        <StyledPomodoroButtonAction onPress={disabled ? null : onPress} disabled={disabled}>
             {icon}
         </StyledPomodoroButtonAction>
     );

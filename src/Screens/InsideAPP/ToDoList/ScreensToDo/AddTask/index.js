@@ -14,7 +14,7 @@ const AddTask = () => {
         const result = await insertNewTask(dadosFormulario, tokenJWT)
         if (result) {
             setToastVisible(true);
-            navigation.navigate('ToDo', { newTasks: dadosFormulario });
+            navigation.navigate('ToDo');
         } else {
             console.log('Algo deu errado em cadastrar tarefa: ');
         }

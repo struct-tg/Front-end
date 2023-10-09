@@ -2,7 +2,7 @@ import React from 'react';
 import { CardFinishedHome, CardTitle, BotaoCard, NoteCard } from "./StylesCardFinishedsHome.js";
 import { Ionicons } from "@expo/vector-icons";
 
-const CardFinished = ({ name, note, onOpen, isTask }) => {
+const CardsHome = ({ name, note, onOpen, isTask }) => {
     return (
         <CardFinishedHome onPress={onOpen}>
             <CardTitle>{name}</CardTitle>
@@ -19,4 +19,4 @@ const CardFinished = ({ name, note, onOpen, isTask }) => {
     )
 }
 
-export default CardFinished;
+export default CardsHome;

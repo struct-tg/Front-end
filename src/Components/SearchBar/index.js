@@ -1,10 +1,10 @@
 import React from 'react';
 import { Searchbar } from 'react-native-paper';
 
-export default function SearchBarComponent({ setSearchQuery }) {
+export default function SearchBarComponent({ title, setSearchQuery }) {
     return (
         <Searchbar
-            placeholder="Pesquise suas tarefas!"
+            placeholder={title}
             onChangeText={query => { setSearchQuery(query) }}
         />
     );

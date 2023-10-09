@@ -19,13 +19,17 @@ import ScreenFiltersTodo from "./Screens/InsideAPP/ToDoList/ScreensToDo/FiltersT
 
 /*Telas internas ao APP: Pomodoro*/
 import ScreenPomodoro from "./Screens/InsideAPP/Pomodoro/index.js";
+import ScreenAddPomodoro from "./Screens/InsideAPP/Pomodoro/ScreensPomodoro/AddPomodoro/index.js";
+import ScreenEditPomodoro from "./Screens/InsideAPP/Pomodoro/ScreensPomodoro/EditPomodoro/index.js";
+import ScreenClockPomodoro from "./Screens/InsideAPP/Pomodoro/ScreensPomodoro/PomodoroClock/index.js";
+import ScreenSelectPomodoro from "./Screens/InsideAPP/Pomodoro/ScreensPomodoro/SelectPomodoro/index.js";
 
 /*Telas internas ao APP: Disciplinas*/
 import ScreenGrades from "./Screens/InsideAPP/Grades/index.js";
 import ScreenAddGrade from "./Screens/InsideAPP/Grades/ScreensGrades/AddGrade/index.js";
+import ScreenEditGrade from "./Screens/InsideAPP/Grades/ScreensGrades/EditGrade/index.js";
 import ScreenEvaluativeActivity from "./Screens/InsideAPP/Grades/ScreensGrades/EvaluativeActivity/index.js";
 import ScreenActivityFilters from "./Screens/InsideAPP/Grades/ScreensGrades/ActivityFilters/index.js";
-
 
 /*Telas internas ao APP: Calendario*/
 import ScreenCalendar from "./Screens/InsideAPP/Calendar/index.js";
@@ -55,7 +59,13 @@ const Routes = () => {
                 <Stack.Screen name="EditTodo" component={ScreenEditTodo} />
                 <Stack.Screen name="FiltersTodo" component={ScreenFiltersTodo} />
 
+                <Stack.Screen name="AddPomodoro" component={ScreenAddPomodoro} />    
+                <Stack.Screen name="EditPomodoro" component={ScreenEditPomodoro} />
+                <Stack.Screen name="ClockPomodoro" component={ScreenClockPomodoro} />
+                <Stack.Screen name="SelectPomodoro" component={ScreenSelectPomodoro} />   
+
                 <Stack.Screen name='AddGrade' component={ScreenAddGrade} />
+                <Stack.Screen name='EditGrade' component={ScreenEditGrade} />
                 <Stack.Screen name='EvaluativeActivity' component={ScreenEvaluativeActivity} />
                 <Stack.Screen name='ActivityFilters' component={ScreenActivityFilters} />
 

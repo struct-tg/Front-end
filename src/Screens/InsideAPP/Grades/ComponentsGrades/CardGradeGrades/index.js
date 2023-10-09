@@ -9,22 +9,23 @@ import {
 } from "./StylesCardGrades.js";
 import { Ionicons } from "@expo/vector-icons";
 
-const CardGrades = ({ titleGrades, status }) => {
+const CardGrades = ({ titleGrades, status, onOpen, onDelete, onActivity, activity }) => {
     return (
-        <Card>
+        <Card onPress={onOpen}>
             <ViewText>
                 <CardTitle>{titleGrades}</CardTitle>
             </ViewText>
 
             <CardBlockNote>
-                <CardTextStatus>{status}</CardTextStatus>
+                <CardTextStatus>{status == 'DISAPPROVED' ? 'Reprovado' : 'Aprovado'}</CardTextStatus>
             </CardBlockNote>
 
             <CardButton>
                 <Ionicons
                     name={"school-outline"}
                     size={30}
-                    color={"white"}
+                    color={activity ? "#d7d7d9" : "gray"}
+                    onPress={onActivity}
                 />
             </CardButton>
             <CardButton>
@@ -32,6 +33,7 @@ const CardGrades = ({ titleGrades, status }) => {
                     name={"trash-outline"}
                     size={30}
                     color={"white"}
+                    onPress={onDelete}
                 />
             </CardButton>
         </Card>

@@ -12,19 +12,14 @@ export const ButtonText = styled.Text`
     text-align: center;
 `;
 
-export const StyledLargestButton = styled.TouchableOpacity`
-    width: auto;
-    background-color: white;
-    border-radius: 10px;
-    padding-vertical: 20px;
-`;
-
 export const StyledPomodoroButtonSettings = styled.TouchableOpacity`
     border-width: 2px;
     border-radius: 10px;
     padding-vertical: 15px;
     width: 30%;
-    background-color: #168B9D;
+    background-color: ${props => (props.disabled ? 'transparent' : '#168B9D')};
+    opacity: ${props => (props.disabled ? 0.65 : 1)};
+    border: ${props => (props.disabled ? '1px solid #fff' : '1px solid #000')};
 `;
 
 export const StyledPomodoroButtonAction = styled.TouchableOpacity`
@@ -33,5 +28,7 @@ export const StyledPomodoroButtonAction = styled.TouchableOpacity`
     padding-vertical: 10px;
     width: 30%;
     align-items: center;
-    background-color: #168B9D;
+    background-color: ${props => (props.disabled ? 'transparent' : '#168B9D')};
+    opacity: ${props => (props.disabled ? 0.5 : 1)};
+    border: ${props => (props.disabled ? '1px solid #fff' : '1px solid #000')};
 `;

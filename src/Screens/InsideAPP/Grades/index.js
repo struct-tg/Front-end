@@ -1,30 +1,85 @@
-import React, { useState, Fragment, useContext } from "react";
-import { TouchableOpacity } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
-import { Image } from 'react-native'
-import { View, ViewSettings, TitleGrades, ViewBlock } from "./StylesGrades";
+import React, { useState, Fragment, useContext, useEffect } from "react";
+import { TouchableOpacity, Image, View } from "react-native";
+import { ContentContainer, ViewContainer, Title, ViewSettings, ViewBlock, ContainerImageInitial } from "../../../Styles/DefaultStyles/index";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { AutenticacaoContext } from "../../../Contexts/UserContext";
 import { Ionicons } from "@expo/vector-icons";
-import CardActivies from "./ComponentsGrades/CardActiviesGrades";
+import { deleteDiscipline, getAllDiscipline, getDisciplineByID } from "../../../Services/Requisicoes/Grades/index";
+import { FlatList } from "react-native-gesture-handler";
 import CardGrades from "./ComponentsGrades/CardGradeGrades";
+import AlertComponent from "../../../Components/Alert";
+import SpinnerComponent from "../../../Components/Spinner";
 
 const Grades = () => {
     const [grades, setGrades] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [selectedDisciplineID, setSelectedDisciplineID] = useState(undefined);
+    const [alertMessages, setAlertMessages] = useState([
+        { titulo: 'Deseja mesmo excluir sua disciplina?', descricao: 'Essa ação é irreversível e não terá como você desfazer após a confirmação.' },
+    ]);
     const { tokenJWT, username } = useContext(AutenticacaoContext);
     const navigation = useNavigation();
+    const isFocused = useIsFocused(false);
+
+    useEffect(() => {
+        async function fetchDatas() {
+            try {
+                const result = await getAllDiscipline(tokenJWT);
+                setGrades(result);
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        fetchDatas();
+    }, [isFocused]);
 
     const goToAddGrade = () => {
         navigation.navigate('AddGrade');
-    }
+    };
 
     const goToActivityFilters = () => {
         navigation.navigate('ActivityFilters');
+    };
+
+    const showAlertDeleteDiscipline = (DisciplineID) => {
+        setSelectedDisciplineID(DisciplineID);
+        setAlertVisible(true);
+    };
+
+    const handleCancelDeleteDiscipline = () => {
+        setSelectedDisciplineID(undefined);
+        setAlertVisible(false);
+    };
+
+    const handleConfirmDeleteDiscipline = async () => {
+        if (selectedDisciplineID != null) {
+            setGrades((prevGrades) => prevGrades.filter((grade) => grade.id != selectedDisciplineID));
+            const result = await deleteDiscipline(selectedDisciplineID, tokenJWT);
+            if (result) {
+                setSelectedDisciplineID(undefined)
+            } else {
+                console.log('Nao excluiu');
+            }
+        }
+        setAlertVisible(false);
+    }
+
+    const fnGoToEdit = async (idDiscipline) => {
+        const result = await getDisciplineByID(tokenJWT, idDiscipline);
+        if (result) {
+            navigation.navigate('EditGrade', { objGrade: result });
+        } else {
+            console.log('Algo deu errado');
+        }
     }
 
     return (
-        <SafeAreaView style={{ flexGrow: 1, paddingHorizontal: 24, justifyContent: "space-between", backgroundColor: "#2aabbf" }}>
-            <View>
+        <ContentContainer>
+            <ViewContainer>
+
                 <ViewSettings>
                     <TouchableOpacity>
                         <Ionicons
@@ -47,23 +102,59 @@ const Grades = () => {
                     </ViewBlock>
                 </ViewSettings>
 
-                {grades.length >= 10 ? (
-                    <Fragment>
-                        <TitleGrades>{`Adicione novas disciplinas, ${username}!`}</TitleGrades>
-                        <View style={{ flex: 0.9, justifyContent: 'center', alignItems: 'center' }}>
-                            <Image
-                                source={require('./Grade-Image.png')}
-                                style={{ width: "100%", height: "55%" }}
-                                resizeMode="cover"
+                {isLoading
+                    ?
+                    (<SpinnerComponent state={isLoading} text={'Carregando...'} />)
+                    :
+                    grades.length <= 0
+                        ?
+                        (
+                            <Fragment>
+                                <Title>{`Adicione novas disciplinas, ${username}!`}</Title>
+                                <ContainerImageInitial>
+                                    <Image
+                                        source={require('./Grade-Image.png')}
+                                        style={{ width: "100%", height: "55%" }}
+                                        resizeMode="cover"
+                                    />
+                                </ContainerImageInitial>
+                            </Fragment>
+                        )
+                        :
+                        (
+                            <FlatList
+                                data={grades}
+                                renderItem={({ item }) =>
+                                    <CardGrades
+                                        titleGrades={item.name}
+                                        status={item.status}
+                                        onOpen={() => fnGoToEdit(item.id)}
+                                        onDelete={() => showAlertDeleteDiscipline(item.id)}
+                                        activity={() => {
+                                            if (item.activity && item.activity.length > 0) {
+                                                return true;
+                                            } else {
+                                                return false;
+                                            }
+                                        }}
+                                    />
+                                }
+                                showsVerticalScrollIndicator={false}
                             />
-                        </View>
-                    </Fragment>
-                ) : (<CardGrades titleGrades={'Laboratorio de banco de sss'}
-
-                    status={'APROVADO'} />)
+                        
+                        )
                 }
-            </View>
-        </SafeAreaView>
+            </ViewContainer>
+
+            <AlertComponent
+                state={alertVisible}
+                setVisible={setAlertVisible}
+                title={alertMessages[0].titulo}
+                message={alertMessages[0].descricao}
+                onCancel={handleCancelDeleteDiscipline}
+                onConfirm={handleConfirmDeleteDiscipline}
+            />
+        </ContentContainer>
     );
 }
 

@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect, useState, useContext } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { View, ViewSettings, ViewTasks, TitleToDo, ViewBlock } from "./StylesToDoList.js";
+import { ContentContainer, ViewContainer, Title, ViewSettings, ViewBlock, ContainerImageInitial } from "../../../Styles/DefaultStyles/index.js";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
@@ -8,6 +7,7 @@ import { Image } from "react-native";
 import { getAllTasks, deleteTask, getTaskById, finishTask } from "../../../Services/Requisicoes/Tasks";
 import { AutenticacaoContext } from "../../../Contexts/UserContext.js";
 import { convertDateISO8601 } from "../../../Utils/Date/index";
+import { getAllNamesDiscipline } from "../../../Services/Requisicoes/Grades/Filters";
 import ModalComponent from "./ComponentsToDo/ModalInformationsToDo";
 import CardTaskToDo from "./ComponentsToDo/CardTaskToDo";
 import AlertComponent from "../../../Components/Alert";
@@ -62,7 +62,7 @@ const ToDoList = () => {
             if (result) {
                 setSelectedTaskId(null);
             } else {
-                console.log('algo deu errado na delecao de dados')
+                console.log('algo deu errado na delecao de dados');
             }
         }
         setAlertDelete(false);
@@ -84,7 +84,6 @@ const ToDoList = () => {
             if (result) {
                 const updateDatas = await getAllTasks(tokenJWT);
                 setTasks(updateDatas);
-
             } else {
                 console.log('Algo deu errado ao finalizar uma tarefa')
             }
@@ -106,7 +105,7 @@ const ToDoList = () => {
                 const updateDatas = await getAllTasks(tokenJWT);
                 setTasks(updateDatas);
             } else {
-                console.log('Algo deu errado ao finalizar uma tarefa')
+                console.log('Algo deu errado ao finalizar uma tarefa');
             }
             setSelectedTaskId(null);
         }
@@ -136,8 +135,8 @@ const ToDoList = () => {
     }
 
     return (
-        <SafeAreaView style={{ flexGrow: 1, paddingHorizontal: 24, justifyContent: "space-between", backgroundColor: "#2aabbf" }}>
-            <View>
+        <ContentContainer>
+            <ViewContainer>
                 <ViewSettings>
                     <TouchableOpacity>
                         <Ionicons
@@ -147,6 +146,7 @@ const ToDoList = () => {
                             onPress={goToAddTodo}
                         />
                     </TouchableOpacity>
+
                     <ViewBlock>
                         <TouchableOpacity>
                             <Ionicons
@@ -168,45 +168,51 @@ const ToDoList = () => {
                     </ViewBlock>
                 </ViewSettings>
 
-                {isLoading ? (
-                    <SpinnerComponent state={isLoading} text={'Carregando...'} />
-                ) : tasks.length <= 0 ? (
-                    <Fragment>
-                        <TitleToDo>{`Adicione novas tarefas, ${username}!`}</TitleToDo>
-                        <View style={{ flex: 0.9, justifyContent: 'center', alignItems: 'center' }}>
-                            <Image
-                                source={require('./ToDo-Image.png')}
-                                style={{ width: "100%", height: "50%" }}
-                                resizeMode="cover"
+                {isLoading
+                    ?
+                    (
+                        <SpinnerComponent state={isLoading} text={'Carregando...'} />
+                    )
+                    : tasks.length <= 0
+                        ?
+                        (<Fragment>
+                            <Title>{`Adicione novas tarefas, ${username}!`}</Title>
+                            <ContainerImageInitial>
+                                <Image
+                                    source={require('./ToDo-Image.png')}
+                                    style={{ width: "100%", height: "50%" }}
+                                    resizeMode="cover"
+                                />
+                            </ContainerImageInitial>
+                        </Fragment>
+                        )
+                        :
+                        (
+                            <FlatList
+                                data={tasks}
+                                renderItem={({ item }) => <CardTaskToDo
+                                    title={item.name}
+                                    state={item.dateEnd === null
+                                        ? 0
+                                        : item.dateEnd !== null
+                                            ? convertDateISO8601(item.dateEnd) > convertDateISO8601(item.dateWishEnd)
+                                                ? 3
+                                                : 1
+                                            : null}
+                                    onDelete={() => showDeleteAlert(item.id)}
+                                    onOpen={() => fnGoToEdit(item.id)}
+                                    onFinish={() => item.dateEnd ? showUnfinishAlert(item.id) : showFinishAlert(item.id)}
+                                    isModify={true}
+                                />
+                                }
+                                showsVerticalScrollIndicator={false}
+                                keyExtractor={(item, index) => index.toString()}
                             />
-                        </View>
-                    </Fragment>
-                ) : (
-                    <ViewTasks>
-                        <FlatList
-                            data={tasks}
-                            renderItem={({ item }) => <CardTaskToDo
-                                title={item.name}
-                                state={item.dateEnd === null
-                                    ? 0
-                                    : item.dateEnd !== null
-                                        ? convertDateISO8601(item.dateEnd) > convertDateISO8601(item.dateWishEnd)
-                                            ? 3
-                                            : 1
-                                        : null}
-                                onDelete={() => showDeleteAlert(item.id)}
-                                onOpen={() => fnGoToEdit(item.id)}
-                                onFinish={() => item.dateEnd ? showUnfinishAlert(item.id) : showFinishAlert(item.id)}
-                                isModify={true}
-                            />
-                            }
-                            showsVerticalScrollIndicator={false}
-                            keyExtractor={(item, index) => index.toString()}
-                        />
-                    </ViewTasks>
-                )
+
+                        )
+
                 }
-            </View>
+            </ViewContainer>
 
             <ModalComponent
                 state={modalInformation}
@@ -239,7 +245,7 @@ const ToDoList = () => {
                 onConfirm={handleConfirmUnfinish}
                 onCancel={handleCancelUnfinish}
             />
-        </SafeAreaView >
+        </ContentContainer >
     );
 }
 

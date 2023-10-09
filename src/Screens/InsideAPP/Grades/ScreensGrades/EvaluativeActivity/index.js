@@ -1,6 +1,5 @@
 import React, { useContext } from "react"
-import { SafeAreaView } from "react-native-safe-area-context";
-import { View, TitleGrades } from "./StylesEvaluativeActivity";
+import { ContentContainer, Title, ContainerImageInitial } from "../../../../../Styles/DefaultStyles/index.js";
 import { AutenticacaoContext } from "../../../../../Contexts/UserContext";
 import { Image } from "react-native";
 
@@ -8,16 +7,16 @@ const EvaluativeActivity = () => {
     const { username } = useContext(AutenticacaoContext);
 
     return (
-        <SafeAreaView style={{ flexGrow: 1, padding: 24, justifyContent: "space-between", backgroundColor: "#2aabbf" }}>
-            <TitleGrades>{`Cadastre novas atividades avaliativas, ${username}!`}</TitleGrades>
-            <View style={{ flex: 0.9, justifyContent: 'center', alignItems: 'center' }}>
+        <ContentContainer>
+            <Title>{`Cadastre novas atividades avaliativas, ${username}!`}</Title>
+            <ContainerImageInitial>
                 <Image
                     source={require('./EvaluativeActivity-Image.png')}
                     style={{ width: "100%", height: "55%" }}
                     resizeMode="cover"
                 />
-            </View>
-        </SafeAreaView>
+            </ContainerImageInitial>
+        </ContentContainer>
     )
 }
 

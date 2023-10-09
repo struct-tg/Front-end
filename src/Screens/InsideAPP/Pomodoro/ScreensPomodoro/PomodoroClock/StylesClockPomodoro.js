@@ -53,3 +53,10 @@ export const NumberClock = styled.Text`
     font-size: 30px;
     font-weight: bold;
 `;
+
+export const TitlePomdoro = styled.Text`
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+`;

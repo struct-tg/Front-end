@@ -24,7 +24,7 @@ export async function getAllPomodoro(tokenJWT) {
         const objData = result.data;
         const objRetorno = objData.data;
 
-        return objRetorno[0];
+        return objRetorno;
     } catch (error) {
         console.log('ERRO NA CAPTURA DE TODOS POMODOROS POR USUARIO');
         return [];
@@ -33,12 +33,14 @@ export async function getAllPomodoro(tokenJWT) {
 
 export async function getPomodoroByID(idPomodoro, tokenJWT) {
     try {
-        await api.get(`/pomodoro/${idPomodoro}`, {
+        const result = await api.get(`/pomodoro/${idPomodoro}`, {
             headers: {
                 Authorization: `Bearer ${tokenJWT}`
             }
         });
-        return true;
+        const objData = result.data;
+        
+        return objData;
     } catch (error) {
         console.log('ERRO NA CAPTURA DO POMODORO');
         return false;
@@ -59,7 +61,7 @@ export async function updatePomodoro(idPomodoro, objPomodoro, tokenJWT) {
     }
 };
 
-export async function deletePomdooro(idPomodoro, tokenJWT) {
+export async function deletePomodoro(idPomodoro, tokenJWT) {
     try {
         await api.delete(`/pomodoro/${idPomodoro}`, {
             headers: {

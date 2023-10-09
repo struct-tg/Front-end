@@ -2,14 +2,38 @@ import React, { useState } from 'react';
 import { TextInput, IconButton } from 'react-native-paper';
 import { ContainerIconButton, ContainerIconInput, ContainerIcons, StyledInput } from "../../Components/Inputs/StylesInputs.js";
 
-export const Input = ({ secureText, text, value, onChangeText }) => {
+export const Input = ({ secureText, text, value, onChangeText, type, formatNumber }) => {
+    const formatInputValue = (inputText) => {
+        const numericValue = inputText.replace(/[^0-9]/g, '').replace(/^0+/, '');
+        switch (numericValue.length) {
+            case 0:
+                return '0.00';
+            case 1:
+                return `0.0${numericValue}`;
+            case 2:
+                return `0.${numericValue}`;
+            default:
+                const integerPart = numericValue.slice(0, -2);
+                const decimalPart = numericValue.slice(-2);
+                return `${integerPart}.${decimalPart}`;
+        }
+    };
+
     return (
-        <TextInput
+        <StyledInput
             label={text}
             mode="flat"
             secureTextEntry={secureText}
             value={value}
-            onChangeText={onChangeText}
+            onChangeText={(text) => {
+                if (formatNumber) {
+                    const formattedValue = formatInputValue(text);
+                    onChangeText(formattedValue);
+                } else {
+                    onChangeText(text);
+                }
+            }}
+            keyboardType={type}
         />
     );
 };
@@ -31,7 +55,7 @@ export const InputPassword = ({ text, value, onChangeText }) => {
     const [passwordVisible, setPasswordVisible] = useState(true);
 
     return (
-        <TextInput
+        <StyledInput
             label={text}
             mode="flat"
             secureTextEntry={passwordVisible}
@@ -46,7 +70,7 @@ export const InputPencil = ({ text, value, onChangeText }) => {
     const [passwordVisible, setPasswordVisible] = useState(true);
 
     return (
-        <TextInput
+        <StyledInput
             label={text}
             mode="flat"
             secureTextEntry={passwordVisible}

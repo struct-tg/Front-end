@@ -1,32 +1,43 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { View } from "react-native";
 import { Input } from "../../../Components/Inputs";
 import { Button } from "../../../Components/Button";
 import { useNavigation } from '@react-navigation/native';
 import { useForm, Controller } from "react-hook-form";
 import {
-    Container,
+    ContentContainer,
     ViewContainer,
     UppercaseTitle,
     ContainerButton,
 } from "../../../Styles/DefaultStyles";
+import { AutenticacaoContext } from "../../../Contexts/UserContext";
+import { generateOTP } from "../../../Services/Requisicoes/OTP";
 import HelperTextComponent from "../../../Components/HelperText";
 
 const ForgotPassword = () => {
     const { control, handleSubmit, formState: { errors } } = useForm({ mode: "onChange" });
+    const [toastVisible, setToastVisible] = useState(false);
 
     const navigation = useNavigation();
     const goToPasswordCode = () => {
         navigation.navigate('PasswordCode');
     }
 
-    const onSubmit = (data) => {
-        console.log(data);
-        goToPasswordCode();
+    const onSubmit = async (data) => {
+        try {
+            const result = await generateOTP(data)
+            if (result) {
+                goToPasswordCode();
+            } else {
+                console.log('Algo de errado aconteceu.');
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
-        <Container>
+        <ContentContainer>
             <ViewContainer>
                 <UppercaseTitle>Recupere sua senha.</UppercaseTitle>
 
@@ -59,7 +70,7 @@ const ForgotPassword = () => {
                     />
                 </ContainerButton>
             </ViewContainer>
-        </Container>
+        </ContentContainer>
     );
 }
 

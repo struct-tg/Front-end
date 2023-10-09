@@ -19,7 +19,9 @@ const ModalPerfilSettings = ({ state, setModalPerfilSettings }) => {
     const [alertMessage, setAlertMessage] = useState('');
     const [isEditUsername, setIsEditUsername] = useState(false);
     const { tokenJWT, logout, username } = useContext(AutenticacaoContext);
-    const { control, handleSubmit, formState: { errors } } = useForm({ mode: "onChange" });
+    const { control, handleSubmit, formState: { errors }, watch, setError } = useForm({ mode: "onChange" });
+    const password = watch('password', '');
+    const confirmPassword = watch('confirmPassword', '');
     const navigation = useNavigation();
 
     const showAlertDeleteAccount = () => {
@@ -50,14 +52,19 @@ const ModalPerfilSettings = ({ state, setModalPerfilSettings }) => {
     }
 
     const handleEditInformation = async (objEnvio) => {
-        const { confirmPassword, username, ...data } = objEnvio;
-        console.log(data)
         try {
-            const result = await updateUser(tokenJWT, data);
-            if (result) {
-                navigation.navigate('Login');
-            } else {
-                console.log('deu ruim mano')
+            if (objEnvio.password !== objEnvio.confirmPassword) {
+                setError('confirmPassword', {
+                    type: 'manual',
+                    message: 'As senhas não coincidem'
+                });
+            }
+            else {
+                const { confirmPassword, username, ...data } = objEnvio;
+                const result = await updateUser(tokenJWT, data);
+                if (result) {
+                    navigation.navigate('Login');
+                }
             }
         } catch (error) {
             console.log(JSON.stringify(error))

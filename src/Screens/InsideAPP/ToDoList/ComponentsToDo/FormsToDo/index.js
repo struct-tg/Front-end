@@ -1,25 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { DateTime } from 'luxon';
 import { View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { ContentContainer, ViewContainer } from "../../../../../Styles/DefaultStyles/index";
 import { useForm, Controller } from 'react-hook-form';
 import { InputForm } from '../../../../../Components/Inputs';
 import { ContainerButton } from '../../../../../Styles/DefaultStyles';
 import { Button } from '../../../../../Components/Button';
 import { convertDateISO8601, convertISODateToSlashDateString, convertISODateToTraceDateString } from '../../../../../Utils/Date/index';
+import { getAllNamesDiscipline } from "../../../../../Services/Requisicoes/Grades/Filters";
+import { useIsFocused } from '@react-navigation/native';
+import { AutenticacaoContext } from "../../../../../Contexts/UserContext";
 import ToastComponent from "../../../../../Components/Toast";
 import TextArea from "../../../../../Components/TextArea";
 import ScrollBlock from '../ScrollBlockToDo';
 import HelperTextComponent from "../../../../../Components/HelperText";
 import Calendar from '../CalendarToDo';
+import DropdownComponent from '../../../../../Components/DropDown';
 
 const FormsToDo = ({ aoSubmitar, initialValues, isEdit }) => {
     const { control, handleSubmit, formState: { errors } } = useForm({ mode: "onChange", defaultValues: initialValues });
     const [subTasks, setSubtasks] = useState(isEdit ? initialValues.subTasks || [] : [] || initialValues.subTasks);
+    const [namesDisciplines, setNamesDisciplines] = useState([]);
     const [calendarVisible, setCalendarVisible] = useState(false);
     const [dateError, setDateError] = useState(false);
     const [currentDate, setCurrentDate] = useState(new Date());
     const [toastVisible, setToastVisible] = useState(false);
+    const { tokenJWT } = useContext(AutenticacaoContext);
+    const isFocused = useIsFocused();
+
+    useEffect(() => {
+        async function fetchNamesDisciplines() {
+            const result = await getAllNamesDiscipline(tokenJWT)
+            if (result) {
+                const data = result.map(item => ({
+                    label: item.name,
+                    value: item.disciplineId
+                }));
+                setNamesDisciplines(data)
+            }
+        }
+        fetchNamesDisciplines()
+    }, [isFocused])
 
     const fnAddNewInput = (ID) => {
         const newSubtask = {
@@ -64,6 +85,7 @@ const FormsToDo = ({ aoSubmitar, initialValues, isEdit }) => {
     }
 
     const fnSubmit = (data) => {
+        
         const subTasksWithoutId = subTasks.map(({ id, ...rest }) => rest);
         const objEnvio = { ...data, subTasks: subTasksWithoutId };
         objEnvio.dateWishEnd = convertDate(objEnvio.dateWishEnd);
@@ -85,88 +107,105 @@ const FormsToDo = ({ aoSubmitar, initialValues, isEdit }) => {
     }
 
     return (
-        <SafeAreaView style={{ backgroundColor: '#40aab8', flexGrow: 1, justifyContent: 'space-evenly', paddingHorizontal: 20 }}>
-            <Controller
-                control={control}
-                name='name'
-                defaultValue=""
-                rules={{ required: ' Campo obrigatório! ' }}
-                render={({ field }) => (
-                    <View>
-                        <InputForm
-                            text={"Nome da tarefa: "}
-                            secureText={false}
-                            value={field.value}
-                            onChangeText={field.onChange}
-                            disabled={isEdit === true && initialValues.dateEnd !== null ? true : false}
-                        />
-                        {errors.name && (<HelperTextComponent helperType={'error'} helperText={errors.name.message} />)}
-                    </View>
-                )}
-            />
-            
-            <Controller
-                control={control}
-                name='dateWishEnd'
-                defaultValue={""}
-                rules={{ required: ' Campo obrigatório! ' }}
-                render={({ field }) => (
-                    <View>
-                        <Calendar
-                            state={calendarVisible}
-                            setCalendarVisible={setCalendarVisible}
-                            data={field.value}
-                            setData={(newValue) => field.onChange(newValue)}
-                            disabled={isEdit === true && initialValues.dateEnd !== null ? true : false}
-                        />
-                        {errors.dateWishEnd && (<HelperTextComponent helperType={'error'} helperText={errors.dateWishEnd.message} />)}
-                    </View>
-                )}
-            />
-
-            <Controller
-                control={control}
-                name='description'
-                defaultValue=""
-                rules={{ required: ' Campo obrigatório! ' }}
-                render={({ field }) => (
-                    <View>
-                        <TextArea
-                            text={"Descricação da tarefa: "}
-                            value={field.value}
-                            onChangeText={field.onChange}
-                            disabled={isEdit === true && initialValues.dateEnd !== null ? true : false}
-                        />
-                        {errors.description && (<HelperTextComponent helperType={'error'} helperText={errors.description.message} />)}
-                    </View>
-                )}
-            />
-
-            <ScrollBlock
-                state={subTasks}
-                setState={setSubtasks}
-                addInput={fnAddNewInput}
-                removeInput={fnRemoveInput}
-                finishInput={fnFinishTask}
-                changeInput={fnChangeText}
-            />
-
-
-            <ContainerButton>
-                <Button
-                    text={"Salvar tarefa."}
-                    onPress={handleSubmit(fnSubmit)}
+        <ContentContainer>
+            <ViewContainer>
+                <Controller
+                    control={control}
+                    name='name'
+                    defaultValue=""
+                    rules={{ required: ' Campo obrigatório! ' }}
+                    render={({ field }) => (
+                        <View>
+                            <InputForm
+                                text={"Nome da tarefa: "}
+                                secureText={false}
+                                value={field.value}
+                                onChangeText={field.onChange}
+                                disabled={isEdit === true && initialValues.dateEnd !== null ? true : false}
+                            />
+                            {errors.name && (<HelperTextComponent helperType={'error'} helperText={errors.name.message} />)}
+                        </View>
+                    )}
                 />
-            </ContainerButton>
 
-            {toastVisible && (
-                <ToastComponent
-                    ToastType={'error'}
-                    Title={'Data inválida!'}
-                    Description={'Insira uma data valida, Estudante!'}
+                <Controller
+                    control={control}
+                    name='dateWishEnd'
+                    defaultValue={""}
+                    rules={{ required: 'Campo obrigatório!' }}
+                    render={({ field }) => (
+                        <View>
+                            <Calendar
+                                state={calendarVisible}
+                                setCalendarVisible={setCalendarVisible}
+                                data={field.value}
+                                setData={(newValue) => field.onChange(newValue)}
+                                disabled={isEdit === true && initialValues.dateEnd !== null ? true : false}
+                            />
+                            {errors.dateWishEnd && (<HelperTextComponent helperType={'error'} helperText={errors.dateWishEnd.message} />)}
+                        </View>
+                    )}
                 />
-            )}
-        </SafeAreaView>
+
+                <Controller
+                    control={control}
+                    name="disciplineId"
+                    defaultValue={null}
+                    render={({ field }) => (
+                        <DropdownComponent
+                            state={field.value}
+                            fnSetValue={field.onChange}
+                            text={namesDisciplines.length === 0 ? "Você ainda não tem disciplinas cadastradas." : "Associe a uma disciplina ?"}
+                            arrObjInformation={namesDisciplines}
+                            disable={namesDisciplines.length === 0 || isEdit === true && initialValues.dateEnd !== null ? true : false}
+                        />
+                    )}
+                />
+
+                <Controller
+                    control={control}
+                    name='description'
+                    defaultValue=""
+                    rules={{ required: ' Campo obrigatório! ' }}
+                    render={({ field }) => (
+                        <View>
+                            <TextArea
+                                text={"Descricação da tarefa: "}
+                                value={field.value}
+                                onChangeText={field.onChange}
+                                disabled={isEdit === true && initialValues.dateEnd !== null ? true : false}
+                            />
+                            {errors.description && (<HelperTextComponent helperType={'error'} helperText={errors.description.message} />)}
+                        </View>
+                    )}
+                />
+
+                <ScrollBlock
+                    state={subTasks}
+                    setState={setSubtasks}
+                    addInput={fnAddNewInput}
+                    removeInput={fnRemoveInput}
+                    finishInput={fnFinishTask}
+                    changeInput={fnChangeText}
+                />
+
+
+                <ContainerButton>
+                    <Button
+                        text={"Salvar tarefa."}
+                        onPress={handleSubmit(fnSubmit)}
+                    />
+                </ContainerButton>
+
+                {toastVisible && (
+                    <ToastComponent
+                        ToastType={'error'}
+                        Title={'Data inválida!'}
+                        Description={'Insira uma data valida, Estudante!'}
+                    />
+                )}
+            </ViewContainer>
+        </ContentContainer>
     );
 };
 

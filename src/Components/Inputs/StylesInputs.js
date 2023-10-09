@@ -16,6 +16,6 @@ export const ContainerIcons = styled.View`
 `;
 
 export const StyledInput = styled(TextInput)`
-  background-color: ${(props) => (props.disabled ? '#ffffff' : '#dfdfdf')};
+  background-color: ${(props) => (props.disabled ? '#ffffff' : '#ffffff')};
   border: ${(props) => (props.disabled ? '1.2px solid #000000' : '#dfdfdf')};
 `;

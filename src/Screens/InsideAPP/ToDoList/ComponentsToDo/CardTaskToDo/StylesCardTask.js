@@ -1,11 +1,5 @@
 import styled from 'styled-components/native';
 
-/* #02f78d - concluidas */
-/* #ed1354 - atrasadas */
-/* #eef205 - pendente */
-/* #0521f7 - pendente */
-/* #35effc - pendente */
-
 export const Card = styled.TouchableOpacity`
     display: flex;
     flex-direction: row;

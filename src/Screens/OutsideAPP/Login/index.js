@@ -6,7 +6,7 @@ import { TouchableOpacity, View } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { AutenticacaoContext } from "../../../Contexts/UserContext";
 import {
-    Container,
+    ContentContainer,
     ViewContainer,
     ContainerImage,
     ContainerButton,
@@ -44,7 +44,7 @@ const ScreenLogin = () => {
     }
 
     return (
-        <Container>
+        <ContentContainer>
             <ViewContainer>
                 <ContainerImage
                     source={require('./image-Struct.png')}
@@ -113,7 +113,7 @@ const ScreenLogin = () => {
                     Description={'E-mail ou senha incorretas.'}
                 />
             )}
-        </Container>
+        </ContentContainer>
     );
 }
 

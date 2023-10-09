@@ -6,7 +6,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import { cadastraUsuario } from "../../../Services/Requisicoes/Users/index.js";
 import {
-    Container,
+    ContentContainer,
     ViewContainer,
     UppercaseTitle,
     ContainerButton
@@ -47,8 +47,8 @@ const ScreenRegister = () => {
     }
 
     return (
-        <Container>
-            <ViewContainer >
+        <ContentContainer>
+            <ViewContainer>
                 <UppercaseTitle>Faça o seu cadastro.</UppercaseTitle>
                 <Controller
                     control={control}
@@ -159,7 +159,7 @@ const ScreenRegister = () => {
                     Description={userRegister ? 'Bem-vindo, Estudante!' : 'Houve um erro ao criar a conta!'}
                 />
             )}
-        </Container>
+        </ContentContainer>
     );
 }
 

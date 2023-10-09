@@ -9,22 +9,24 @@ import RadioButtonComponent from "../../../../../Components/RadioButton";
 import HelperTextComponent from "../../../../../Components/HelperText";
 import TitleNote from "./StylesFormsGrades";
 
-const FormsGrades = () => {
-    const [selectedRadio, setSelectedRadio] = useState('media');
+const FormsGrades = ({ aoSubmitar, initialValues, isEdit }) => {
+    const [selectedRadio, setSelectedRadio] = useState(isEdit ? initialValues.typeAv : 'SIMPLE');
     const { control, handleSubmit, formState: { errors } } = useForm({
-        mode: "onChange", defaultValues: {
-            disciplina: "",
-            nomeProfessor: "",
-            notaMinima: "",
+        mode: "onChange",
+        defaultValues: {
+            name: isEdit ? String(initialValues.name) : "",
+            nameTeacher: isEdit ? String(initialValues.nameTeacher) : "",
+            noteMin: isEdit ? String(initialValues.noteMin.toFixed(2)) : "",
         }
     });
 
     const onSubmit = (data) => {
         const formData = {
             ...data,
-            calculoNota: selectedRadio,
+            typeAv: selectedRadio,
+            status: 'DISAPPROVED'
         };
-        console.log('Os dados capturados: ', formData);
+        aoSubmitar(formData);
     }
 
     const handleRadioSelect = (radioId) => {
@@ -35,7 +37,7 @@ const FormsGrades = () => {
         <SafeAreaView style={{ backgroundColor: '#40aab8', flexGrow: 1, justifyContent: 'space-around', paddingHorizontal: 20 }}>
             <Controller
                 control={control}
-                name='disciplina'
+                name='name'
 
                 rules={{ required: "Campo obrigatório!" }}
                 render={({ field }) => (
@@ -46,8 +48,8 @@ const FormsGrades = () => {
                             value={field.value}
                             onChangeText={field.onChange}
                         />
-                        {errors.disciplina && (
-                            <HelperTextComponent helperType={'error'} helperText={errors.disciplina.message} />
+                        {errors.name && (
+                            <HelperTextComponent helperType={'error'} helperText={errors.name.message} />
                         )}
                     </View>
                 )}
@@ -55,8 +57,7 @@ const FormsGrades = () => {
 
             <Controller
                 control={control}
-                name='nomeProfessor'
-
+                name='nameTeacher'
                 rules={{ required: "Campo obrigatório!" }}
                 render={({ field }) => (
                     <View>
@@ -66,8 +67,8 @@ const FormsGrades = () => {
                             value={field.value}
                             onChangeText={field.onChange}
                         />
-                        {errors.nomeProfessor && (
-                            <HelperTextComponent helperType={'error'} helperText={errors.nomeProfessor.message} />
+                        {errors.nameTeacher && (
+                            <HelperTextComponent helperType={'error'} helperText={errors.nameTeacher.message} />
                         )}
                     </View>
                 )}
@@ -75,19 +76,20 @@ const FormsGrades = () => {
 
             <Controller
                 control={control}
-                name='notaMinima'
-
+                name='noteMin'
                 rules={{ required: "Campo obrigatório!" }}
                 render={({ field }) => (
                     <View>
                         <Input
                             text={'Nota minima para aprovação: '}
                             secureText={false}
+                            type={'numeric'}
                             value={field.value}
                             onChangeText={field.onChange}
+                            formatNumber={true}
                         />
-                        {errors.notaMinima && (
-                            <HelperTextComponent helperType={'error'} helperText={errors.notaMinima.message} />
+                        {errors.noteMin && (
+                            <HelperTextComponent helperType={'error'} helperText={errors.noteMin.message} />
                         )}
                     </View>
                 )}
@@ -96,16 +98,16 @@ const FormsGrades = () => {
             <TitleNote>Como deseja calcular sua nota?</TitleNote>
             <RadioButtonComponent
                 title={'Média aritmética'}
-                id={'media'}
-                selected={selectedRadio === 'media'}
-                onSelect={() => setSelectedRadio('media')}
+                id={'SIMPLE'}
+                selected={selectedRadio === 'SIMPLE'}
+                onSelect={() => setSelectedRadio('SIMPLE')}
             />
 
             <RadioButtonComponent
                 title={'Média ponderada'}
-                id={'ponderada'}
-                selected={selectedRadio === 'ponderada'}
-                onSelect={() => setSelectedRadio('ponderada')}
+                id={'WEIGHTED'}
+                selected={selectedRadio === 'WEIGHTED'}
+                onSelect={() => setSelectedRadio('WEIGHTED')}
             />
 
             <ContainerButton>
