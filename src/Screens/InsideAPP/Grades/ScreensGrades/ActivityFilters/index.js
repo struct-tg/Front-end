@@ -20,8 +20,6 @@ const ActivityFilters = () => {
     const isFocused = useIsFocused(false);
     const navigation = useNavigation();
     
-    
-
     useEffect(() => {
         async function fetchDatas() {
             try {
@@ -97,7 +95,6 @@ const ActivityFilters = () => {
                         )
                         :
                         (<Fragment>
-
                             <SearchBarComponent title={'Pesquise suas disciplinas!'} setSearchQuery={setSearchQuery} />
 
                             <RadioButtonComponent

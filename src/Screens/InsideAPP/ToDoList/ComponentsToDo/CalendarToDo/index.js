@@ -4,7 +4,7 @@ import { DataInput } from "../../../../../Components/Inputs";
 import { convertISODateToSlashDateString } from "../../../../../Utils/Date/index";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
-const Calendar = ({ state, setCalendarVisible, data, setData, disabled }) => {
+const Calendar = ({ state, setCalendarVisible, data, setData, disabled, interactions }) => {
     const showDatePicker = () => {
         setCalendarVisible(true);
     };
@@ -24,7 +24,13 @@ const Calendar = ({ state, setCalendarVisible, data, setData, disabled }) => {
             <DataInput
                 edit={false}
                 value={data ? data : "Data de previsão de término da tarefa:"}
-                fnModal={showDatePicker}
+                fnModal={() => {
+                    if (interactions === false) {
+                        return;
+                    } else {
+                        showDatePicker()
+                    }
+                }}
                 disabled={disabled}
             />
 

@@ -3,6 +3,9 @@ import { StyleSheet } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 
 const DropdownComponent = ({ state, disable, fnSetValue, text, arrObjInformation }) => {
+    const colors = disable ? "#B3B1B1" : "#535454";
+    const inputFontSize = 16;
+
     return (
         <Dropdown
             data={arrObjInformation}
@@ -13,10 +16,13 @@ const DropdownComponent = ({ state, disable, fnSetValue, text, arrObjInformation
             placeholder={text}
             disable={disable}
             placeholderStyle={{
-                color: disable ? "gray" : "black",
-                fontSize: 16,
+                color: colors,
+                fontSize: inputFontSize,
             }}
-            selectedTextStyle={styles.selectedTextStyle}
+            selectedTextStyle={{
+                color: colors,
+                fontSize: inputFontSize,
+            }}
             maxHeight={150}
             labelField="label"
             valueField="value"
@@ -45,8 +51,5 @@ const styles = StyleSheet.create({
         borderColor: "#000000",
         borderWidth: 1.2,
 
-    },
-    selectedTextStyle: {
-        fontSize: 16,
     },
 });

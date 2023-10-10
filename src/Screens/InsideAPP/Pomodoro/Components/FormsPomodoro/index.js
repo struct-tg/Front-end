@@ -104,7 +104,7 @@ const FormsPomodoro = ({ aoSubmitar, initialValues, isEdit }) => {
                 />
 
                 <ModalTextRadioButton>
-                    <Text>Iniciar automaticamente as pausas: </Text>
+                    <Text>Iniciar automaticamente os intervalos: </Text>
                     <Controller
                         control={control}
                         name="startAutomaticPause"

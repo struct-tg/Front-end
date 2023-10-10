@@ -25,6 +25,7 @@ const AddTask = () => {
             <FormsToDo
                 aoSubmitar={aoSubmitarForm}
                 isEdit={false}
+                interactions={true}
             />
             {toastVisible && (
                 <ToastComponent

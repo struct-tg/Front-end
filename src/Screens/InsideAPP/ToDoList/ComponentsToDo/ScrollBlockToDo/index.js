@@ -6,9 +6,8 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { useForm, Controller } from "react-hook-form";
 import uuid from 'react-native-uuid';
 import ContainerScroll from "./StylesScrollBlock.js";
-import HelperTextComponent from "../../../../../Components/HelperText";
 
-const ScrollBlock = ({ state, addInput, removeInput, finishInput, changeInput, isEdit }) => {
+const ScrollBlock = ({ state, addInput, removeInput, finishInput, changeInput, scrollBlockInteractions, scrollBlockIsEditing }) => {
     const { control, formState: { errors } } = useForm({ mode: "onChange" });
 
     const addNewInput = () => {
@@ -18,11 +17,11 @@ const ScrollBlock = ({ state, addInput, removeInput, finishInput, changeInput, i
 
     return (
         <View>
-            <TouchableOpacity onPress={addNewInput}>
+            <TouchableOpacity onPress={scrollBlockInteractions ? addNewInput : null}>
                 <Ionicons
                     name="add-circle-outline"
                     size={35}
-                    color={"white"}
+                    color={scrollBlockInteractions ? "white" : "#D6D4D4"}
                 />
             </TouchableOpacity>
 
@@ -33,13 +32,17 @@ const ScrollBlock = ({ state, addInput, removeInput, finishInput, changeInput, i
                             text={"Adicione uma subtarefa: "}
                             value={subtask.description}
                             onChangeText={(newText) => changeInput(subtask.id, newText)}
-                            textBlock={subtask.status}
+                            textBlock={(subtask.status && scrollBlockInteractions) || (subtask.status && !scrollBlockInteractions)}
+                            interaction={scrollBlockInteractions}
                             iconOne={() => (
                                 <Ionicons
                                     name="checkmark-outline"
                                     size={35}
                                     color={subtask.status === true ? "#02f78d" : "white"}
                                     onPress={() => {
+                                        if (scrollBlockInteractions === false) {
+                                            return; // Não faça nada se scrollBlockInteractions for falso
+                                        }
                                         finishInput(subtask.id, subtask.status);
                                     }}
                                 />

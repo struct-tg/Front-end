@@ -24,15 +24,11 @@ const ForgotPassword = () => {
     }
 
     const onSubmit = async (data) => {
-        try {
-            const result = await generateOTP(data)
-            if (result) {
-                goToPasswordCode();
-            } else {
-                console.log('Algo de errado aconteceu.');
-            }
-        } catch (error) {
-            console.log(error);
+        const result = await generateOTP(data)
+        if (result) {
+            goToPasswordCode();
+        } else {
+            console.log('Algo de errado aconteceu.');
         }
     }
 

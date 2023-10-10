@@ -1,4 +1,5 @@
 import { getAllDiscipline } from "../../Grades/index";
+import { getAllTasks } from "../../Tasks";
 
 export async function getAllDisciplineReproved(tokenJWT) {
     try {
@@ -35,6 +36,18 @@ export async function getAllNamesDiscipline(tokenJWT) {
         return allNameDiscipline;
     } catch (error) {
         console.log(error.response.data);
+        return null;
+    }
+};
+
+export async function getAllTasksByDiscipline(tokenJWT, idDiscipline) {
+    try {
+        const allTasks = await getAllTasks(tokenJWT);
+        const allTasksByDiscipline = allTasks.filter((task) => task.disciplineId === idDiscipline)
+
+        return allTasksByDiscipline;
+    } catch (error) {
+        console.log(error);
         return null;
     }
 };

@@ -17,7 +17,7 @@ import HelperTextComponent from "../../../../../Components/HelperText";
 import Calendar from '../CalendarToDo';
 import DropdownComponent from '../../../../../Components/DropDown';
 
-const FormsToDo = ({ aoSubmitar, initialValues, isEdit }) => {
+const FormsToDo = ({ aoSubmitar, initialValues, isEdit, interactions }) => {
     const { control, handleSubmit, formState: { errors } } = useForm({ mode: "onChange", defaultValues: initialValues });
     const [subTasks, setSubtasks] = useState(isEdit ? initialValues.subTasks || [] : [] || initialValues.subTasks);
     const [namesDisciplines, setNamesDisciplines] = useState([]);
@@ -85,7 +85,7 @@ const FormsToDo = ({ aoSubmitar, initialValues, isEdit }) => {
     }
 
     const fnSubmit = (data) => {
-        
+
         const subTasksWithoutId = subTasks.map(({ id, ...rest }) => rest);
         const objEnvio = { ...data, subTasks: subTasksWithoutId };
         objEnvio.dateWishEnd = convertDate(objEnvio.dateWishEnd);
@@ -141,6 +141,7 @@ const FormsToDo = ({ aoSubmitar, initialValues, isEdit }) => {
                                 data={field.value}
                                 setData={(newValue) => field.onChange(newValue)}
                                 disabled={isEdit === true && initialValues.dateEnd !== null ? true : false}
+                                interactions={interactions}
                             />
                             {errors.dateWishEnd && (<HelperTextComponent helperType={'error'} helperText={errors.dateWishEnd.message} />)}
                         </View>
@@ -187,15 +188,20 @@ const FormsToDo = ({ aoSubmitar, initialValues, isEdit }) => {
                     removeInput={fnRemoveInput}
                     finishInput={fnFinishTask}
                     changeInput={fnChangeText}
+                    scrollBlockInteractions={interactions}
+                    scrollBlockIsEditing={isEdit}
                 />
 
+                {interactions && (
+                    <ContainerButton>
+                        <Button
+                            text={"Salvar tarefa."}
+                            onPress={handleSubmit(fnSubmit)}
+                        />
+                    </ContainerButton>
+                )
 
-                <ContainerButton>
-                    <Button
-                        text={"Salvar tarefa."}
-                        onPress={handleSubmit(fnSubmit)}
-                    />
-                </ContainerButton>
+                }
 
                 {toastVisible && (
                     <ToastComponent

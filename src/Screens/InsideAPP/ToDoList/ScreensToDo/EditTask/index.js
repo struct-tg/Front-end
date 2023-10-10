@@ -2,18 +2,19 @@ import React, { useState, useContext, Fragment } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { updateTask } from "../../../../../Services/Requisicoes/Tasks";
 import { AutenticacaoContext } from "../../../../../Contexts/UserContext";
+import { convertDateISO8601, convertISODateToSlashDateString, convertISODateToTraceDateString } from '../../../../../Utils/Date';
 import FormsToDo from "../../ComponentsToDo/FormsToDo";
 import ToastComponent from "../../../../../Components/Toast";
-import { convertDateISO8601, convertISODateToSlashDateString, convertISODateToTraceDateString } from '../../../../../Utils/Date';
 
 const EditTask = ({ route }) => {
   const [toastVisible, setToastVisible] = useState(false);
   const { tokenJWT } = useContext(AutenticacaoContext);
   const { obj } = route.params;
   const navigation = useNavigation();
-
   const objEdit = { ...obj };
   objEdit.dateWishEnd = convertDateISO8601(objEdit.dateWishEnd);
+
+  const isDateEndNotNull = objEdit.dateEnd !== null;
 
   const fnEditSubmitForm = async (datasForm) => {
     const { id, userId, ...cleanObj } = datasForm;
@@ -36,6 +37,7 @@ const EditTask = ({ route }) => {
         aoSubmitar={fnEditSubmitForm}
         initialValues={objEdit}
         isEdit={true}
+        interactions={!isDateEndNotNull}
       />
       {toastVisible && (
         <ToastComponent

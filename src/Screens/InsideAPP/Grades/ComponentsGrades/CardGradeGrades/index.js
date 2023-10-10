@@ -24,7 +24,7 @@ const CardGrades = ({ titleGrades, status, onOpen, onDelete, onActivity, activit
                 <Ionicons
                     name={"school-outline"}
                     size={30}
-                    color={activity ? "#d7d7d9" : "gray"}
+                    color={activity ? "white" : "gray"}
                     onPress={onActivity}
                 />
             </CardButton>

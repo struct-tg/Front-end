@@ -20,6 +20,7 @@ import {
 import ModalPerfilSettings from "./Components/ModalPerfilHome";
 import CardsHome from "./Components/CardFinishedsHome";
 import SpinnerComponent from "../../../Components/Spinner";
+import { getAllTasksByDiscipline } from "../../../Services/Requisicoes/Grades/Filters";
 
 const Home = () => {
     const [tasksFinisheds, setTasksFinisheds] = useState([]);
@@ -30,6 +31,7 @@ const Home = () => {
     const { tokenJWT, username } = useContext(AutenticacaoContext);
     const isFocused = useIsFocused(false);
     const navigation = useNavigation();
+    const [tasksByID, setTasksByID] = useState([]);
 
     useEffect(() => {
         async function fetchDatas() {

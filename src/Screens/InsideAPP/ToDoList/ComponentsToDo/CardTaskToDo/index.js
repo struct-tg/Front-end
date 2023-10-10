@@ -28,7 +28,7 @@ const CardTask = ({ title, date, state, onDelete, onOpen, onFinish, isModify }) 
                     <Ionicons
                         name={"checkmark-outline"}
                         size={30}
-                        color={"white"}
+                        color={state !== 0 ? "#02f78d" : "white"}
                         onPress={onFinish}
                     />
                 </BotaoCard>

@@ -7,6 +7,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import CardPomodoro from "../../Components/CardPomodoro";
+import SpinnerComponent from '../../../../../Components/Spinner';
 
 const SelectPomodoro = () => {
     const [pomodoros, setPomodoros] = useState([]);
@@ -42,40 +43,43 @@ const SelectPomodoro = () => {
 
     return (
         <ContentContainer>
-            <ViewContainer>
-                {pomodoros.length <= 0
-                    ?
-                    (<Fragment>
-                        <Title>{`Para utilizar o sistema Pomodoro, você configurar algum ciclo.`}</Title>
-                        <ContainerImageInitial>
-                            <Image
-                                source={require('./SelectPomodoro.png')}
-                                style={{ width: "100%", height: "55%" }}
-                                resizeMode="cover"
-                            />
-                        </ContainerImageInitial>
+            {isLoading ? (
+                <SpinnerComponent state={isLoading} text={"Carregando..."} />
+            ) : (
+                <ViewContainer>
+                    <Fragment>
+                        {pomodoros.length <= 0 ? (
+                            <Fragment>
+                                <Title>{`Para utilizar o sistema Pomodoro, você configurar algum ciclo.`}</Title>
+                                <ContainerImageInitial>
+                                    <Image
+                                        source={require('./SelectPomodoro.png')}
+                                        style={{ width: "100%", height: "55%" }}
+                                        resizeMode="cover"
+                                    />
+                                </ContainerImageInitial>
+                            </Fragment>
+                        ) : (
+                            <Fragment>
+                                <Title>{`Selecione o Pomodoro que você vai utilizar, ${username}!`}</Title>
+                                <FlatList
+                                    data={pomodoros}
+                                    showsVerticalScrollIndicator={false}
+                                    keyExtractor={(item, index) => index.toString()}
+                                    renderItem={({ item }) =>
+                                        <CardPomodoro
+                                            time={item.timer}
+                                            shortStop={item.timerPauseShort}
+                                            longStop={item.timerPauseLong}
+                                            onSelect={() => onSelect(item.id)}
+                                            isModify={false}
+                                        />}
+                                />
+                            </Fragment>
+                        )}
                     </Fragment>
-                    )
-                    :
-                    (<Fragment>
-                        <Title>{`Selecione o Pomodoro que você vai utilizar, ${username}!`}</Title>
-                        <FlatList
-                            data={pomodoros}
-                            showsVerticalScrollIndicator={false}
-                            keyExtractor={(item, index) => index.toString()}
-                            renderItem={({ item }) =>
-                                <CardPomodoro
-                                    time={item.timer}
-                                    shortStop={item.timerPauseShort}
-                                    longStop={item.timerPauseLong}
-                                    onSelect={() => onSelect(item.id)}
-                                    isModify={false}
-                                />}
-                        />
-                    </Fragment>
-                    )
-                }
-            </ViewContainer>
+                </ViewContainer>
+            )}
         </ContentContainer>
     )
 }

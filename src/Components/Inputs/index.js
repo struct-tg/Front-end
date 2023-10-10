@@ -94,7 +94,7 @@ export const DataInput = ({ text, edit, value, disabled, fnModal }) => {
     )
 }
 
-export const InputIcon = ({ text, value, textBlock, onChangeText, iconTwo, iconOne, onButtonPress }) => {
+export const InputIcon = ({ text, value, textBlock = false, onChangeText, iconTwo, iconOne, onButtonPress, interaction }) => {
 
     return (
         <ContainerIconButton>
@@ -116,15 +116,14 @@ export const InputIcon = ({ text, value, textBlock, onChangeText, iconTwo, iconO
                     />
                     )
                 }
-                {iconTwo
-                    && (
+                {interaction === false ? null : (
+                    iconTwo && (
                         <IconButton
                             icon={iconTwo}
                             onPress={onButtonPress}
                         />
                     )
-
-                }
+                )}
             </ContainerIcons>
         </ContainerIconButton>
     );

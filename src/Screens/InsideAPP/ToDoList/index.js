@@ -26,12 +26,12 @@ const ToDoList = () => {
 
     const [alertDelete, setAlertDelete] = useState(false);
     const [alertFinish, setAlertFinish] = useState(false);
-    const [alertUnfinish, setAlertUnfinish] = useState(false);
+    const [alertFinished, setAlertFinished] = useState(false);
 
     const [alertMessages, setAlertMessages] = useState([
         { titulo: 'Deseja mesmo excluir sua tarefa?', descricao: 'Essa ação é irreversível e não terá como você desfazer após a confirmação.' },
-        { titulo: `Parabéns, ${username}`, descricao: 'Você finalizou mais uma tarefa. Continue estudando, estamos você na sua jornada.' },
-        { titulo: 'Deseja reabrir esta tarefa ?', descricao: `Ao reabrir esta tarefa todas as suas subtarefas permanecerão finalizadas. Deseja mesmo continuar, ${username}?` },
+        { titulo: `Parabéns, ${username}!`, descricao: 'Você finalizou mais uma tarefa. Continue estudando, estamos com você na sua jornada.' },
+        { titulo: `Você já finalizou esta tarefa!`, descricao: `A partir de agora, só é possível visualizar o conteúdo adicionado nesta tarefa.` },
     ]);
 
     useEffect(() => {
@@ -93,28 +93,12 @@ const ToDoList = () => {
     }
 
 
-    const showUnfinishAlert = (idTask) => {
-        setSelectedTaskId(idTask);
-        setAlertUnfinish(true);
+    const showAlertFinished = () => {
+        setAlertFinished(true);
     }
 
-    const handleConfirmUnfinish = async () => {
-        if (selectedTaskId !== null) {
-            const result = await finishTask(selectedTaskId, tokenJWT);
-            if (result) {
-                const updateDatas = await getAllTasks(tokenJWT);
-                setTasks(updateDatas);
-            } else {
-                console.log('Algo deu errado ao finalizar uma tarefa');
-            }
-            setSelectedTaskId(null);
-        }
-        setAlertUnfinish(false);
-    }
-
-    const handleCancelUnfinish = () => {
-        setSelectedTaskId(null);
-        setAlertUnfinish(false);
+    const handleConfirmAlertFinished = () => {
+        setAlertFinished(false);
     }
 
     const fnGoToEdit = async (idTask) => {
@@ -133,6 +117,10 @@ const ToDoList = () => {
     const goToFiltersTodo = () => {
         navigation.navigate('FiltersTodo');
     }
+
+    const transformConvertDateISO8601 = (dateString) => {
+        return new Date(dateString);
+    };
 
     return (
         <ContentContainer>
@@ -190,27 +178,34 @@ const ToDoList = () => {
                         (
                             <FlatList
                                 data={tasks}
-                                renderItem={({ item }) => <CardTaskToDo
-                                    title={item.name}
-                                    state={item.dateEnd === null
-                                        ? 0
-                                        : item.dateEnd !== null
-                                            ? convertDateISO8601(item.dateEnd) > convertDateISO8601(item.dateWishEnd)
-                                                ? 3
-                                                : 1
-                                            : null}
-                                    onDelete={() => showDeleteAlert(item.id)}
-                                    onOpen={() => fnGoToEdit(item.id)}
-                                    onFinish={() => item.dateEnd ? showUnfinishAlert(item.id) : showFinishAlert(item.id)}
-                                    isModify={true}
-                                />
-                                }
+                                renderItem={({ item }) => {
+                                    const dateEnd = item.dateEnd ? transformConvertDateISO8601(item.dateEnd) : null;
+                                    const dateWishEnd = item.dateWishEnd ? transformConvertDateISO8601(item.dateWishEnd) : null;
+                                    let state = 0;
+                                    if (dateEnd) {
+                                        if (dateWishEnd) {
+                                            if (dateEnd > dateWishEnd) {
+                                                state = 3;
+                                            } else {
+                                                state = 1;
+                                            }
+                                        }
+                                    }
+                                    return (
+                                        <CardTaskToDo
+                                            title={item.name}
+                                            state={state}
+                                            onDelete={() => showDeleteAlert(item.id)}
+                                            onOpen={() => fnGoToEdit(item.id)}
+                                            onFinish={() => item.dateEnd ? showAlertFinished() : showFinishAlert(item.id)}
+                                            isModify={true}
+                                        />
+                                    );
+                                }}
                                 showsVerticalScrollIndicator={false}
                                 keyExtractor={(item, index) => index.toString()}
                             />
-
                         )
-
                 }
             </ViewContainer>
 
@@ -238,12 +233,12 @@ const ToDoList = () => {
             />
 
             <AlertComponent
-                state={alertUnfinish}
-                setVisible={setAlertUnfinish}
+                state={alertFinished}
+                setVisible={setAlertFinished}
+                isInformation={true}
                 title={alertMessages[2].titulo}
                 message={alertMessages[2].descricao}
-                onConfirm={handleConfirmUnfinish}
-                onCancel={handleCancelUnfinish}
+                onConfirm={handleConfirmAlertFinished}
             />
         </ContentContainer >
     );
