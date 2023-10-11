@@ -113,7 +113,7 @@ const FormsToDo = ({ aoSubmitar, initialValues, isEdit, interactions }) => {
                     control={control}
                     name='name'
                     defaultValue=""
-                    rules={{ required: ' Campo obrigatório! ' }}
+                    rules={{ required: 'Campo obrigatório!', maxLength: {value: 18, message: 'Nome de tarefa muito grande'} }}
                     render={({ field }) => (
                         <View>
                             <InputForm

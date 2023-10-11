@@ -38,8 +38,7 @@ const FormsGrades = ({ aoSubmitar, initialValues, isEdit }) => {
             <Controller
                 control={control}
                 name='name'
-
-                rules={{ required: "Campo obrigatório!" }}
+                rules={{ required: "Campo obrigatório!", maxLength: {value: 20, message: "Nome muito grande!"} }}
                 render={({ field }) => (
                     <View>
                         <Input

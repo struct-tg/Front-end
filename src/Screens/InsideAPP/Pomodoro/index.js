@@ -29,10 +29,6 @@ const Pomodoro = () => {
         navigation.navigate('AddPomodoro');
     }
 
-    const goToClockPomodoro = () => {
-        navigation.navigate('ClockPomodoro');
-    }
-
     useEffect(() => {
         async function fetchPomodoros() {
             try {
@@ -80,6 +76,10 @@ const Pomodoro = () => {
         }
     }
 
+    const fnGoToPomodoro = (ciclo) => {
+        navigation.navigate('ClockPomodoro', { cicloSelecionado: ciclo })
+    }
+
     return (
         <ContentContainer>
             <ViewContainer>
@@ -93,24 +93,14 @@ const Pomodoro = () => {
                         />
                     </TouchableOpacity>
 
-                    <ViewBlock>
-                        <TouchableOpacity>
-                            <Ionicons
-                                name="help-circle-outline"
-                                size={35}
-                                color={"white"}
-                                onPress={() => setModalVisible(true)}
-                            />
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Ionicons
-                                name="alarm-outline"
-                                size={35}
-                                color={"white"}
-                                onPress={goToClockPomodoro}
-                            />
-                        </TouchableOpacity>
-                    </ViewBlock>
+                    <TouchableOpacity>
+                        <Ionicons
+                            name="help-circle-outline"
+                            size={35}
+                            color={"white"}
+                            onPress={() => setModalVisible(true)}
+                        />
+                    </TouchableOpacity>
                 </ViewSettings>
 
                 {isLoading
@@ -139,7 +129,8 @@ const Pomodoro = () => {
                                     shortStop={item.timerPauseShort}
                                     longStop={item.timerPauseLong}
                                     onDelete={() => showDeleteAlert(item.id)}
-                                    onSelect={() => fnGoToEdit(item.id)}
+                                    onEdit={() => fnGoToEdit(item.id)}
+                                    onSelect={() => fnGoToPomodoro(item)}
                                     isModify={true}
                                 />
                                 }

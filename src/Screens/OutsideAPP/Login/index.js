@@ -14,13 +14,16 @@ import {
 } from "../../../Styles/DefaultStyles";
 import HelperTextComponent from "../../../Components/HelperText";
 import ToastComponent from "../../../Components/Toast";
+import deviceDimensions from "../../../Device/DeviceInformation";
 
 const ScreenLogin = () => {
     const { control, handleSubmit, formState: { errors } } = useForm({ mode: "onChange" });
     const { login } = useContext(AutenticacaoContext);
-
     const [toastVisible, setToastVisible] = useState(false);
     const navigation = useNavigation();
+    
+    console.log('Altura do dispositivo (PX):', deviceDimensions.height);
+    console.log('Largura do dispositivo (PX):', deviceDimensions.width);
 
     const goToRegister = () => {
         navigation.navigate('Register');
@@ -106,6 +109,7 @@ const ScreenLogin = () => {
 
                 </ContainerButton>
             </ViewContainer>
+
             {toastVisible && (
                 <ToastComponent
                     ToastType={'error'}

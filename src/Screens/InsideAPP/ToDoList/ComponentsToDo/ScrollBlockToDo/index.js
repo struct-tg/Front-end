@@ -4,8 +4,9 @@ import { InputIcon } from "../../../../../Components/Inputs";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useForm, Controller } from "react-hook-form";
+import { UppercaseTitle } from "../../../../../Styles/DefaultStyles";
 import uuid from 'react-native-uuid';
-import ContainerScroll from "./StylesScrollBlock.js";
+import { ContainerScroll, ViewTop } from "./StylesScrollBlock.js";
 
 const ScrollBlock = ({ state, addInput, removeInput, finishInput, changeInput, scrollBlockInteractions, scrollBlockIsEditing }) => {
     const { control, formState: { errors } } = useForm({ mode: "onChange" });
@@ -17,19 +18,22 @@ const ScrollBlock = ({ state, addInput, removeInput, finishInput, changeInput, s
 
     return (
         <View>
-            <TouchableOpacity onPress={scrollBlockInteractions ? addNewInput : null}>
-                <Ionicons
-                    name="add-circle-outline"
-                    size={35}
-                    color={scrollBlockInteractions ? "white" : "#D6D4D4"}
-                />
-            </TouchableOpacity>
+            <ViewTop>
+            <UppercaseTitle>{scrollBlockIsEditing ? 'Edite subtarefas!' : 'Adicione subtarefas!'}</UppercaseTitle>
+                <TouchableOpacity onPress={scrollBlockInteractions ? addNewInput : null}>
+                    <Ionicons
+                        name="add-circle-outline"
+                        size={35}
+                        color={scrollBlockInteractions ? "white" : "#D6D4D4"}
+                    />
+                </TouchableOpacity>
+            </ViewTop>
 
             <ContainerScroll>
                 {state.map((subtask, index) => (
                     <View key={subtask.id} style={{ marginBottom: 15 }}>
                         <InputIcon
-                            text={"Adicione uma subtarefa: "}
+                            text={subtask.status ? "Subtarefa finalizada!" : "Adicione uma subtarefa!"}
                             value={subtask.description}
                             onChangeText={(newText) => changeInput(subtask.id, newText)}
                             textBlock={(subtask.status && scrollBlockInteractions) || (subtask.status && !scrollBlockInteractions)}
@@ -41,7 +45,7 @@ const ScrollBlock = ({ state, addInput, removeInput, finishInput, changeInput, s
                                     color={subtask.status === true ? "#02f78d" : "white"}
                                     onPress={() => {
                                         if (scrollBlockInteractions === false) {
-                                            return; // Não faça nada se scrollBlockInteractions for falso
+                                            return;
                                         }
                                         finishInput(subtask.id, subtask.status);
                                     }}

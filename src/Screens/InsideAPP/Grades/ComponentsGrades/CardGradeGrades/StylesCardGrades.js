@@ -1,55 +1,60 @@
 import styled from 'styled-components/native';
-import { Dimensions } from 'react-native';
-const windowWidth = Dimensions.get('window').width;
+import { RFValue } from 'react-native-responsive-fontsize';
+import deviceDimensions from "../../../../../Device/DeviceInformation";
 
-export const Card = styled.TouchableOpacity`
+export const CardGrades = styled.TouchableOpacity`
     display: flex;
-    flex-direction: row;
     border-radius: 15px;
-    border: 3px solid #ffffff;
+    border: 3px solid #fff;
     background-color: #168B9D;
-    justify-content: space-between;
-    align-items: center;
-    height: 100px;
-    margin: 5px 0;
-    padding: 0 10px;
+    height: 200px;
+    padding: 10px;
+    margin-bottom: 5%;
 `;
 
-export const ViewText = styled.View`
-    width: ${(windowWidth * 0.35)}px; 
-    height: 50px; 
+export const TopBlock = styled.View`
+    height: 60%;
+    width: 100%;
+    justify-content: space-evenly;
+    border-width: 0 0 3px 0;
+    border-color: #fff;
 `;
 
-export const CardTitle = styled.Text`
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-    text-align: center;
-    overflow: hidden;
-`;
-
-export const CardBlockNote = styled.View`
-    width: 35%;
-    height: 47%;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    border: 1.5px solid #000000;
-    border-radius: 5px;
-`;
-
-export const CardTextStatus = styled.Text`
-    font-size: 18px;
-    font-weight: bold;
-`;
-
-export const CardButtons = styled.View`
-    display: flex;
+export const LineBlock = styled.View`
     flex-direction: row;
-    width: 25%;
     justify-content: space-between;
+    align-items: center;
 `;
 
-export const CardButton = styled.TouchableOpacity`
+export const TitleCardGrades = styled.Text`
+    font-size: ${RFValue(32, deviceDimensions.height)}px;
+    color: #fff;
+    font-weight: 500;
+`;
+
+export const SituationCardGrades = styled.Text`
+    font-size: ${RFValue(24, deviceDimensions.height)}px;
+    color: #fff;
+    font-weight: bold;
+`;
+
+export const BotaoCardGrades = styled.TouchableOpacity`
+    justify-content: flex-end;
+`;
+
+export const BotoesCardGrades = styled.View`
     display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+`;
+
+export const BottomBlock = styled.View`
+    flex-grow: 1;
+    width: 100%;
+    justify-content: center;
+`;
+
+export const TitleNotesGrades = styled.Text`
+    font-size:  ${RFValue(20, deviceDimensions.height)}px;
+    color: #fff;
 `;

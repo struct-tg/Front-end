@@ -18,7 +18,7 @@ export const SectionRow = styled.View`
 `;
 
 export const SectionCycles = styled.View`
-    flex-grow: 0.8;
+    flex-grow: 1;
     background-color: white;
     border: 2px solid black;
     border-radius: 10px;

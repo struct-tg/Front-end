@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import {
     CardPomodoro,
@@ -7,10 +7,11 @@ import {
     TopBlock, BottomBlock,
     BotaoCardPomodoro,
     LineBlock,
-    TitleStopsPomodoro
+    TitleStopsPomodoro,
+    BotoesCardPomodoro
 } from "./StylesCardPomodoro";
 
-const CardPomodoroComponent = ({ time, shortStop, longStop, onDelete, onSelect, isModify }) => {
+const CardPomodoroComponent = ({ time, shortStop, longStop, onDelete, onEdit, onSelect, isModify }) => {
     const formatMinutes = (minutes) => {
         return String(minutes).padStart(2, "0");
     };
@@ -20,20 +21,28 @@ const CardPomodoroComponent = ({ time, shortStop, longStop, onDelete, onSelect, 
     const formattedLongStop = `${formatMinutes(longStop)}:00`;
 
     return (
-        <CardPomodoro onPress={onSelect}>
+        <CardPomodoro onPress={onEdit}>
             <TopBlock>
                 <TitleCardPomodoro>Pomodoro</TitleCardPomodoro>
                 <LineBlock>
                     <TimeCardPomodoro>{formattedTime}</TimeCardPomodoro>
                     {isModify
-                        ?
-                        <BotaoCardPomodoro onPress={onDelete}>
-                            <Ionicons
-                                name={"trash-outline"}
-                                size={30}
-                                color={"white"}
-                            />
-                        </BotaoCardPomodoro>
+                        ? <BotoesCardPomodoro>
+                            <BotaoCardPomodoro onPress={onSelect}>
+                                <Ionicons
+                                    name={"alarm-outline"}
+                                    size={30}
+                                    color={"white"}
+                                />
+                            </BotaoCardPomodoro>
+                            <BotaoCardPomodoro onPress={onDelete}>
+                                <Ionicons
+                                    name={"trash-outline"}
+                                    size={30}
+                                    color={"white"}
+                                />
+                            </BotaoCardPomodoro>
+                        </BotoesCardPomodoro>
                         :
                         null
                     }

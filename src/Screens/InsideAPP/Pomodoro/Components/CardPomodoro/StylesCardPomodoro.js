@@ -1,11 +1,13 @@
 import styled from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
+import deviceDimensions from "../../../../../Device/DeviceInformation";
 
 export const CardPomodoro = styled.TouchableOpacity`
     display: flex;
     border-radius: 15px;
     border: 3px solid #fff;
     background-color: #168B9D;
-    height: 200px;
+    height: ${RFValue(200, deviceDimensions.height)}px;
     padding: 10px;
     margin-bottom: 5%;
 `;
@@ -40,6 +42,12 @@ export const BotaoCardPomodoro = styled.TouchableOpacity`
     justify-content: flex-end;
 `;
 
+export const BotoesCardPomodoro = styled.View`
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+`;
+
 export const BottomBlock = styled.View`
     flex-grow: 1;
     width: 100%;
@@ -47,6 +55,6 @@ export const BottomBlock = styled.View`
 `;
 
 export const TitleStopsPomodoro = styled.Text`
-    font-size: 20px;
+    font-size: ${RFValue(20, deviceDimensions.height)}px;
     color: #fff;
 `;

@@ -1,5 +1,7 @@
 import styled from 'styled-components/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { RFValue } from 'react-native-responsive-fontsize';
+import deviceDimensions from "../../Device/DeviceInformation";
 
 export const ContentContainer = styled(SafeAreaView)`   
     flex: 1;
@@ -15,7 +17,7 @@ export const ViewContainer = styled.View`
 
 export const UppercaseTitle = styled.Text`   
     text-align: center;
-    font-size: 30px;
+    font-size: ${RFValue(28, deviceDimensions.height)}px;
     color: white;
     font-weight: bold;
     text-transform: uppercase;
@@ -23,18 +25,18 @@ export const UppercaseTitle = styled.Text`
 
 export const Title = styled.Text`
     text-align: center;
-    font-size: 30px;
+    font-size: ${RFValue(24, deviceDimensions.height)}px;
     font-weight: bold;
     color: #ffffff;
 `;
 
 export const Text = styled.Text`
     color: white;
-    font-size: 16px;
+    font-size: ${RFValue(18, deviceDimensions.height)}px;
 `;
 
 export const TextModal = styled.Text`
-    font-size: 18px;
+    font-size: ${RFValue(18, deviceDimensions.height)}px;
     text-align: justify;
     color: #FFFFFF;
 `;
@@ -63,7 +65,7 @@ export const ContainerScroll = styled.View`
 `;
 
 export const TitleContainerScroll = styled.Text`
-    font-size: 18px;
+    font-size: ${RFValue(18, deviceDimensions.height)}px;
     font-weight: bold;
     color: #FFFFFF;
     align-self: center;

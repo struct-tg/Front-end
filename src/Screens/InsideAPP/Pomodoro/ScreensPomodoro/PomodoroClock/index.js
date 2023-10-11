@@ -26,6 +26,7 @@ const PomodoroClock = ({ route }) => {
     const [startPauseLong, setStartPauseLong] = useState(0);
     const [completedCycles, setCompletedCycles] = useState(0);
     const [controlaPomodoro, setControlaPomodoro] = useState(false);
+    const [isIntervalButtonDisabled, setIsIntervalButtonDisabled] = useState(true);
 
     const [minutes, setMinutes] = useState(0);
     const [seconds, setSeconds] = useState(0);
@@ -76,11 +77,13 @@ const PomodoroClock = ({ route }) => {
                 } else {
                     fnPlayNotificationSound();
                     setControlaPomodoro(false);
-
+                    setIsIntervalButtonDisabled(false);
+                    
                     if (currentTimerType === "Pomodoro") {
                         previousTimerTypeRef.current = "Pomodoro";
                     } else if (previousTimerTypeRef.current == "Pomodoro" && currentTimerType == "Intervalo Curto") {
                         handleCycleCompletion();
+                       
                     } else if (previousTimerTypeRef.current == "Pomodoro" && currentTimerType != "Intervalo Curto") {
                         handleZeroCycle();
                     }
@@ -200,21 +203,13 @@ const PomodoroClock = ({ route }) => {
                         {Array(5).fill(0).map((_, index) => (<Ionicons key={index} name="time-outline" size={35} color={index < completedCycles ? '#168B9D' : 'black'} />))}
                     </SectionCycles>
 
-                    <TouchableOpacity>
-                        <Ionicons
-                            name="options-outline"
-                            size={35}
-                            color={"white"}
-                            onPress={goToSelectPomodoro}
-                        />
-                    </TouchableOpacity>
                 </SectionRow>
 
                 <SectionRow>
                     <PomodoroButtonSettings
                         text={"Intervalo longo"}
                         onPress={buttonPauseLong}
-                        disabled={cicloSelecionado === undefined || controlaPomodoro}
+                        disabled={isIntervalButtonDisabled || controlaPomodoro}
                     />
                     <PomodoroButtonSettings
                         text={"Pomodoro"}
@@ -224,7 +219,7 @@ const PomodoroClock = ({ route }) => {
                     <PomodoroButtonSettings
                         text={"Intervalo curto"}
                         onPress={buttonPauseShort}
-                        disabled={cicloSelecionado === undefined || controlaPomodoro}
+                        disabled={isIntervalButtonDisabled || controlaPomodoro}
                     />
                 </SectionRow>
 

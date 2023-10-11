@@ -22,7 +22,6 @@ import ScreenPomodoro from "./Screens/InsideAPP/Pomodoro/index.js";
 import ScreenAddPomodoro from "./Screens/InsideAPP/Pomodoro/ScreensPomodoro/AddPomodoro/index.js";
 import ScreenEditPomodoro from "./Screens/InsideAPP/Pomodoro/ScreensPomodoro/EditPomodoro/index.js";
 import ScreenClockPomodoro from "./Screens/InsideAPP/Pomodoro/ScreensPomodoro/PomodoroClock/index.js";
-import ScreenSelectPomodoro from "./Screens/InsideAPP/Pomodoro/ScreensPomodoro/SelectPomodoro/index.js";
 
 /*Telas internas ao APP: Disciplinas*/
 import ScreenGrades from "./Screens/InsideAPP/Grades/index.js";
@@ -62,7 +61,6 @@ const Routes = () => {
                 <Stack.Screen name="AddPomodoro" component={ScreenAddPomodoro} />    
                 <Stack.Screen name="EditPomodoro" component={ScreenEditPomodoro} />
                 <Stack.Screen name="ClockPomodoro" component={ScreenClockPomodoro} />
-                <Stack.Screen name="SelectPomodoro" component={ScreenSelectPomodoro} />   
 
                 <Stack.Screen name='AddGrade' component={ScreenAddGrade} />
                 <Stack.Screen name='EditGrade' component={ScreenEditGrade} />
@@ -79,7 +77,7 @@ function RoutesApp() {
     return (
         <Tab.Navigator screenOptions={{ headerShown: false, tabBarHideOnKeyboard: true, tabBarStyle: { backgroundColor: "#168B9D", borderColor: "transparent", borderWidth: 0 }, tabBarLabelStyle: { color: "white" } }} >
             <Tab.Screen
-                name="Home"
+                name="Início"
                 component={ScreenHome}
                 options={{
                     tabBarIcon: ({ color, size }) => (
@@ -88,7 +86,7 @@ function RoutesApp() {
                 }}
             />
             <Tab.Screen
-                name="ToDo"
+                name="Tarefas"
                 component={ScreenToDo}
                 options={{
                     tabBarIcon: ({ color, size }) => (
@@ -106,7 +104,7 @@ function RoutesApp() {
                 }}
             />
             <Tab.Screen
-                name="Calendar"
+                name="Calendario"
                 component={ScreenCalendar}
                 options={{
                     tabBarIcon: ({ color, size }) => (
@@ -115,7 +113,7 @@ function RoutesApp() {
                 }}
             />
             <Tab.Screen
-                name="Grades"
+                name="Disciplinas"
                 component={ScreenGrades}
                 options={{
                     tabBarIcon: ({ color, size }) => (
