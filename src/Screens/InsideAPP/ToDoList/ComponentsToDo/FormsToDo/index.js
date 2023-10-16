@@ -93,9 +93,6 @@ const FormsToDo = ({ aoSubmitar, initialValues, isEdit, interactions }) => {
         const selectedDate = objEnvio.dateWishEnd;
         const currentDateFormatada = convertISODateToTraceDateString(currentDate);
 
-        console.log(`A data atual ${currentDateFormatada}`);
-        console.log(`A data selecionada ${selectedDate}`);
-
         if (selectedDate < currentDateFormatada) {
             setDateError(true);
             setToastVisible(true);
@@ -113,7 +110,7 @@ const FormsToDo = ({ aoSubmitar, initialValues, isEdit, interactions }) => {
                     control={control}
                     name='name'
                     defaultValue=""
-                    rules={{ required: 'Campo obrigatório!', maxLength: {value: 18, message: 'Nome de tarefa muito grande'} }}
+                    rules={{ required: 'Campo obrigatório!', maxLength: { value: 20, message: "Nome muito grande!" }, minLength: { value: 3, message: "Nome muito pequeno"} }}
                     render={({ field }) => (
                         <View>
                             <InputForm
@@ -156,13 +153,13 @@ const FormsToDo = ({ aoSubmitar, initialValues, isEdit, interactions }) => {
                         <DropdownComponent
                             state={field.value}
                             fnSetValue={field.onChange}
-                            text={namesDisciplines.length === 0 ? "Você ainda não tem disciplinas cadastradas." : "Associe a uma disciplina ?"}
+                            text={namesDisciplines.length === 0 ? "Você ainda não tem disciplinas cadastradas." : "Associe a uma disciplina."}
                             arrObjInformation={namesDisciplines}
                             disable={namesDisciplines.length === 0 || isEdit === true && initialValues.dateEnd !== null ? true : false}
                         />
                     )}
                 />
-
+ 
                 <Controller
                     control={control}
                     name='description'

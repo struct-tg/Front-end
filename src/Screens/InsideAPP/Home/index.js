@@ -20,7 +20,6 @@ import {
 import ModalPerfilSettings from "./Components/ModalPerfilHome";
 import CardsHome from "./Components/CardFinishedsHome";
 import SpinnerComponent from "../../../Components/Spinner";
-import { getAllTasksByDiscipline } from "../../../Services/Requisicoes/Grades/Filters";
 
 const Home = () => {
     const [tasksFinisheds, setTasksFinisheds] = useState([]);

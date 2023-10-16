@@ -86,7 +86,7 @@ function RoutesApp() {
                 }}
             />
             <Tab.Screen
-                name="Tarefas"
+                name="ToDo"
                 component={ScreenToDo}
                 options={{
                     tabBarIcon: ({ color, size }) => (
@@ -113,7 +113,7 @@ function RoutesApp() {
                 }}
             />
             <Tab.Screen
-                name="Disciplinas"
+                name="Grades"
                 component={ScreenGrades}
                 options={{
                     tabBarIcon: ({ color, size }) => (

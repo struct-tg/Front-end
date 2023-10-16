@@ -23,7 +23,7 @@ const Calendar = ({ state, setCalendarVisible, data, setData, disabled, interact
         <View>
             <DataInput
                 edit={false}
-                value={data ? data : "Data de previsão de término da tarefa:"}
+                value={data ? data : "Previsão de término:"}
                 fnModal={() => {
                     if (interactions === false) {
                         return;

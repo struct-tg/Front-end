@@ -75,9 +75,13 @@ const FiltersTasks = () => {
 
     return (
         <ContentContainer>
-            <ViewContainer>
-                {isLoading ? (<SpinnerComponent state={isLoading} text={'Carregando os filtros...'} />)
-                    : allTasks.length <= 0 ? (
+            {isLoading ?
+                (
+                    <SpinnerComponent state={isLoading} text={'Carregando...'} />
+                )
+                :
+                (<ViewContainer>
+                    {allTasks.length <= 0 ? (
                         <Fragment>
                             <Title>{`Cadastre novas tarefas para filtrar, ${username}!`}</Title>
                             <ContainerImageInitial>
@@ -96,28 +100,28 @@ const FiltersTasks = () => {
                             />
 
                             <RadioButtonComponent
-                                title={'Todas as tarefas'}
+                                title={'Todas as tarefas.'}
                                 id={'all'}
                                 selected={selectedRadio === 'all'}
                                 onSelect={handleRadioSelect}
                             />
 
                             <RadioButtonComponent
-                                title={'Tarefas concluídas'}
+                                title={'Tarefas concluídas.'}
                                 id={'finished'}
                                 selected={selectedRadio === 'finished'}
                                 onSelect={handleRadioSelect}
                             />
 
                             <RadioButtonComponent
-                                title={'Tarefas Atrasadas'}
+                                title={'Tarefas Atrasadas.'}
                                 id={'lates'}
                                 selected={selectedRadio === 'lates'}
                                 onSelect={handleRadioSelect}
                             />
 
                             <RadioButtonComponent
-                                title={'Tarefas pendentes'}
+                                title={'Tarefas pendentes.'}
                                 id={'pending'}
                                 selected={selectedRadio === 'pending'}
                                 onSelect={handleRadioSelect}
@@ -144,8 +148,10 @@ const FiltersTasks = () => {
                             />
                         </Fragment>
                     )
-                }
-            </ViewContainer>
+                    }
+                </ViewContainer>
+                )
+            }
         </ContentContainer>
     )
 }

@@ -7,11 +7,12 @@ import { Image } from "react-native";
 import { getAllTasks, deleteTask, getTaskById, finishTask } from "../../../Services/Requisicoes/Tasks";
 import { AutenticacaoContext } from "../../../Contexts/UserContext.js";
 import { convertDateISO8601 } from "../../../Utils/Date/index";
-import { getAllNamesDiscipline } from "../../../Services/Requisicoes/Grades/Filters";
+import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen';
 import ModalComponent from "./ComponentsToDo/ModalInformationsToDo";
 import CardTaskToDo from "./ComponentsToDo/CardTaskToDo";
 import AlertComponent from "../../../Components/Alert";
 import SpinnerComponent from "../../../Components/Spinner/index.js";
+import ResponsiveImage from "react-native-responsive-image";
 
 const ToDoList = () => {
     const { tokenJWT, username } = useContext(AutenticacaoContext);
@@ -28,16 +29,19 @@ const ToDoList = () => {
     const [alertFinish, setAlertFinish] = useState(false);
     const [alertFinished, setAlertFinished] = useState(false);
 
+    const imageWidth = widthPercentageToDP('100%'); 
+    const imageHeight = heightPercentageToDP('50%');
+
     const [alertMessages, setAlertMessages] = useState([
         { titulo: 'Deseja mesmo excluir sua tarefa?', descricao: 'Essa ação é irreversível e não terá como você desfazer após a confirmação.' },
         { titulo: `Parabéns, ${username}!`, descricao: 'Você finalizou mais uma tarefa. Continue estudando, estamos com você na sua jornada.' },
         { titulo: `Você já finalizou esta tarefa!`, descricao: `A partir de agora, só é possível visualizar o conteúdo adicionado nesta tarefa.` },
     ]);
-
+   
     useEffect(() => {
         async function fetchTasks(tokenJWT) {
             try {
-                const result = await getAllTasks(tokenJWT);
+                const result = await getAllTasks(tokenJWT)
                 setTasks(result);
             } catch (error) {
                 console.log('Erro ao obter tarefas: ', error);
@@ -166,9 +170,10 @@ const ToDoList = () => {
                         (<Fragment>
                             <Title>{`Adicione novas tarefas, ${username}!`}</Title>
                             <ContainerImageInitial>
-                                <Image
+                                <ResponsiveImage
                                     source={require('./ToDo-Image.png')}
-                                    style={{ width: "100%", height: "50%" }}
+                                    initWidth={imageWidth}
+                                    initHeight={imageHeight}
                                     resizeMode="cover"
                                 />
                             </ContainerImageInitial>

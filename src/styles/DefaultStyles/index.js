@@ -3,6 +3,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { RFValue } from 'react-native-responsive-fontsize';
 import deviceDimensions from "../../Device/DeviceInformation";
 
+const imageWidth = deviceDimensions.width * 0.8;
+const imageHeight =  deviceDimensions.width  * 0.3; 
+
 export const ContentContainer = styled(SafeAreaView)`   
     flex: 1;
     justify-content: space-between;
@@ -84,11 +87,11 @@ export const ModalTextRadioButton = styled.View`
 `;
 
 export const ContainerImage = styled.Image`   
-    flex: 0.4;
-    width: 80%;
-    align-self: center;
-    justify-content: center;
-    align-items: center;
+    width: ${imageWidth}px;
+    height: ${imageHeight}px;
+    alignSelf: center;
+    justifyContent: center;
+    alignItems: center;
 `;
 
 export const ContainerCenter = styled.View`   

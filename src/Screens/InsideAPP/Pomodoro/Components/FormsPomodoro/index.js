@@ -39,10 +39,11 @@ const FormsPomodoro = ({ aoSubmitar, initialValues, isEdit }) => {
                     render={({ field }) => (
                         <View>
                             <Input
-                                text={"Informe o tempo de Pomodoro (Minutos): "}
+                                text={"Tempo de Pomodoro (Minutos): "}
                                 value={String(field.value)}
                                 onChangeText={field.onChange}
                                 type={'numeric'}
+                                formatPomodoro={true}
                             />
                             {errors.timer && (<HelperTextComponent helperType="error" helperText={errors.timer.message} />)}
                         </View>
@@ -57,7 +58,7 @@ const FormsPomodoro = ({ aoSubmitar, initialValues, isEdit }) => {
                     render={({ field }) => (
                         <View>
                             <Input
-                                text={"Informe o tempo de pausa curta (Minutos): "}
+                                text={"Tempo de pausa curta (Minutos): "}
                                 value={String(field.value)}
                                 onChangeText={field.onChange}
                                 type={'numeric'}
@@ -75,7 +76,7 @@ const FormsPomodoro = ({ aoSubmitar, initialValues, isEdit }) => {
                     render={({ field }) => (
                         <View>
                             <Input
-                                text={"Informe o tempo de pausa longa (Minutos): "}
+                                text={"Tempo de pausa longa (Minutos): "}
                                 value={String(field.value)}
                                 onChangeText={field.onChange}
                                 type={'numeric'}

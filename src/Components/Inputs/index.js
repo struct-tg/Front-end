@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { TextInput, IconButton } from 'react-native-paper';
 import { ContainerIconButton, ContainerIconInput, ContainerIcons, StyledInput } from "../../Components/Inputs/StylesInputs.js";
+import { RFValue } from "react-native-responsive-fontsize";
+import deviceDimensions from "../../Device/DeviceInformation.js";
 
-export const Input = ({ secureText, text, value, onChangeText, type, formatNumber }) => {
+export const Input = ({ secureText, text, value, onChangeText, type, formatNumber, formatPomodoro }) => {
     const formatInputValue = (inputText) => {
         const numericValue = inputText.replace(/[^0-9]/g, '').replace(/^0+/, '');
         switch (numericValue.length) {

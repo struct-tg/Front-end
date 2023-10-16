@@ -19,7 +19,7 @@ const ActivityFilters = () => {
     const { tokenJWT, username } = useContext(AutenticacaoContext);
     const isFocused = useIsFocused(false);
     const navigation = useNavigation();
-    
+
     useEffect(() => {
         async function fetchDatas() {
             try {
@@ -71,75 +71,79 @@ const ActivityFilters = () => {
 
     return (
         <ContentContainer>
-            <ViewContainer>
-                {isLoading
-                    ?
-                    (<SpinnerComponent
-                        state={isLoading}
-                        text={'Carregando...'}
-                    />
-                    )
-                    :
-                    grades.length <= 0
-                        ?
-                        (<Fragment>
-                            <Title>{`Cadastre novas atividades avaliativas para filtrar, ${username}!`}</Title>
-                            <ContainerImageInitial>
-                                <Image
-                                    source={require('./ActivityFilters-Image.png')}
-                                    style={{ width: "100%", height: "55%" }}
-                                    resizeMode="cover"
-                                />
-                            </ContainerImageInitial>
-                        </Fragment>
-                        )
-                        :
-                        (<Fragment>
-                            <SearchBarComponent title={'Pesquise suas disciplinas!'} setSearchQuery={setSearchQuery} />
+            {isLoading
+                ?
+                (<SpinnerComponent
+                    state={isLoading}
+                    text={'Carregando...'}
+                />
+                )
+                :
+                (<ViewContainer>
+                    {
 
-                            <RadioButtonComponent
-                                title={'Todas disciplinas.'}
-                                id={'allDisciplines'}
-                                selected={selectedRadio === 'allDisciplines'}
-                                onSelect={handleRadioSelect}
-                            />
-
-                            <RadioButtonComponent
-                                title={'Disciplinas aprovadas.'}
-                                id={'APPROVED'}
-                                selected={selectedRadio === 'APPROVED'}
-                                onSelect={handleRadioSelect}
-                            />
-
-                            <RadioButtonComponent
-                                title={'Disciplinas reprovadas.'}
-                                id={'DISAPPROVED'}
-                                selected={selectedRadio === 'DISAPPROVED'}
-                                onSelect={handleRadioSelect}
-                            />
-
-                            <FlatList
-                                data={filterAndSearchDisciplines()}
-                                renderItem={({ item }) => (
-                                    <CardGrades
-                                        titleGrades={item.name}
-                                        status={item.status}
-                                        onOpen={() => fnGoToEdit(item.id)}
-                                        activity={() => {
-                                            if (item.activity && item.activity.length > 0) {
-                                                return true;
-                                            } else {
-                                                return false;
-                                            }
-                                        }}
+                        grades.length <= 0
+                            ?
+                            (<Fragment>
+                                <Title>{`Cadastre novas atividades avaliativas para filtrar, ${username}!`}</Title>
+                                <ContainerImageInitial>
+                                    <Image
+                                        source={require('./ActivityFilters-Image.png')}
+                                        style={{ width: "100%", height: "55%" }}
+                                        resizeMode="cover"
                                     />
-                                )}
-                                showsVerticalScrollIndicator={false}
-                            />
-                        </Fragment>
-                        )
-                }
-            </ViewContainer>
+                                </ContainerImageInitial>
+                            </Fragment>
+                            )
+                            :
+                            (<Fragment>
+                                <SearchBarComponent title={'Pesquise suas disciplinas!'} setSearchQuery={setSearchQuery} />
+
+                                <RadioButtonComponent
+                                    title={'Todas disciplinas.'}
+                                    id={'allDisciplines'}
+                                    selected={selectedRadio === 'allDisciplines'}
+                                    onSelect={handleRadioSelect}
+                                />
+
+                                <RadioButtonComponent
+                                    title={'Disciplinas aprovadas.'}
+                                    id={'APPROVED'}
+                                    selected={selectedRadio === 'APPROVED'}
+                                    onSelect={handleRadioSelect}
+                                />
+
+                                <RadioButtonComponent
+                                    title={'Disciplinas reprovadas.'}
+                                    id={'DISAPPROVED'}
+                                    selected={selectedRadio === 'DISAPPROVED'}
+                                    onSelect={handleRadioSelect}
+                                />
+
+                                <FlatList
+                                    data={filterAndSearchDisciplines()}
+                                    renderItem={({ item }) => (
+                                        <CardGrades
+                                            titleGrades={item.name}
+                                            status={item.status}
+                                            onOpen={() => fnGoToEdit(item.id)}
+                                            activity={() => {
+                                                if (item.activity && item.activity.length > 0) {
+                                                    return true;
+                                                } else {
+                                                    return false;
+                                                }
+                                            }}
+                                        />
+                                    )}
+                                    showsVerticalScrollIndicator={false}
+                                />
+                            </Fragment>
+                            )
+                    }
+                </ViewContainer>
+                )
+            }
         </ContentContainer>
     )
 };

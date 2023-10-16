@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useContext, Fragment, useRef } from 'react';
 import { Audio } from 'expo-av';
-import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 import { AutenticacaoContext } from "../../../../../Contexts/UserContext";
 import { PomodoroButtonAction, PomodoroButtonSettings } from "../../../../../Components/Button";
 import { ContentContainer } from "../../../../../Styles/DefaultStyles/index.js";
 import { Ionicons } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import {
     SectionCycles,
     SectionRow,
@@ -34,13 +33,15 @@ const PomodoroClock = ({ route }) => {
     const [som, setSom] = useState(null);
     const [somNotification, setSomNotification] = useState(false);
 
+    const [alertMessagePauseLong, setAlertMessagePauseLong] = useState(false);
     const [alertCongratulation, setAlertCongratulation] = useState(false);
-    const isFocused = useIsFocused(false);
-    const navigation = useNavigation();
 
-    const goToSelectPomodoro = () => {
-        navigation.navigate('SelectPomodoro');
-    }
+    const isFocused = useIsFocused(false);
+
+    const [alertMessage, setAlertMessage] = useState([
+        { title: `Parabéns, ${username}!!! ✨🎉✨🎉`, message: 'Você concluiu todos os cinco ciclos de Pomodoro. Continue focado nos estudos, estamos com você.' },
+        { title: `Você tem certeza dessa ação, ${username}?`, message: 'Ao concluir esta ação, você perderá o tempo de pomodoro anterior para completar um ciclo.' }
+    ]);
 
     useEffect(() => {
         fnLoadAudio();
@@ -67,6 +68,10 @@ const PomodoroClock = ({ route }) => {
     useEffect(() => {
         let tempo;
 
+        if (previousTimerTypeRef.current == "Pomodoro" && currentTimerType == "Intervalo Longo") {
+            setAlertMessagePauseLong(true);
+        }
+
         if (controlaPomodoro) {
             tempo = setInterval(() => {
                 if (seconds > 0) {
@@ -78,12 +83,11 @@ const PomodoroClock = ({ route }) => {
                     fnPlayNotificationSound();
                     setControlaPomodoro(false);
                     setIsIntervalButtonDisabled(false);
-                    
+
                     if (currentTimerType === "Pomodoro") {
                         previousTimerTypeRef.current = "Pomodoro";
                     } else if (previousTimerTypeRef.current == "Pomodoro" && currentTimerType == "Intervalo Curto") {
                         handleCycleCompletion();
-                       
                     } else if (previousTimerTypeRef.current == "Pomodoro" && currentTimerType != "Intervalo Curto") {
                         handleZeroCycle();
                     }
@@ -161,6 +165,17 @@ const PomodoroClock = ({ route }) => {
                 break;
         }
     };
+
+    const handleCancelAlertMessagePauseLong = () => {
+        setAlertMessagePauseLong(false);
+    }
+
+    const handleConfirmAlertMessagePauseLong = () => {
+        buttonPauseLong();
+
+        previousTimerTypeRef.current = "Intervalo Longo";
+        setAlertMessagePauseLong(false);
+    }
 
     async function fnLoadAudio() {
         const audio = new Audio.Sound()
@@ -251,8 +266,9 @@ const PomodoroClock = ({ route }) => {
                             />
                         )}
                         onPress={ativaPomodoro}
-                        disabled={cicloSelecionado === undefined ? true : false}
+                        disabled={controlaPomodoro ? true : false}
                     />
+
                     <PomodoroButtonAction
                         icon={(
                             <Ionicons
@@ -269,9 +285,18 @@ const PomodoroClock = ({ route }) => {
                     state={alertCongratulation}
                     setVisible={setAlertCongratulation}
                     isInformation={true}
-                    title={`Parabéns, ${username}!!! ✨🎉✨🎉`}
-                    message={'Você concluiu todos os cinco ciclos de Pomodoro. Continue focado nos estudos, estamos com você.'}
+                    title={alertMessage[0].title}
+                    message={alertMessage[0].message}
                     onConfirm={() => setAlertCongratulation(false)}
+                />
+
+                <AlertComponent
+                    state={alertMessagePauseLong}
+                    setVisible={setAlertMessagePauseLong}
+                    title={alertMessage[1].title}
+                    message={alertMessage[1].message}
+                    onCancel={handleCancelAlertMessagePauseLong}
+                    onConfirm={handleConfirmAlertMessagePauseLong}
                 />
             </Fragment>
         </ContentContainer>
