@@ -1,4 +1,6 @@
 import styled from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
+import deviceDimensions from "../../../../../Device/DeviceInformation.js";
 
 export const Card = styled.TouchableOpacity`
     display: flex;
@@ -14,7 +16,7 @@ export const Card = styled.TouchableOpacity`
 `;
 
 export const TituloCard = styled.Text`
-    font-size: 24px;
+    font-size: ${RFValue(20, deviceDimensions.height)}px;
     font-weight: bold;
     text-transform: uppercase;
     color: white;

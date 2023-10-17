@@ -27,7 +27,7 @@ export const LineBlock = styled.View`
 `;
 
 export const TitleCardPomodoro = styled.Text`
-    font-size: 25px;
+    font-size: ${RFValue(25, deviceDimensions.height)}px;
     color: #fff;
     font-weight: 500;
 `;
@@ -55,6 +55,6 @@ export const BottomBlock = styled.View`
 `;
 
 export const TitleStopsPomodoro = styled.Text`
-    font-size: ${RFValue(20, deviceDimensions.height)}px;
+    font-size: ${RFValue(18, deviceDimensions.height)}px;
     color: #fff;
 `;

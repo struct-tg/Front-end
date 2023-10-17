@@ -13,6 +13,7 @@ import CardTaskToDo from "./ComponentsToDo/CardTaskToDo";
 import AlertComponent from "../../../Components/Alert";
 import SpinnerComponent from "../../../Components/Spinner/index.js";
 import ResponsiveImage from "react-native-responsive-image";
+import deviceDimensions from "../../../Device/DeviceInformation.js";
 
 const ToDoList = () => {
     const { tokenJWT, username } = useContext(AutenticacaoContext);

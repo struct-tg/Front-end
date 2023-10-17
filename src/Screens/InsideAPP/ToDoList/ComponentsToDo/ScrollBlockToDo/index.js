@@ -7,6 +7,8 @@ import { useForm } from "react-hook-form";
 import { UppercaseTitle } from "../../../../../Styles/DefaultStyles";
 import uuid from 'react-native-uuid';
 import { ContainerScroll, ViewTop } from "./StylesScrollBlock.js";
+import { RFValue } from "react-native-responsive-fontsize";
+import deviceDimensions from "../../../../../Device/DeviceInformation";
 
 const ScrollBlock = ({ state, addInput, removeInput, finishInput, changeInput, scrollBlockInteractions, scrollBlockIsEditing }) => {
     const { control, formState: { errors } } = useForm({ mode: "onChange" });
