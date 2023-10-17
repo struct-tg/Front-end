@@ -21,7 +21,7 @@ const EditGrade = ({ route }) => {
             const result = await updateDiscipline(tokenJWT, objGrade.id, objEnvio);
             if (result) {
                 setToastVisible(true);
-                navigation.navigate('Grades');
+                navigation.navigate('Tarefas');
             }
         } catch (error) {
             console.log(error.message);

@@ -17,15 +17,15 @@ const ChartHome = () => {
     };
 
     const dataGraficoDois = {
-        labels: ["January", "February", "March", "April", "May", "June"],
+        labels: ["ED", "LP", "SI", "BD", "LBD"],
         datasets: [
             {
                 data: [20, 45, 28, 80, 99, 43],
-                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`, // optional
-                strokeWidth: 6 // optional
+                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`, 
+                strokeWidth: 6 
             }
         ],
-        legend: ["Rainy Days"] // optional
+        legend: ["A quantidade de tarefas atrasadas"] 
     };
 
     const chartConfig = {

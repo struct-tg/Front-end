@@ -15,7 +15,7 @@ const AddGrade = () => {
         try {
             const result = await insertNewDiscipline(tokenJWT, dadosFormulario);
             if (result) {
-                navigation.navigate('Grades');
+                navigation.navigate('Tarefas');
             }
         }
         catch (error) {

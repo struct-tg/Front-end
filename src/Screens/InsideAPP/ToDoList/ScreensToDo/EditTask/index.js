@@ -27,7 +27,7 @@ const EditTask = ({ route }) => {
     console.log(`A data enviada para o back end: ${cleanObj.dateWishEnd}`);
 
     await updateTask(id, cleanObj, tokenJWT);
-    navigation.navigate('ToDo', { updateTask: cleanObj });
+    navigation.navigate('Tarefas', { updateTask: cleanObj });
     setToastVisible(true);
   };
 
