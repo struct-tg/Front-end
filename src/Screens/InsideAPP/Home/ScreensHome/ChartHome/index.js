@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Image, View } from "react-native";
+import { Image, View, Text } from "react-native";
 import { ContentContainer, ViewContainer, Title, ContainerImageInitial } from "../../../../../Styles/DefaultStyles/index.js";
 import { AutenticacaoContext } from "../../../../../Contexts/UserContext";
 import { ProgressChart, LineChart } from "react-native-chart-kit";
@@ -9,11 +9,11 @@ const ChartHome = () => {
     const { username } = useContext(AutenticacaoContext);
 
     const desiredHeight = deviceDimensions.height * 0.3;
-    const desiredWidth = deviceDimensions.width * 0.9;
+    const desiredWidth = deviceDimensions.width * 0.95;
 
     const data = {
-        labels: ['ED', 'LP', 'SI', 'BD', 'LBD'],
-        data: [0.7, 0.55, 0.3, 0.8, 0.1,],
+        labels: ['Finalizada', 'Pendente', 'Atrasada'],
+        data: [0.7, 0.55, 0.3],
     };
 
     const dataGraficoDois = {
@@ -46,8 +46,6 @@ const ChartHome = () => {
                         strokeWidth={15}
                         style={{
                             borderRadius: 10,
-                            display: 'flex',
-                            justifyContent: 'space-around'
                         }}
                     />
                 </View>

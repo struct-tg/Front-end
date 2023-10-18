@@ -30,7 +30,7 @@ const ToDoList = () => {
     const [alertFinish, setAlertFinish] = useState(false);
     const [alertFinished, setAlertFinished] = useState(false);
 
-    const imageWidth = widthPercentageToDP('100%'); 
+    const imageWidth = widthPercentageToDP('100%');
     const imageHeight = heightPercentageToDP('50%');
 
     const [alertMessages, setAlertMessages] = useState([
@@ -38,7 +38,7 @@ const ToDoList = () => {
         { titulo: `Parabéns, ${username}!`, descricao: 'Você finalizou mais uma tarefa. Continue estudando, estamos com você na sua jornada.' },
         { titulo: `Você já finalizou esta tarefa!`, descricao: `A partir de agora, só é possível visualizar o conteúdo adicionado nesta tarefa.` },
     ]);
-   
+
     useEffect(() => {
         async function fetchTasks(tokenJWT) {
             try {
@@ -147,6 +147,14 @@ const ToDoList = () => {
                                 size={35}
                                 color={"white"}
                                 onPress={() => setModalInformation(true)}
+                            />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity>
+                            <Ionicons
+                                name={"pie-chart-outline"}
+                                size={35} 
+                                color={"white"}
                             />
                         </TouchableOpacity>
 

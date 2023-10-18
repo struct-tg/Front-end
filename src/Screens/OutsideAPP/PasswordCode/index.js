@@ -17,21 +17,11 @@ import HelperTextComponent from "../../../Components/HelperText";
 const PasswordCode = () => {
     const { control, handleSubmit, formState: { errors } } = useForm({ mode: "onChange" });
     const navigation = useNavigation();
-    const goToNewPassword = () => {
-        navigation.navigate('RecoverPassword');
-    }
 
     const onSubmit = async (data) => {
-        try {
-            const result = await VerifyOTP(data);
-            if (result) {
-                goToNewPassword();
-            } else {
-                console.log('deu ruim')
-            }
-        } catch (error) {
-            console.log(error);
-        }
+        const codigo = Number(data.code);
+        await VerifyOTP(codigo);
+        navigation.navigate('RecoverPassword', { otp: codigo })
     }
 
     return (

@@ -14,11 +14,13 @@ import { AutenticacaoContext } from "../../../Contexts/UserContext";
 import { ChangePassword } from "../../../Services/Requisicoes/OTP/index";
 import HelperTextComponent from "../../../Components/HelperText";
 
-const RecoverPassword = () => {
+const RecoverPassword = ({ route }) => {
     const { control, handleSubmit, formState: { errors }, watch, setError } = useForm({ mode: "onChange" });
     const { tokenJWT } = useContext(AutenticacaoContext);
     const navigation = useNavigation();
 
+    const { otp } = route.params;
+    
     const password = watch('password', '');
     const confirmPassword = watch('confirmPassword', '');
 
