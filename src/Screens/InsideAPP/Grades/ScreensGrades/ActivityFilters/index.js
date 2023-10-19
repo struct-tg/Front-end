@@ -96,7 +96,7 @@ const ActivityFilters = () => {
                             </Fragment>
                             )
                             :
-                            (<Fragment>
+                            (<ViewContainer>
                                 <SearchBarComponent title={'Pesquise suas disciplinas!'} setSearchQuery={setSearchQuery} />
 
                                 <RadioButtonComponent
@@ -126,7 +126,7 @@ const ActivityFilters = () => {
                                         <CardGrades
                                             titleGrades={item.name}
                                             status={item.status}
-                                            onOpen={() => fnGoToEdit(item.id)}
+                                            onEdit={() => fnGoToEdit(item.id)}
                                             activity={() => {
                                                 if (item.activity && item.activity.length > 0) {
                                                     return true;
@@ -138,7 +138,7 @@ const ActivityFilters = () => {
                                     )}
                                     showsVerticalScrollIndicator={false}
                                 />
-                            </Fragment>
+                            </ViewContainer>
                             )
                     }
                 </ViewContainer>

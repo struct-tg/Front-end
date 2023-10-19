@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Input } from "../../../Components/Inputs";
 import { Button } from "../../../Components/Button";
 import { useNavigation } from '@react-navigation/native';
@@ -13,15 +13,30 @@ import {
 } from "../../../Styles/DefaultStyles";
 import { VerifyOTP } from "../../../Services/Requisicoes/OTP";
 import HelperTextComponent from "../../../Components/HelperText";
+import ToastComponent from "../../../Components/Toast/index.js";
 
 const PasswordCode = () => {
-    const { control, handleSubmit, formState: { errors } } = useForm({ mode: "onChange" });
+    const [toastAlert, setToastAlert] = useState(false);
+    const [toastMessages, setToastMessages] = useState([
+        { title: 'O código expirou, Estudante!', description: 'Tenta criar um novo código.', type: 'error' },
+        { title: 'Este código não existe, Estudante!', description: 'Informe um código válido.', type: 'error' },
+    ]);
+    const [toastMessageIndex, setToastMessageIndex] = useState(null);
+    const { control, handleSubmit, formState: { errors } } = useForm({ mode: "onSubmit" });
     const navigation = useNavigation();
 
     const onSubmit = async (data) => {
         const codigo = Number(data.code);
-        await VerifyOTP(codigo);
-        navigation.navigate('RecoverPassword', { otp: codigo })
+        const result = await VerifyOTP(codigo);
+        if (result === true) {
+            navigation.navigate('RecoverPassword', { otp: codigo });
+        } else if (result && result.response && result.response.status === 400) {
+            setToastMessageIndex(0);
+            setToastAlert(true);
+        } else if (result && result.response && result.response.status === 404) {
+            setToastMessageIndex(1);
+            setToastAlert(true);
+        }
     }
 
     return (
@@ -58,6 +73,17 @@ const PasswordCode = () => {
                     />
                 </ContainerButton>
             </ViewContainer>
+
+            {toastAlert
+                &&
+                (<ToastComponent
+                    Title={toastMessages[toastMessageIndex].title}
+                    Description={toastMessages[toastMessageIndex].description}
+                    ToastType={toastMessages[toastMessageIndex].type}
+                    key={Math.random()}
+                />
+                )
+            }
         </ContentContainer>
     );
 }

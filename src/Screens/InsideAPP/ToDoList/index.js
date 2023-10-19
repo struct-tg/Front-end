@@ -13,7 +13,6 @@ import CardTaskToDo from "./ComponentsToDo/CardTaskToDo";
 import AlertComponent from "../../../Components/Alert";
 import SpinnerComponent from "../../../Components/Spinner/index.js";
 import ResponsiveImage from "react-native-responsive-image";
-import deviceDimensions from "../../../Device/DeviceInformation.js";
 
 const ToDoList = () => {
     const { tokenJWT, username } = useContext(AutenticacaoContext);
@@ -123,6 +122,10 @@ const ToDoList = () => {
         navigation.navigate('FiltersTodo');
     }
 
+    const goToChartToDo = () => {
+        navigation.navigate('ChartTodo');
+    }
+
     const transformConvertDateISO8601 = (dateString) => {
         return new Date(dateString);
     };
@@ -153,8 +156,9 @@ const ToDoList = () => {
                         <TouchableOpacity>
                             <Ionicons
                                 name={"pie-chart-outline"}
-                                size={35} 
+                                size={35}
                                 color={"white"}
+                                onPress={goToChartToDo}
                             />
                         </TouchableOpacity>
 

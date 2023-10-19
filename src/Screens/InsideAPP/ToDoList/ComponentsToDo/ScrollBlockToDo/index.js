@@ -4,9 +4,8 @@ import { InputIcon } from "../../../../../Components/Inputs";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useForm } from "react-hook-form";
-import { UppercaseTitle } from "../../../../../Styles/DefaultStyles";
 import uuid from 'react-native-uuid';
-import { ContainerScroll, ViewTop } from "./StylesScrollBlock.js";
+import { ContainerScroll, ViewTop, HeaderSituation } from "./StylesScrollBlock.js";
 import { RFValue } from "react-native-responsive-fontsize";
 import deviceDimensions from "../../../../../Device/DeviceInformation";
 
@@ -21,7 +20,7 @@ const ScrollBlock = ({ state, addInput, removeInput, finishInput, changeInput, s
     return (
         <View>
             <ViewTop>
-            <UppercaseTitle>{scrollBlockInteractions === false ? 'Subtarefas finalizadas!' : scrollBlockIsEditing ? 'Edite as subtarefas!' : 'Adicione subtarefas!'}</UppercaseTitle>
+                <HeaderSituation>{scrollBlockInteractions === false ? 'Subtarefas finalizadas!' : scrollBlockIsEditing ? 'Edite as subtarefas!' : 'Adicione subtarefas!'}</HeaderSituation>
                 <TouchableOpacity onPress={scrollBlockInteractions ? addNewInput : null}>
                     <Ionicons
                         name="add-circle-outline"

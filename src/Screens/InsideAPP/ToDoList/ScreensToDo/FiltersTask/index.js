@@ -93,7 +93,7 @@ const FiltersTasks = () => {
                             </ContainerImageInitial>
                         </Fragment>
                     ) : (
-                        <Fragment>
+                        <ViewContainer>
                             <SearchBarComponent
                                 setSearchQuery={setSearchQuery}
                                 title={'Pesquise suas tarefas!'}
@@ -146,7 +146,7 @@ const FiltersTasks = () => {
                                 keyExtractor={(item, index) => index.toString()}
                                 showsVerticalScrollIndicator={false}
                             />
-                        </Fragment>
+                        </ViewContainer>
                     )
                     }
                 </ViewContainer>

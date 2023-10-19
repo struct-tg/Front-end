@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Image, View, Text } from "react-native";
 import { ContentContainer, ViewContainer, Title, ContainerImageInitial } from "../../../../../Styles/DefaultStyles/index.js";
 import { AutenticacaoContext } from "../../../../../Contexts/UserContext";
-import { ProgressChart, LineChart } from "react-native-chart-kit";
+import { LineChart } from "react-native-chart-kit";
 import deviceDimensions from "../../../../../Device/DeviceInformation.js";
 
 const ChartHome = () => {
@@ -11,21 +11,16 @@ const ChartHome = () => {
     const desiredHeight = deviceDimensions.height * 0.3;
     const desiredWidth = deviceDimensions.width * 0.95;
 
-    const data = {
-        labels: ['Finalizada', 'Pendente', 'Atrasada'],
-        data: [0.7, 0.55, 0.3],
-    };
-
     const dataGraficoDois = {
-        labels: ["ED", "LP", "SI", "BD", "LBD"],
+        labels: ["TESTE", "TESTE", "TESTE", "TESTE", "TESTE"],
         datasets: [
             {
-                data: [20, 45, 28, 80, 99, 43],
-                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`, 
-                strokeWidth: 6 
+                data: [0, 10, 20, 30, 40, 50],
+                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                strokeWidth: 6
             }
         ],
-        legend: ["A quantidade de tarefas atrasadas"] 
+        legend: ["TESTE"]
     };
 
     const chartConfig = {
@@ -37,19 +32,6 @@ const ChartHome = () => {
     return (
         <ContentContainer>
             <ViewContainer>
-                <View style={{ alignItems: "center" }}>
-                    <ProgressChart
-                        data={data}
-                        width={desiredWidth}
-                        height={desiredHeight}
-                        chartConfig={chartConfig}
-                        strokeWidth={15}
-                        style={{
-                            borderRadius: 10,
-                        }}
-                    />
-                </View>
-
                 <View style={{ alignItems: "center" }}>
                     <LineChart
                         data={dataGraficoDois}

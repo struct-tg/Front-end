@@ -16,7 +16,7 @@ export async function VerifyOTP(OTPCode) {
         return true;
     } catch (error) {
         console.log(error.response.data);
-       return false;
+        return error;
     }
 }
 
@@ -26,6 +26,6 @@ export async function ChangePassword(objData) {
         return true;
     } catch (error) {
         console.log(error.response.data);
-        return false;
+        return error;
     }
 }

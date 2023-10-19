@@ -13,19 +13,26 @@ import {
 import { AutenticacaoContext } from "../../../Contexts/UserContext";
 import { ChangePassword } from "../../../Services/Requisicoes/OTP/index";
 import HelperTextComponent from "../../../Components/HelperText";
+import ToastComponent from "../../../Components/Toast/index.js";
 
 const RecoverPassword = ({ route }) => {
-    const { control, handleSubmit, formState: { errors }, watch, setError } = useForm({ mode: "onChange" });
+    const [toastAlert, setToastAlert] = useState(false);
+    const [toastMessageIndex, setToastMessageIndex] = useState(null);
+    const [toastMessages, setToastMessages] = useState([
+        { title: 'O código expirou, Estudante!', description: 'Tenta criar um novo código.', type: 'error' },
+        { title: 'Senha alterada com sucesso, Estudante!', description: 'Parabéns, você alterou a sua senha', type: 'success' },
+    ]);
+    const { control, handleSubmit, formState: { errors }, watch, setError } = useForm({ mode: "onSubmit" });
     const { tokenJWT } = useContext(AutenticacaoContext);
     const navigation = useNavigation();
 
     const { otp } = route.params;
-    
+
     const password = watch('password', '');
     const confirmPassword = watch('confirmPassword', '');
 
-    const goToHome = () => {
-        navigation.navigate('Home');
+    const goToLogin = () => {
+        navigation.navigate('Login');
     }
 
     const aoSubmitar = async (data) => {
@@ -35,16 +42,19 @@ const RecoverPassword = ({ route }) => {
                 message: 'As senhas não coincidem'
             });
         } else {
-            try {
-                const { confirmPassword, ...objEnvio } = data;
-                const result = await ChangePassword(tokenJWT, objEnvio)
-                if (result) {
-                    goToHome();
-                } else {
-                    console.log('deu ruim');
-                }
-            } catch (error) {
-                console.log(error);
+            const { confirmPassword, ...objEnvio } = data;
+            objEnvio.otp = otp;
+            const result = await ChangePassword(objEnvio);
+            if (result === true) {
+                
+                setToastMessageIndex(1);
+                setToastAlert(true);
+                
+
+                goToLogin();
+            } else if (result && result.response && result.response.status === 400) {
+                setToastMessageIndex(0);
+                setToastAlert(true);
             }
         }
     }
@@ -97,6 +107,16 @@ const RecoverPassword = ({ route }) => {
                     />
                 </ContainerButton>
             </ViewContainer>
+            {toastAlert
+                &&
+                (<ToastComponent
+                    Title={toastMessages[toastMessageIndex].title}
+                    Description={toastMessages[toastMessageIndex].description}
+                    ToastType={toastMessages[toastMessageIndex].type}
+                    key={Math.random()}
+                />
+                )
+            }
         </ContentContainer>
     );
 }

@@ -93,6 +93,14 @@ const Grades = () => {
                     <ViewBlock>
                         <TouchableOpacity>
                             <Ionicons
+                                name={"library-outline"}
+                                size={30}
+                                color={"white"}
+                                onPress={() => navigation.navigate('DisciplinesFiltersToDo')}
+                            />
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Ionicons
                                 name={"options-outline"}
                                 size={35}
                                 color={"white"}
@@ -128,7 +136,8 @@ const Grades = () => {
                                     <CardGrades
                                         titleGrades={item.name}
                                         status={item.status}
-                                        onOpen={() => fnGoToEdit(item.id)}
+                                        onEdit={() => fnGoToEdit(item.id)}
+                                        isModify={true}
                                         onDelete={() => showAlertDeleteDiscipline(item.id)}
                                         activity={() => {
                                             if (item.activity && item.activity.length > 0) {
@@ -141,7 +150,7 @@ const Grades = () => {
                                 }
                                 showsVerticalScrollIndicator={false}
                             />
-                        
+
                         )
                 }
             </ViewContainer>

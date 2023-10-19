@@ -19,22 +19,26 @@ const CardGradesComponent = ({ titleGrades, status, onDelete, onEdit, onSelect, 
                 <TitleCardGrades>{titleGrades}</TitleCardGrades>
                 <LineBlock>
                     <SituationCardGrades>{`Situação: ${status  === 'DISAPPROVED' ? 'Reprovado' : 'Aprovado'}`}</SituationCardGrades>
-                    <BotoesCardGrades>
-                        <BotaoCardGrades onPress={onSelect}>
-                            <Ionicons
-                                name={"school-outline"}
-                                size={30}
-                                color={"white"}
-                            />
-                        </BotaoCardGrades>
-                        <BotaoCardGrades onPress={onDelete}>
-                            <Ionicons
-                                name={"trash-outline"}
-                                size={30}
-                                color={"white"}
-                            />
-                        </BotaoCardGrades>
-                    </BotoesCardGrades>
+                    {   isModify 
+                        &&
+                        (   <BotoesCardGrades>
+                            <BotaoCardGrades onPress={onSelect}>
+                                <Ionicons
+                                    name={"school-outline"}
+                                    size={30}
+                                    color={"white"}
+                                />
+                            </BotaoCardGrades>
+                            <BotaoCardGrades onPress={onDelete}>
+                                <Ionicons
+                                    name={"trash-outline"}
+                                    size={30}
+                                    color={"white"}
+                                />
+                            </BotaoCardGrades>
+                        </BotoesCardGrades>
+                        )
+                    }
                 </LineBlock>
             </TopBlock>
             <BottomBlock>
