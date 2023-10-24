@@ -25,7 +25,7 @@ const PomodoroClock = ({ route }) => {
     const [startPauseLong, setStartPauseLong] = useState(0);
     const [completedCycles, setCompletedCycles] = useState(0);
     const [controlaPomodoro, setControlaPomodoro] = useState(false);
-    const [isIntervalButtonDisabled, setIsIntervalButtonDisabled] = useState(true);
+    const [timerFinished, setTimerFinished] = useState(false);
 
     const [minutes, setMinutes] = useState(0);
     const [seconds, setSeconds] = useState(0);
@@ -35,12 +35,22 @@ const PomodoroClock = ({ route }) => {
 
     const [alertMessagePauseLong, setAlertMessagePauseLong] = useState(false);
     const [alertCongratulation, setAlertCongratulation] = useState(false);
+    const [startAlertPauseLong, setStartAlertPauseLong] = useState(false);
+
+    const [disabledButtonPomodoro, setDisabledButtonPomodoro] = useState(false);
+    const [disabledButtonShortPause, setDisabledButtonShortPause] = useState(true);
+    const [disabledButtonLongPause, setDisabledButtonLongPause] = useState(true);
+
+    const [disabledButtonReload, setDisabledButtonReload] = useState(true);
+    const [disabledButtonStart, setDisabledButtonStart] = useState(false);
+    const [disabledButtonStop, setDisabledButtonStop] = useState(true);
 
     const isFocused = useIsFocused(false);
 
     const [alertMessage, setAlertMessage] = useState([
         { title: `Parabéns, ${username}!!! ✨🎉✨🎉`, message: 'Você concluiu todos os cinco ciclos de Pomodoro. Continue focado nos estudos, estamos com você.' },
-        { title: `Você tem certeza dessa ação, ${username}?`, message: 'Ao concluir esta ação, você perderá o tempo de pomodoro anterior para completar um ciclo.' }
+        { title: `Você tem certeza dessa ação, ${username}?`, message: 'Ao concluir esta ação, você perderá o tempo de pomodoro anterior para completar um ciclo.' },
+        { title: `Agora é o momento da sua pausa longa!`, message: `Pare por um momento e descanse, ${username}. Este é uns dos momentos mais importantes para a sua produtividade.` }
     ]);
 
     useEffect(() => {
@@ -51,6 +61,7 @@ const PomodoroClock = ({ route }) => {
         setCompletedCycles(completedCycles + 1);
 
         if (startPauseLong === completedCycles) {
+            setStartAlertPauseLong(true);
             setSeconds(0);
             setMinutes(cicloSelecionado.timerPauseLong);
         }
@@ -82,7 +93,7 @@ const PomodoroClock = ({ route }) => {
                 } else {
                     fnPlayNotificationSound();
                     setControlaPomodoro(false);
-                    setIsIntervalButtonDisabled(false);
+                    setTimerFinished(true);
 
                     if (currentTimerType === "Pomodoro") {
                         previousTimerTypeRef.current = "Pomodoro";
@@ -104,39 +115,83 @@ const PomodoroClock = ({ route }) => {
 
     const ativaPomodoro = () => {
         setControlaPomodoro(true);
+        setTimerFinished(false);
+
+        setDisabledButtonReload(false);
+        setDisabledButtonStop(false);
+
+        setDisabledButtonStart(true);
+
+        if (currentTimerType === "Pomodoro" && timerFinished === false) {
+            setDisabledButtonPomodoro(true);
+        } else if (currentTimerType === "Intervalo Curto" && timerFinished === false) {
+            onInitialStateButtonsActions();
+            setDisabledButtonShortPause(true);
+        }
     };
 
     const desativaPomodoro = () => {
         setControlaPomodoro(false);
+
+        if (disabledButtonStart === true) {
+            setDisabledButtonStart(false);
+        }
+
+        if (previousTimerTypeRef.current === "Pomodoro" && timerFinished === true) {
+            setDisabledButtonLongPause(false);
+            setDisabledButtonShortPause(false);
+        }
+
+        if (timerFinished === true) {
+            offActionButtons();
+        }
+
         if (somNotification) {
             fnStopNotificationSound();
         }
     };
 
     const buttonPauseLong = () => {
+        setTimerFinished(false);
         setSeconds(0);
         setMinutes(cicloSelecionado.timerPauseLong || 0);
         setCurrentTimerType("Intervalo Longo");
+
         if (cicloSelecionado.startAutomaticPause) {
             ativaPomodoro();
+        } else {
+            offButtonsStopAndReplay();
+            setDisabledButtonStart(false);
         }
     };
 
     const buttonPomodoro = () => {
+        setTimerFinished(false);
         setSeconds(0);
         setMinutes(cicloSelecionado.timer || 0);
         setCurrentTimerType("Pomodoro");
+
         if (cicloSelecionado.startAutomaticTimer) {
             ativaPomodoro();
         }
     };
 
     const buttonPauseShort = () => {
+        setTimerFinished(false);
+        setCurrentTimerType("Intervalo Curto");
+
+        setDisabledButtonPomodoro(true);
+        setDisabledButtonLongPause(true);
+
         setSeconds(0);
         setMinutes(cicloSelecionado.timerPauseShort || 0);
-        setCurrentTimerType("Intervalo Curto");
+
         if (cicloSelecionado.startAutomaticPause) {
+            console.log('entrou aqui')
             ativaPomodoro();
+        } else {
+            offButtonsStopAndReplay();
+            setDisabledButtonStart(false);
         }
     };
 
@@ -167,7 +222,11 @@ const PomodoroClock = ({ route }) => {
     };
 
     const handleCancelAlertMessagePauseLong = () => {
+        setSeconds(0);
+        setMinutes(cicloSelecionado.timer);
         setAlertMessagePauseLong(false);
+
+        setCurrentTimerType("Pomodoro");
     }
 
     const handleConfirmAlertMessagePauseLong = () => {
@@ -175,6 +234,23 @@ const PomodoroClock = ({ route }) => {
 
         previousTimerTypeRef.current = "Intervalo Longo";
         setAlertMessagePauseLong(false);
+    }
+
+    function offButtonsStopAndReplay() {
+        setDisabledButtonStop(true);
+        setDisabledButtonReload(true);
+    }
+
+    function offActionButtons() {
+        setDisabledButtonStop(true);
+        setDisabledButtonStart(true);
+        setDisabledButtonReload(true);
+    }
+
+    function onInitialStateButtonsActions() {
+        setDisabledButtonStart(true);
+        setDisabledButtonReload(false);
+        setDisabledButtonStop(false);
     }
 
     async function fnLoadAudio() {
@@ -224,17 +300,17 @@ const PomodoroClock = ({ route }) => {
                     <PomodoroButtonSettings
                         text={"Intervalo longo"}
                         onPress={buttonPauseLong}
-                        disabled={isIntervalButtonDisabled || controlaPomodoro}
+                        disabled={disabledButtonLongPause}
                     />
                     <PomodoroButtonSettings
                         text={"Pomodoro"}
+                        disabled={disabledButtonPomodoro}
                         onPress={buttonPomodoro}
-                        disabled={cicloSelecionado === undefined || controlaPomodoro}
                     />
                     <PomodoroButtonSettings
                         text={"Intervalo curto"}
                         onPress={buttonPauseShort}
-                        disabled={isIntervalButtonDisabled || controlaPomodoro}
+                        disabled={disabledButtonShortPause}
                     />
                 </SectionRow>
 
@@ -254,7 +330,7 @@ const PomodoroClock = ({ route }) => {
                             />
                         )}
                         onPress={reloadTime}
-                        disabled={cicloSelecionado === undefined ? true : false}
+                        disabled={disabledButtonReload}
                     />
 
                     <PomodoroButtonAction
@@ -266,7 +342,7 @@ const PomodoroClock = ({ route }) => {
                             />
                         )}
                         onPress={ativaPomodoro}
-                        disabled={controlaPomodoro ? true : false}
+                        disabled={disabledButtonStart}
                     />
 
                     <PomodoroButtonAction
@@ -278,9 +354,10 @@ const PomodoroClock = ({ route }) => {
                             />
                         )}
                         onPress={desativaPomodoro}
-                        disabled={cicloSelecionado === undefined ? true : false}
+                        disabled={disabledButtonStop}
                     />
                 </SectionRow>
+
                 <AlertComponent
                     state={alertCongratulation}
                     setVisible={setAlertCongratulation}
@@ -298,6 +375,16 @@ const PomodoroClock = ({ route }) => {
                     onCancel={handleCancelAlertMessagePauseLong}
                     onConfirm={handleConfirmAlertMessagePauseLong}
                 />
+
+                <AlertComponent
+                    state={startAlertPauseLong}
+                    setVisible={setStartAlertPauseLong}
+                    isInformation={true}
+                    title={alertMessage[2].title}
+                    message={alertMessage[2].message}
+                    onConfirm={() => setStartAlertPauseLong(false)}
+                />
+
             </Fragment>
         </ContentContainer>
     );
