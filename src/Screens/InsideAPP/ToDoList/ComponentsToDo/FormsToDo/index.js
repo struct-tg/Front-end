@@ -84,10 +84,16 @@ const FormsToDo = ({ aoSubmitar, initialValues, isEdit, interactions }) => {
         return dateString;
     }
 
-    const fnSubmit = (data) => {
+    const removeEmptyDescriptionSubTasks = (subTasks) => {
+        const filteredSubTasks = subTasks.filter(subtask => subtask.description !== "");
+        return filteredSubTasks;
+    }
 
+    const fnSubmit = (data) => {
         const subTasksWithoutId = subTasks.map(({ id, ...rest }) => rest);
-        const objEnvio = { ...data, subTasks: subTasksWithoutId };
+        const enviaSubTasks = removeEmptyDescriptionSubTasks(subTasksWithoutId);
+        const objEnvio = { ...data, subTasks: enviaSubTasks };
+
         objEnvio.dateWishEnd = convertDate(objEnvio.dateWishEnd);
 
         const selectedDate = objEnvio.dateWishEnd;
@@ -110,7 +116,7 @@ const FormsToDo = ({ aoSubmitar, initialValues, isEdit, interactions }) => {
                     control={control}
                     name='name'
                     defaultValue=""
-                    rules={{ required: 'Campo obrigatório!', maxLength: { value: 20, message: "Nome muito grande!" }, minLength: { value: 3, message: "Nome muito pequeno"} }}
+                    rules={{ required: 'Campo obrigatório!', maxLength: { value: 20, message: "Nome muito grande!" }, minLength: { value: 3, message: "Nome muito pequeno" } }}
                     render={({ field }) => (
                         <View>
                             <InputForm
@@ -159,7 +165,7 @@ const FormsToDo = ({ aoSubmitar, initialValues, isEdit, interactions }) => {
                         />
                     )}
                 />
- 
+
                 <Controller
                     control={control}
                     name='description'

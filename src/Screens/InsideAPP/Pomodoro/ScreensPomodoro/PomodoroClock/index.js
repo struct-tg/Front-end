@@ -22,8 +22,9 @@ const PomodoroClock = ({ route }) => {
     const [currentTimerType, setCurrentTimerType] = useState("Pomodoro");
     const previousTimerTypeRef = useRef(currentTimerType);
 
-    const [startPauseLong, setStartPauseLong] = useState(0);
+    const [startPauseLong, setStartPauseLong] = useState(cicloSelecionado.quantityPauseLong === 1 ? 0 : cicloSelecionado.quantityPauseLong - 1);
     const [completedCycles, setCompletedCycles] = useState(0);
+    const [cicleFinished, setCicleFinished] = useState(false);
     const [controlaPomodoro, setControlaPomodoro] = useState(false);
     const [timerFinished, setTimerFinished] = useState(false);
 
@@ -64,6 +65,10 @@ const PomodoroClock = ({ route }) => {
             setStartAlertPauseLong(true);
             setSeconds(0);
             setMinutes(cicloSelecionado.timerPauseLong);
+
+            setDisabledButtonPomodoro(true);
+            setDisabledButtonLongPause(true);
+            setDisabledButtonShortPause(true);
         }
 
         if (completedCycles === 4) {
@@ -99,6 +104,8 @@ const PomodoroClock = ({ route }) => {
                         previousTimerTypeRef.current = "Pomodoro";
                     } else if (previousTimerTypeRef.current == "Pomodoro" && currentTimerType == "Intervalo Curto") {
                         handleCycleCompletion();
+                        previousTimerTypeRef.current = "Intervalo Curto";
+                        setCicleFinished(true);
                     } else if (previousTimerTypeRef.current == "Pomodoro" && currentTimerType != "Intervalo Curto") {
                         handleZeroCycle();
                     }
@@ -133,6 +140,14 @@ const PomodoroClock = ({ route }) => {
     const desativaPomodoro = () => {
         setControlaPomodoro(false);
 
+        if (cicleFinished) {
+            setDisabledButtonPomodoro(false);
+            setDisabledButtonLongPause(true);
+            setDisabledButtonShortPause(true);
+
+            setCicleFinished(false);
+        }
+
         if (disabledButtonStart === true) {
             setDisabledButtonStart(false);
         }
@@ -156,6 +171,10 @@ const PomodoroClock = ({ route }) => {
         setSeconds(0);
         setMinutes(cicloSelecionado.timerPauseLong || 0);
         setCurrentTimerType("Intervalo Longo");
+
+        if (disabledButtonLongPause === false) {
+            setDisabledButtonLongPause(true);
+        }
 
         if (cicloSelecionado.startAutomaticPause) {
             ativaPomodoro();
@@ -183,11 +202,14 @@ const PomodoroClock = ({ route }) => {
         setDisabledButtonPomodoro(true);
         setDisabledButtonLongPause(true);
 
+        if (disabledButtonShortPause === false) {
+            setDisabledButtonShortPause(true);
+        }
+
         setSeconds(0);
         setMinutes(cicloSelecionado.timerPauseShort || 0);
 
         if (cicloSelecionado.startAutomaticPause) {
-            console.log('entrou aqui')
             ativaPomodoro();
         } else {
             offButtonsStopAndReplay();
