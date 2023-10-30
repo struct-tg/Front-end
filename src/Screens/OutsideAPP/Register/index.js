@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View } from "react-native";
 import { Input, InputPassword } from "../../../Components/Inputs";
 import { Button } from "../../../Components/Button";
@@ -45,6 +45,10 @@ const ScreenRegister = () => {
             setToastVisible(true);
         }
     }
+
+    useEffect(() => {
+        setToastVisible(false);
+    }, [toastVisible]);
 
     return (
         <ContentContainer>

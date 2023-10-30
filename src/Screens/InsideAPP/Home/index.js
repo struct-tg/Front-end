@@ -4,9 +4,8 @@ import { Image } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { AutenticacaoContext } from "../../../Contexts/UserContext";
 import { getAllTasksPendings } from "../../../Services/Requisicoes/Tasks/Filters/index";
-import { getAllDisciplineReproved } from "../../../Services/Requisicoes/Grades/Filters/index";
 import { getTaskById } from "../../../Services/Requisicoes/Tasks/index";
-import { getDisciplineByID } from "../../../Services/Requisicoes/Grades/index";
+import { getDisciplineByID, getAllDiscipline } from "../../../Services/Requisicoes/Grades/index";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import {
     ContentContainer,
@@ -36,7 +35,7 @@ const Home = () => {
         async function fetchDatas() {
             try {
                 setTasksFinisheds(await getAllTasksPendings(tokenJWT));
-                setGrades(await getAllDisciplineReproved(tokenJWT));
+                setGrades(await getAllDiscipline(tokenJWT));
             } catch (error) {
                 console.log('Erro ao obter tarefas em home: ', error);
             } finally {
@@ -137,7 +136,7 @@ const Home = () => {
                         :
                         (
                             <Fragment>
-                                <Title>{`Seja bem-vindo ao Struct, ${username}!`}</Title>
+                                <Title>{`Você ainda não tem dados cadastrados, ${username}!`}</Title>
                                 <ContainerImageInitial>
                                     <Image
                                         source={require('./Home.png')}

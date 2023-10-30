@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input } from "../../../Components/Inputs";
 import { Button } from "../../../Components/Button";
 import { useNavigation } from '@react-navigation/native';
@@ -24,6 +24,10 @@ const PasswordCode = () => {
     const [toastMessageIndex, setToastMessageIndex] = useState(null);
     const { control, handleSubmit, formState: { errors } } = useForm({ mode: "onSubmit" });
     const navigation = useNavigation();
+
+    useEffect(() => {
+        setToastAlert(false);
+    }, [toastAlert]);
 
     const onSubmit = async (data) => {
         const codigo = Number(data.code);

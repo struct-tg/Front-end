@@ -2,7 +2,7 @@ import React from 'react';
 import { Input } from "../../../../../Components/Inputs";
 import { Button } from "../../../../../Components/Button";
 import { View } from 'react-native';
-import { ContentContainer, ViewContainer, ContainerButton, ModalTextRadioButton, Text } from "../../../../../Styles/DefaultStyles";
+import { ContentContainer, ViewContainer, ContainerButton, InlineTextSwitch, Text } from "../../../../../Styles/DefaultStyles";
 import { Controller, useForm } from 'react-hook-form';
 import DropdownComponent from '../../../../../Components/DropDown';
 import SwitchComponent from "../../../../../Components/Switch";
@@ -104,7 +104,7 @@ const FormsPomodoro = ({ aoSubmitar, initialValues, isEdit }) => {
                     )}
                 />
 
-                <ModalTextRadioButton>
+                <InlineTextSwitch>
                     <Text>Iniciar automaticamente os intervalos: </Text>
                     <Controller
                         control={control}
@@ -117,9 +117,9 @@ const FormsPomodoro = ({ aoSubmitar, initialValues, isEdit }) => {
                             />
                         )}
                     />
-                </ModalTextRadioButton>
+                </InlineTextSwitch>
 
-                <ModalTextRadioButton>
+                <InlineTextSwitch>
                     <Text>Iniciar automaticamente o pomodoro: </Text>
                     <Controller
                         control={control}
@@ -132,7 +132,7 @@ const FormsPomodoro = ({ aoSubmitar, initialValues, isEdit }) => {
                             />
                         )}
                     />
-                </ModalTextRadioButton>
+                </InlineTextSwitch>
 
                 <ContainerButton>
                     <Button

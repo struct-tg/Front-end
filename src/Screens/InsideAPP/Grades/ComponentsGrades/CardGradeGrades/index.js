@@ -11,18 +11,18 @@ import {
     BotoesCardGrades
 } from "./StylesCardGrades";
 
-const CardGradesComponent = ({ titleGrades, status, onDelete, onEdit, onSelect, isModify }) => {
+const CardGradesComponent = ({ titleGrades, status, onDelete, onOFF, onEdit, onSelectActivity, isModify, noteMin, noteCurrent }) => {
 
     return (
-        <CardGrades onPress={onEdit}>
+        <CardGrades onPress={onEdit} onLongPress={onOFF}>
             <TopBlock>
                 <TitleCardGrades>{titleGrades}</TitleCardGrades>
                 <LineBlock>
-                    <SituationCardGrades>{`Situação: ${status  === 'DISAPPROVED' ? 'Reprovado' : 'Aprovado'}`}</SituationCardGrades>
-                    {   isModify 
+                    <SituationCardGrades>{`Situação: ${status === null ? 'Em andamento' : noteCurrent >= noteMin ? 'Aprovado' : 'Reprovado'}`}</SituationCardGrades>
+                    {isModify
                         &&
-                        (   <BotoesCardGrades>
-                            <BotaoCardGrades onPress={onSelect}>
+                        (<BotoesCardGrades>
+                            <BotaoCardGrades onPress={onSelectActivity}>
                                 <Ionicons
                                     name={"school-outline"}
                                     size={30}
@@ -43,8 +43,8 @@ const CardGradesComponent = ({ titleGrades, status, onDelete, onEdit, onSelect, 
             </TopBlock>
             <BottomBlock>
                 <LineBlock>
-                    <TitleNotesGrades>Nota Minima: 6.00</TitleNotesGrades>
-                    <TitleNotesGrades>Nota Atual: 05.75</TitleNotesGrades>
+                    <TitleNotesGrades>{`Nota Minima: ${noteMin.toFixed(2)}`}</TitleNotesGrades>
+                    <TitleNotesGrades>{`Nota Atual: ${noteCurrent === null ? '0.00' : noteMin.toFixed(2)}`}</TitleNotesGrades>
                 </LineBlock>
             </BottomBlock>
         </CardGrades>

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View } from "react-native";
 import { Input } from "../../../Components/Inputs";
 import { Button } from "../../../Components/Button";
@@ -46,10 +46,10 @@ const RecoverPassword = ({ route }) => {
             objEnvio.otp = otp;
             const result = await ChangePassword(objEnvio);
             if (result === true) {
-                
+
                 setToastMessageIndex(1);
                 setToastAlert(true);
-                
+
 
                 goToLogin();
             } else if (result && result.response && result.response.status === 400) {
@@ -58,7 +58,10 @@ const RecoverPassword = ({ route }) => {
             }
         }
     }
-
+    useEffect(() => {
+        setToastAlert(false);
+    }, [toastAlert]);
+    
     return (
         <ContentContainer >
             <ViewContainer >

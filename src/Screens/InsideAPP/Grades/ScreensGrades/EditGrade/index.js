@@ -12,16 +12,22 @@ const EditGrade = ({ route }) => {
     const [toastVisible, setToastVisible] = useState(false);
     const { objGrade } = route.params;
 
+    const isDateEndNotNull = objGrade.dateEnd !== null;
+
     const fnEditSubmitForm = async (dadosFormulario) => {
         dadosFormulario.noteMin = parseFloat(dadosFormulario.noteMin);
         dadosFormulario.noteMin = parseFloat(dadosFormulario.noteMin.toFixed(2));
+        if (dadosFormulario.dateEnd) {
+            dadosFormulario.dateEnd = null;
+        } else {
+            dadosFormulario.dateEnd = new Date();
+        }
 
-        const { status, ...objEnvio } = dadosFormulario;
         try {
-            const result = await updateDiscipline(tokenJWT, objGrade.id, objEnvio);
+            const result = await updateDiscipline(tokenJWT, objGrade.id, dadosFormulario);
             if (result) {
                 setToastVisible(true);
-                navigation.navigate('Tarefas');
+                navigation.navigate('Disciplinas');
             }
         } catch (error) {
             console.log(error.message);
@@ -34,6 +40,7 @@ const EditGrade = ({ route }) => {
                 aoSubmitar={fnEditSubmitForm}
                 initialValues={objGrade}
                 isEdit={true}
+                interactions={isDateEndNotNull}
             />
             {toastVisible
                 &&

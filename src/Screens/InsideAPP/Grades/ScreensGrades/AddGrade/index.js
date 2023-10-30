@@ -11,6 +11,11 @@ const AddGrade = () => {
     const handleAddNewDiscipline = async (dadosFormulario) => {
         dadosFormulario.noteMin = parseFloat(dadosFormulario.noteMin);
         dadosFormulario.noteMin = parseFloat(dadosFormulario.noteMin.toFixed(2));
+        if (dadosFormulario.dateEnd) {
+            dadosFormulario.dateEnd = null;
+        } else {
+            dadosFormulario.dateEnd = new Date();
+        }
 
         try {
             const result = await insertNewDiscipline(tokenJWT, dadosFormulario);

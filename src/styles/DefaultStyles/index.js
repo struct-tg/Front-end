@@ -80,7 +80,7 @@ export const ContainerImageInitial = styled.View`
     align-items: center;
 `;
 
-export const ModalTextRadioButton = styled.View`
+export const InlineTextSwitch = styled.View`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;

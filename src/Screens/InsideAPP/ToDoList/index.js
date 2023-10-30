@@ -155,8 +155,8 @@ const ToDoList = () => {
 
                         <TouchableOpacity>
                             <Ionicons
-                                name={"pie-chart-outline"}
-                                size={35}
+                                name={"stats-chart-outline"}
+                                size={30}
                                 color={"white"}
                                 onPress={goToChartToDo}
                             />

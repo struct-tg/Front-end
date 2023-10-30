@@ -1,113 +1,291 @@
 import React, { useState, useEffect, useContext, Fragment, useRef } from 'react';
 import { Audio } from 'expo-av';
-import { useIsFocused } from "@react-navigation/native";
-import { AutenticacaoContext } from "../../../../../Contexts/UserContext";
-import { PomodoroButtonAction, PomodoroButtonSettings } from "../../../../../Components/Button";
+import { AutenticacaoContext } from "../../../../../Contexts/UserContext.js";
+import { PomodoroButtonAction, PomodoroButtonSettings } from "../../Components/ButtonsPomodoro/index.js";
 import { ContentContainer } from "../../../../../Styles/DefaultStyles/index.js";
+import { useIsFocused } from '@react-navigation/native';
 import { Ionicons } from "@expo/vector-icons";
 import {
-    SectionCycles,
-    SectionRow,
-    TitleCycles,
-    SectionClock,
-    CircleClock,
-    NumberClock,
+    SectionCycles, SectionRow, TitleCycles,
+    SectionClock, CircleClock, NumberClock,
 } from "./StylesClockPomodoro";
 import AlertComponent from "../../../../../Components/Alert";
 
 const PomodoroClock = ({ route }) => {
+    const { cicloSelecionado } = route.params;
     const { username } = useContext(AutenticacaoContext);
-    const { cicloSelecionado } = route.params || {};
-
-    const [currentTimerType, setCurrentTimerType] = useState("Pomodoro");
-    const previousTimerTypeRef = useRef(currentTimerType);
-
-    const [startPauseLong, setStartPauseLong] = useState(cicloSelecionado.quantityPauseLong === 1 ? 0 : cicloSelecionado.quantityPauseLong - 1);
-    const [completedCycles, setCompletedCycles] = useState(0);
-    const [cicleFinished, setCicleFinished] = useState(false);
-    const [controlaPomodoro, setControlaPomodoro] = useState(false);
-    const [timerFinished, setTimerFinished] = useState(false);
-
-    const [minutes, setMinutes] = useState(0);
-    const [seconds, setSeconds] = useState(0);
-
-    const [som, setSom] = useState(null);
-    const [somNotification, setSomNotification] = useState(false);
-
-    const [alertMessagePauseLong, setAlertMessagePauseLong] = useState(false);
-    const [alertCongratulation, setAlertCongratulation] = useState(false);
-    const [startAlertPauseLong, setStartAlertPauseLong] = useState(false);
-
-    const [disabledButtonPomodoro, setDisabledButtonPomodoro] = useState(false);
-    const [disabledButtonShortPause, setDisabledButtonShortPause] = useState(true);
-    const [disabledButtonLongPause, setDisabledButtonLongPause] = useState(true);
-
-    const [disabledButtonReload, setDisabledButtonReload] = useState(true);
-    const [disabledButtonStart, setDisabledButtonStart] = useState(false);
-    const [disabledButtonStop, setDisabledButtonStop] = useState(true);
-
-    const isFocused = useIsFocused(false);
-
     const [alertMessage, setAlertMessage] = useState([
         { title: `Parabéns, ${username}!!! ✨🎉✨🎉`, message: 'Você concluiu todos os cinco ciclos de Pomodoro. Continue focado nos estudos, estamos com você.' },
         { title: `Você tem certeza dessa ação, ${username}?`, message: 'Ao concluir esta ação, você perderá o tempo de pomodoro anterior para completar um ciclo.' },
         { title: `Agora é o momento da sua pausa longa!`, message: `Pare por um momento e descanse, ${username}. Este é uns dos momentos mais importantes para a sua produtividade.` }
     ]);
 
-    useEffect(() => {
-        fnLoadAudio();
-    }, [isFocused]);
+    const [controlAllPomodoro, setControlAllPomodoro] = useState({
+        onEndOffTime: false, minutes: cicloSelecionado.timer, seconds: 0,
+        whenStartPauseLong: cicloSelecionado.quantityPauseLong === 1 ? 0 : cicloSelecionado.quantityPauseLong - 1,
+        startAutomaticPause: cicloSelecionado.startAutomaticPause, startAutomaticTimer: cicloSelecionado.startAutomaticTimer,
+        cyclesFinished: 0,
+    });
 
-    function handleCycleCompletion() {
-        setCompletedCycles(completedCycles + 1);
+    const [currentTypeTimer, setCurrentTypeTimer] = useState("Pomodoro");
+    const previousTypeTimerRef = useRef(null);
 
-        if (startPauseLong === completedCycles) {
-            setStartAlertPauseLong(true);
-            setSeconds(0);
-            setMinutes(cicloSelecionado.timerPauseLong);
+    const [isTimeSelected, setIsTimeSelected] = useState(true);
+    const [isTimeRunning, setIsTimeRunning] = useState(false);
 
-            setDisabledButtonPomodoro(true);
-            setDisabledButtonLongPause(true);
-            setDisabledButtonShortPause(true);
+    const [startAutomaticAfterFirstTime, setStartAutomaticAfterFirstTime] = useState(controlAllPomodoro.startAutomaticTimer === true ? false : false);
+
+    const [cycleFinished, setCycleFinished] = useState(false);
+    const [pauseLongRequired, setPauseLongRequired] = useState(false);
+
+    const [disabledTimesButtons, setDisabledTimesButtons] = useState({ buttonPomodoro: true, buttonShortPause: true, buttonLongPause: true });
+    const [disabledControlsButtons, setDisabledControlsButtons] = useState({ buttonPlay: false, buttonStop: true, buttonReload: true });
+    const [alerts, setAlerts] = useState({ alertDecisionLongPause: false, alertFinishedAllCycles: false, alertRequiredLongPause: false });
+    const [audio, setAudio] = useState(null);
+    const isFocused = useIsFocused();
+
+    function onPomodoro() {
+        setIsTimeRunning(true);
+        setStartAutomaticAfterFirstTime(true);
+        setControlAllPomodoro((previousInfo) => ({ ...previousInfo, onEndOffTime: true }));
+        setDisabledControlsButtons({ buttonPlay: true, buttonStop: false, buttonReload: false });
+    };
+
+    function offPomodoro() {
+        setControlAllPomodoro((previousInfo) => ({ ...previousInfo, onEndOffTime: false }));
+        setDisabledControlsButtons({ buttonPlay: false, buttonStop: true, buttonReload: true });
+
+        if (cycleFinished) {
+            setDisabledTimesButtons({ buttonPomodoro: false, buttonShortPause: true, buttonLongPause: true });
+            setDisabledControlsButtons({ buttonPlay: true, buttonStop: true, buttonReload: true });
+
+            setCycleFinished(false);
+        } else if (isTimeRunning === false && isTimeSelected === false && cycleFinished === false) {
+            setDisabledTimesButtons({ buttonPomodoro: true, buttonShortPause: false, buttonLongPause: false });
+            setDisabledControlsButtons((previousInfo) => ({ ...previousInfo, buttonPlay: true }));
         }
 
-        if (completedCycles === 4) {
-            setAlertCongratulation(true);
-            setCompletedCycles(0);
+        if (pauseLongRequired) {
+            setControlAllPomodoro((previousInfo) => ({ ...previousInfo, minutes: cicloSelecionado.timerPauseLong }));
+            setControlAllPomodoro((previousInfo) => ({ ...previousInfo, seconds: 0 }));
+            setDisabledTimesButtons({ buttonPomodoro: true, buttonShortPause: true, buttonLongPause: true });
+            
+            if (controlAllPomodoro.startAutomaticPause) {
+                onPomodoro();
+            } else {
+                setDisabledControlsButtons({ buttonPlay: false, buttonStop: true, buttonReload: true });
+            }
+            setPauseLongRequired(false);
+        }
+
+        if (audio) {
+            stopNotification();
         }
     };
 
-    function handleZeroCycle() {
-        setCompletedCycles(completedCycles);
+    function reloadPomodoro() {
+        setControlAllPomodoro((previousInfo) => ({ ...previousInfo, seconds: 0 }))
+        switch (currentTypeTimer) {
+            case "Pausa Longa":
+                setControlAllPomodoro((previousInfo) => ({ ...previousInfo, minutes: cicloSelecionado.timerPauseLong }))
+                if (cicloSelecionado.startAutomaticPause) {
+                    onPomodoro();
+                }
+                break;
+            case "Pomodoro":
+                setControlAllPomodoro((previousInfo) => ({ ...previousInfo, minutes: cicloSelecionado.timer }))
+                if (cicloSelecionado.startAutomaticTimer) {
+                    onPomodoro();
+                }
+                break;
+            case "Pausa Curta":
+                setControlAllPomodoro((previousInfo) => ({ ...previousInfo, minutes: cicloSelecionado.timerPauseShort }))
+                if (cicloSelecionado.startAutomaticPause) {
+                    onPomodoro();
+                }
+                break;
+            default:
+                break;
+        }
     }
+
+    function handleButtonShortPause() {
+        setIsTimeSelected(true);
+        setControlAllPomodoro((previousInfo) => ({ ...previousInfo, minutes: cicloSelecionado.timerPauseShort }));
+        setCurrentTypeTimer("Pausa Curta");
+
+        if (controlAllPomodoro.startAutomaticPause) {
+            onPomodoro();
+        } else {
+            if (disabledControlsButtons.buttonPlay === true) {
+                setDisabledControlsButtons((previousInfo) => ({ ...previousInfo, buttonPlay: false }));
+            }
+        }
+    };
+
+    function handleButtonPomodoro() {
+        setIsTimeSelected(true);
+        setControlAllPomodoro((previousInfo) => ({ ...previousInfo, minutes: cicloSelecionado.timer }));
+        setCurrentTypeTimer("Pomodoro");
+        if (cicloSelecionado.startAutomaticTimer) {
+            onPomodoro();
+        } else {
+            if (disabledControlsButtons.buttonPlay === true) {
+                setDisabledControlsButtons((previousInfo) => ({ ...previousInfo, buttonPlay: false }));
+            }
+        }
+
+    };
+
+    function handleButtonLongPause() {
+        if (controlAllPomodoro.cyclesFinished !== controlAllPomodoro.whenStartPauseLong) {
+            setAlerts((previousInfo) => ({ ...previousInfo, alertDecisionLongPause: true }));
+        }
+    };
+
+    function handleOnCancelAlertDecisionLongPause() {
+        setAlerts((previousInfo) => ({ ...previousInfo, alertDecisionLongPause: false }));
+        previousTypeTimerRef.current = currentTypeTimer;
+
+        switch (previousTypeTimerRef.current) {
+            case "Pomodoro":
+                setControlAllPomodoro((previousInfo) => ({ ...previousInfo, minutes: cicloSelecionado.timer }));
+                break;
+            case "Pausa Curta":
+                setControlAllPomodoro((previousInfo) => ({ ...previousInfo, minutes: cicloSelecionado.timerPauseShort }));
+                break;
+            case "Pausa Longa":
+                setControlAllPomodoro((previousInfo) => ({ ...previousInfo, minutes: cicloSelecionado.timerPauseLong }));
+                break;
+        }
+    };
+
+    function handleOnConfirmAlertDecisionLongPause() {
+        setIsTimeSelected(true);
+        setAlerts((previousInfo) => ({ ...previousInfo, alertDecisionLongPause: false }));
+        setControlAllPomodoro((previousInfo) => ({ ...previousInfo, minutes: cicloSelecionado.timerPauseLong }))
+
+        if (controlAllPomodoro.startAutomaticPause) {
+            onPomodoro();
+        } else {
+            if (disabledControlsButtons.buttonPlay === true) {
+                setDisabledControlsButtons((previousInfo) => ({ ...previousInfo, buttonPlay: false }));
+                setDisabledTimesButtons({ buttonPomodoro: true, buttonShortPause: true, buttonLongPause: true });
+            }
+        }
+
+        setCurrentTypeTimer("Pausa Longa");
+        handleZeroCycles();
+    };
+
+
+    function handleCompleteCycle() {
+        console.log('Parabens, voce completou um ciclo de estudos');
+        setControlAllPomodoro((previousInfo) => ({ ...previousInfo, cyclesFinished: previousInfo.cyclesFinished + 1 }))
+
+        if (controlAllPomodoro.cyclesFinished === 4) {
+            setAlerts((previousInfo) => ({ ...previousInfo, alertFinishedAllCycles: true }));
+            handleZeroCycles();
+        }
+    }
+
+    function handleZeroCycles() {
+        setControlAllPomodoro((previousInfo) => ({ ...previousInfo, cyclesFinished: 0 }));
+        previousTypeTimerRef.current = null;
+    }
+
+    useEffect(() => {
+        if (isTimeRunning === true && isTimeSelected === true) {
+            setDisabledTimesButtons({ buttonPomodoro: true, buttonShortPause: true, buttonLongPause: true });
+        }
+    }, [isTimeRunning, isTimeSelected]);
+
+    useEffect(() => {
+        async function isFocusedLoad() {
+            loadNotification()
+        }
+
+        isFocusedLoad();
+    }, [isFocused])
+
+    async function loadNotification() {
+        const audio = new Audio.Sound()
+        try {
+            await audio.loadAsync(require('./notification.mp3'));
+            setAudio(audio);
+        } catch (error) {
+            console.log('Erro ao carregar a notificação por áudio: ', error);
+        }
+    };
+
+    async function playNotification() {
+        if (audio) {
+            try {
+                await audio.playAsync()
+            } catch (error) {
+                console.error('Erro ao reproduzir o som:', error);
+            }
+        }
+    };
+
+    async function stopNotification() {
+        if (audio) {
+            try {
+                await audio.stopAsync()
+            } catch (error) {
+                console.error('Erro ao parar o som:', error);
+            }
+        }
+    };
 
     useEffect(() => {
         let tempo;
 
-        if (previousTimerTypeRef.current == "Pomodoro" && currentTimerType == "Intervalo Longo") {
-            setAlertMessagePauseLong(true);
-        }
-
-        if (controlaPomodoro) {
+        if (controlAllPomodoro.onEndOffTime === true && startAutomaticAfterFirstTime === true) {
             tempo = setInterval(() => {
-                if (seconds > 0) {
-                    setSeconds(seconds - 1);
-                } else if (minutes > 0) {
-                    setMinutes(minutes - 1);
-                    setSeconds(59);
+                if (controlAllPomodoro.seconds > 0) {
+                    setControlAllPomodoro((previousInfo) => ({
+                        ...previousInfo,
+                        seconds: previousInfo.seconds - 1
+                    }));
+                } else if (controlAllPomodoro.minutes > 0) {
+                    setControlAllPomodoro(previousInfo => ({
+                        ...previousInfo,
+                        minutes: previousInfo.minutes - 1,
+                        seconds: 59,
+                    }));
                 } else {
-                    fnPlayNotificationSound();
-                    setControlaPomodoro(false);
-                    setTimerFinished(true);
+                    setIsTimeRunning(false);
+                    setIsTimeSelected(false);
+                    playNotification();
 
-                    if (currentTimerType === "Pomodoro") {
-                        previousTimerTypeRef.current = "Pomodoro";
-                    } else if (previousTimerTypeRef.current == "Pomodoro" && currentTimerType == "Intervalo Curto") {
-                        handleCycleCompletion();
-                        previousTimerTypeRef.current = "Intervalo Curto";
-                        setCicleFinished(true);
-                    } else if (previousTimerTypeRef.current == "Pomodoro" && currentTimerType != "Intervalo Curto") {
-                        handleZeroCycle();
+                    console.log('-----------------||--------------------\n\n\n');
+                    console.log('O seu tempo anterior: ', previousTypeTimerRef.current);
+                    console.log('O seu tempo atual finalizado: ', currentTypeTimer);
+                    console.log('O seu ciclo atual: ', controlAllPomodoro.cyclesFinished);
+                    console.log('-----------------||--------------------\n\n\n');
+
+                    setControlAllPomodoro(prevData => ({ ...prevData, onEndOffTime: false }));
+                    if (currentTypeTimer === "Pomodoro") {
+                        previousTypeTimerRef.current = "Pomodoro";
+                        if (controlAllPomodoro.whenStartPauseLong === controlAllPomodoro.cyclesFinished) {
+                            setCurrentTypeTimer("Pausa Longa");
+                            setPauseLongRequired(true);
+                        }
+                    } else if (currentTypeTimer === "Pausa Curta" && previousTypeTimerRef.current === "Pomodoro") {
+                        handleCompleteCycle();
+                        setCycleFinished(true);
+                        previousTypeTimerRef.current = "Pausa Curta";
+                    } else if (currentTypeTimer === "Pausa Longa" && previousTypeTimerRef.current === "Pomodoro") {
+                        handleCompleteCycle();
+                        setCycleFinished(true);
+                        previousTypeTimerRef.current = "Pausa Longa";
+                    } else if (currentTypeTimer === "Pausa Longa" && previousTypeTimerRef.current === null) {
+                        setCycleFinished(true);
+                    }
+
+                    if (currentTypeTimer === "Pausa Longa" && previousTypeTimerRef.current === "Pomodoro" && controlAllPomodoro.whenStartPauseLong !== controlAllPomodoro.cyclesFinished) {
+                        setAlerts((previousInfo) => ({ ...previousInfo, alertDecisionLongPause: true }));
                     }
                 }
             }, 1000);
@@ -118,194 +296,7 @@ const PomodoroClock = ({ route }) => {
         return () => {
             clearInterval(tempo);
         };
-    }, [minutes, seconds, controlaPomodoro, currentTimerType]);
-
-    const ativaPomodoro = () => {
-        setControlaPomodoro(true);
-        setTimerFinished(false);
-
-        setDisabledButtonReload(false);
-        setDisabledButtonStop(false);
-
-        setDisabledButtonStart(true);
-
-        if (currentTimerType === "Pomodoro" && timerFinished === false) {
-            setDisabledButtonPomodoro(true);
-        } else if (currentTimerType === "Intervalo Curto" && timerFinished === false) {
-            onInitialStateButtonsActions();
-            setDisabledButtonShortPause(true);
-        }
-    };
-
-    const desativaPomodoro = () => {
-        setControlaPomodoro(false);
-
-        if (cicleFinished) {
-            setDisabledButtonPomodoro(false);
-            setDisabledButtonLongPause(true);
-            setDisabledButtonShortPause(true);
-
-            setCicleFinished(false);
-        }
-
-        if (disabledButtonStart === true) {
-            setDisabledButtonStart(false);
-        }
-
-        if (previousTimerTypeRef.current === "Pomodoro" && timerFinished === true) {
-            setDisabledButtonLongPause(false);
-            setDisabledButtonShortPause(false);
-        }
-
-        if (timerFinished === true) {
-            offActionButtons();
-        }
-
-        if (somNotification) {
-            fnStopNotificationSound();
-        }
-    };
-
-    const buttonPauseLong = () => {
-        setTimerFinished(false);
-        setSeconds(0);
-        setMinutes(cicloSelecionado.timerPauseLong || 0);
-        setCurrentTimerType("Intervalo Longo");
-
-        if (disabledButtonLongPause === false) {
-            setDisabledButtonLongPause(true);
-        }
-
-        if (cicloSelecionado.startAutomaticPause) {
-            ativaPomodoro();
-        } else {
-            offButtonsStopAndReplay();
-            setDisabledButtonStart(false);
-        }
-    };
-
-    const buttonPomodoro = () => {
-        setTimerFinished(false);
-        setSeconds(0);
-        setMinutes(cicloSelecionado.timer || 0);
-        setCurrentTimerType("Pomodoro");
-
-        if (cicloSelecionado.startAutomaticTimer) {
-            ativaPomodoro();
-        }
-    };
-
-    const buttonPauseShort = () => {
-        setTimerFinished(false);
-        setCurrentTimerType("Intervalo Curto");
-
-        setDisabledButtonPomodoro(true);
-        setDisabledButtonLongPause(true);
-
-        if (disabledButtonShortPause === false) {
-            setDisabledButtonShortPause(true);
-        }
-
-        setSeconds(0);
-        setMinutes(cicloSelecionado.timerPauseShort || 0);
-
-        if (cicloSelecionado.startAutomaticPause) {
-            ativaPomodoro();
-        } else {
-            offButtonsStopAndReplay();
-            setDisabledButtonStart(false);
-        }
-    };
-
-    const reloadTime = () => {
-        setSeconds(0);
-        switch (currentTimerType) {
-            case "Intervalo Longo":
-                setMinutes(cicloSelecionado.timerPauseLong);
-                if (cicloSelecionado.startAutomaticPause) {
-                    ativaPomodoro();
-                }
-                break;
-            case "Pomodoro":
-                setMinutes(cicloSelecionado.timer);
-                if (cicloSelecionado.startAutomaticTimer) {
-                    ativaPomodoro();
-                }
-                break;
-            case "Intervalo Curto":
-                setMinutes(cicloSelecionado.timerPauseShort);
-                if (cicloSelecionado.startAutomaticPause) {
-                    ativaPomodoro();
-                }
-                break;
-            default:
-                break;
-        }
-    };
-
-    const handleCancelAlertMessagePauseLong = () => {
-        setSeconds(0);
-        setMinutes(cicloSelecionado.timer);
-        setAlertMessagePauseLong(false);
-
-        setCurrentTimerType("Pomodoro");
-    }
-
-    const handleConfirmAlertMessagePauseLong = () => {
-        buttonPauseLong();
-
-        previousTimerTypeRef.current = "Intervalo Longo";
-        setAlertMessagePauseLong(false);
-    }
-
-    function offButtonsStopAndReplay() {
-        setDisabledButtonStop(true);
-        setDisabledButtonReload(true);
-    }
-
-    function offActionButtons() {
-        setDisabledButtonStop(true);
-        setDisabledButtonStart(true);
-        setDisabledButtonReload(true);
-    }
-
-    function onInitialStateButtonsActions() {
-        setDisabledButtonStart(true);
-        setDisabledButtonReload(false);
-        setDisabledButtonStop(false);
-    }
-
-    async function fnLoadAudio() {
-        const audio = new Audio.Sound()
-        try {
-            await audio.loadAsync(require('./notification.mp3'))
-            setSom(audio);
-        } catch (error) {
-            console.log('Erro ao carregar a notificação por áudio: ', error);
-        }
-    };
-
-    async function fnPlayNotificationSound() {
-        if (som) {
-            try {
-                setSomNotification(true)
-                await som.playAsync()
-            } catch (error) {
-                console.error('Erro ao reproduzir o som:', error);
-            }
-        }
-    };
-
-    async function fnStopNotificationSound() {
-        if (som) {
-            try {
-                await som.stopAsync()
-                setSomNotification(false)
-            } catch (error) {
-                console.error('Erro ao parar o som:', error);
-            }
-        }
-    };
+    }, [controlAllPomodoro.minutes, controlAllPomodoro.seconds, controlAllPomodoro.onEndOffTime, isTimeRunning, isTimeSelected]);
 
     return (
         <ContentContainer>
@@ -313,32 +304,19 @@ const PomodoroClock = ({ route }) => {
                 <SectionRow>
                     <SectionCycles>
                         <TitleCycles>Ciclos:</TitleCycles>
-                        {Array(5).fill(0).map((_, index) => (<Ionicons key={index} name="time-outline" size={35} color={index < completedCycles ? '#168B9D' : 'black'} />))}
+                        {Array(5).fill(0).map((_, index) => (<Ionicons key={index} name="time-outline" size={35} color={index < controlAllPomodoro.cyclesFinished ? '#168B9D' : '#B8B8B8'} />))}
                     </SectionCycles>
-
                 </SectionRow>
 
                 <SectionRow>
-                    <PomodoroButtonSettings
-                        text={"Intervalo longo"}
-                        onPress={buttonPauseLong}
-                        disabled={disabledButtonLongPause}
-                    />
-                    <PomodoroButtonSettings
-                        text={"Pomodoro"}
-                        disabled={disabledButtonPomodoro}
-                        onPress={buttonPomodoro}
-                    />
-                    <PomodoroButtonSettings
-                        text={"Intervalo curto"}
-                        onPress={buttonPauseShort}
-                        disabled={disabledButtonShortPause}
-                    />
+                    <PomodoroButtonSettings text={"Pausa longa"} disabled={disabledTimesButtons.buttonLongPause} onPress={() => handleButtonLongPause()} />
+                    <PomodoroButtonSettings text={"Pomodoro"} disabled={disabledTimesButtons.buttonPomodoro} onPress={() => handleButtonPomodoro()} />
+                    <PomodoroButtonSettings text={"Pausa curta"} disabled={disabledTimesButtons.buttonShortPause} onPress={() => handleButtonShortPause()} />
                 </SectionRow>
 
                 <SectionClock>
                     <CircleClock>
-                        <NumberClock>{`${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`}</NumberClock>
+                        <NumberClock>{`${String(controlAllPomodoro.minutes).padStart(2, '0')}:${String(controlAllPomodoro.seconds).padStart(2, '0')}`}</NumberClock>
                     </CircleClock>
                 </SectionClock>
 
@@ -350,9 +328,7 @@ const PomodoroClock = ({ route }) => {
                                 size={35}
                                 color={"white"}
                             />
-                        )}
-                        onPress={reloadTime}
-                        disabled={disabledButtonReload}
+                        )} disabled={disabledControlsButtons.buttonReload} onPress={() => reloadPomodoro()}
                     />
 
                     <PomodoroButtonAction
@@ -362,9 +338,7 @@ const PomodoroClock = ({ route }) => {
                                 size={35}
                                 color={"white"}
                             />
-                        )}
-                        onPress={ativaPomodoro}
-                        disabled={disabledButtonStart}
+                        )} disabled={disabledControlsButtons.buttonPlay} onPress={() => onPomodoro()}
                     />
 
                     <PomodoroButtonAction
@@ -374,40 +348,30 @@ const PomodoroClock = ({ route }) => {
                                 size={35}
                                 color={"white"}
                             />
-                        )}
-                        onPress={desativaPomodoro}
-                        disabled={disabledButtonStop}
+                        )} disabled={disabledControlsButtons.buttonStop} onPress={() => offPomodoro()}
                     />
                 </SectionRow>
-
-                <AlertComponent
-                    state={alertCongratulation}
-                    setVisible={setAlertCongratulation}
-                    isInformation={true}
-                    title={alertMessage[0].title}
-                    message={alertMessage[0].message}
-                    onConfirm={() => setAlertCongratulation(false)}
-                />
-
-                <AlertComponent
-                    state={alertMessagePauseLong}
-                    setVisible={setAlertMessagePauseLong}
-                    title={alertMessage[1].title}
-                    message={alertMessage[1].message}
-                    onCancel={handleCancelAlertMessagePauseLong}
-                    onConfirm={handleConfirmAlertMessagePauseLong}
-                />
-
-                <AlertComponent
-                    state={startAlertPauseLong}
-                    setVisible={setStartAlertPauseLong}
-                    isInformation={true}
-                    title={alertMessage[2].title}
-                    message={alertMessage[2].message}
-                    onConfirm={() => setStartAlertPauseLong(false)}
-                />
-
             </Fragment>
+
+            <AlertComponent
+                state={alerts.alertFinishedAllCycles} setVisible={setAlerts}
+                title={alertMessage[0].title} message={alertMessage[0].message}
+                onConfirm={() => setAlerts((previousInfo) => ({ ...previousInfo, alertFinishedAllCycles: false }))}
+                isInformation={true}
+            />
+
+            <AlertComponent
+                state={alerts.alertDecisionLongPause} setVisible={setAlerts}
+                title={alertMessage[1].title} message={alertMessage[1].message}
+                onCancel={handleOnCancelAlertDecisionLongPause} onConfirm={handleOnConfirmAlertDecisionLongPause}
+            />
+
+            <AlertComponent
+                state={alerts.alertRequiredLongPause} setVisible={setAlerts}
+                title={alertMessage[2].title} message={alertMessage[2].message}
+                onConfirm={() => setAlerts((previousInfo) => ({ ...previousInfo, alertRequiredLongPause: false }))}
+                isInformation={true}
+            />
         </ContentContainer>
     );
 }

@@ -90,11 +90,11 @@ function RoutesApp() {
                 }}
             />
             <Tab.Screen
-                name="Tarefas"
-                component={ScreenToDo}
+                name="Disciplinas"
+                component={ScreenGrades}
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="checkmark-circle-outline" color={"white"} size={30} />
+                        <Ionicons name="book-outline" color={"white"} size={30} />
                     )
                 }}
             />
@@ -108,20 +108,20 @@ function RoutesApp() {
                 }}
             />
             <Tab.Screen
+                name="Tarefas"
+                component={ScreenToDo}
+                options={{
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons name="checkmark-circle-outline" color={"white"} size={30} />
+                    )
+                }}
+            />
+            <Tab.Screen
                 name="Calendario"
                 component={ScreenCalendar}
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="calendar-outline" color={"white"} size={30} />
-                    )
-                }}
-            />
-            <Tab.Screen
-                name="Disciplinas"
-                component={ScreenGrades}
-                options={{
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="book-outline" color={"white"} size={30} />
                     )
                 }}
             />

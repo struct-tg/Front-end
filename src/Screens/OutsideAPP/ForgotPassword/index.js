@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import { View } from "react-native";
 import { Input } from "../../../Components/Inputs";
 import { Button } from "../../../Components/Button";
@@ -10,13 +10,11 @@ import {
     UppercaseTitle,
     ContainerButton,
 } from "../../../Styles/DefaultStyles";
-import { AutenticacaoContext } from "../../../Contexts/UserContext";
 import { generateOTP } from "../../../Services/Requisicoes/OTP";
 import HelperTextComponent from "../../../Components/HelperText";
 
 const ForgotPassword = () => {
     const { control, handleSubmit, formState: { errors } } = useForm({ mode: "onChange" });
-    const [toastVisible, setToastVisible] = useState(false);
 
     const navigation = useNavigation();
     const goToPasswordCode = () => {

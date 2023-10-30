@@ -3,13 +3,14 @@ import { View } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { Input } from "../../../../../Components/Inputs";
 import { Button } from "../../../../../Components/Button";
-import { ContainerButton } from "../../../../../Styles/DefaultStyles";
+import { ContainerButton, Text, InlineTextSwitch } from "../../../../../Styles/DefaultStyles";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import SwitchComponent from "../../../../../Components/Switch";
 import RadioButtonComponent from "../../../../../Components/RadioButton";
 import HelperTextComponent from "../../../../../Components/HelperText";
 import TitleNote from "./StylesFormsGrades";
 
-const FormsGrades = ({ aoSubmitar, initialValues, isEdit }) => {
+const FormsGrades = ({ aoSubmitar, initialValues, isEdit, interactions }) => {
     const [selectedRadio, setSelectedRadio] = useState(isEdit ? initialValues.typeAv : 'SIMPLE');
     const { control, handleSubmit, formState: { errors } } = useForm({
         mode: "onChange",
@@ -17,6 +18,7 @@ const FormsGrades = ({ aoSubmitar, initialValues, isEdit }) => {
             name: isEdit ? String(initialValues.name) : "",
             nameTeacher: isEdit ? String(initialValues.nameTeacher) : "",
             noteMin: isEdit ? String(initialValues.noteMin.toFixed(2)) : "",
+            dateEnd: true
         }
     });
 
@@ -24,7 +26,7 @@ const FormsGrades = ({ aoSubmitar, initialValues, isEdit }) => {
         const formData = {
             ...data,
             typeAv: selectedRadio,
-            status: 'DISAPPROVED'
+            dateEnd: true
         };
         aoSubmitar(formData);
     }
@@ -38,11 +40,12 @@ const FormsGrades = ({ aoSubmitar, initialValues, isEdit }) => {
             <Controller
                 control={control}
                 name='name'
-                rules={{ required: "Campo obrigatório!", maxLength: { value: 20, message: "Nome muito grande!" }, minLength: { value: 2, message: "Nome muito pequeno"} }}
+                rules={{ required: "Campo obrigatório!", maxLength: { value: 20, message: "Nome muito grande!" }, minLength: { value: 2, message: "Nome muito pequeno" } }}
                 render={({ field }) => (
                     <View>
                         <Input
                             text={'Nome da disciplina: '}
+                            disabled={isEdit === true && initialValues.dateEnd !== null ? true : false}
                             secureText={false}
                             value={field.value}
                             onChangeText={field.onChange}
@@ -57,11 +60,12 @@ const FormsGrades = ({ aoSubmitar, initialValues, isEdit }) => {
             <Controller
                 control={control}
                 name='nameTeacher'
-                rules={{ required: "Campo obrigatório!", maxLength: { value: 20, message: "Nome muito grande!" }, minLength: { value: 2, message: "Nome muito pequeno"} }}
+                rules={{ required: "Campo obrigatório!", maxLength: { value: 20, message: "Nome muito grande!" }, minLength: { value: 3, message: "Nome muito pequeno" } }}
                 render={({ field }) => (
                     <View>
                         <Input
                             text={'Nome do professor: '}
+                            disabled={isEdit === true && initialValues.dateEnd !== null ? true : false}
                             secureText={false}
                             value={field.value}
                             onChangeText={field.onChange}
@@ -81,6 +85,7 @@ const FormsGrades = ({ aoSubmitar, initialValues, isEdit }) => {
                     <View>
                         <Input
                             text={'Nota minima para aprovação: '}
+                            disabled={isEdit === true && initialValues.dateEnd !== null ? true : false}
                             secureText={false}
                             type={'numeric'}
                             value={field.value}
@@ -108,14 +113,16 @@ const FormsGrades = ({ aoSubmitar, initialValues, isEdit }) => {
                 selected={selectedRadio === 'WEIGHTED'}
                 onSelect={() => setSelectedRadio('WEIGHTED')}
             />
-
-            <ContainerButton>
-                <Button
-                    text={'Salvar disciplina.'}
-                    onPress={handleSubmit(onSubmit)}
-                />
-            </ContainerButton>
-
+            {!interactions
+                &&
+                (<ContainerButton>
+                    <Button
+                        text={'Salvar disciplina.'}
+                        onPress={handleSubmit(onSubmit)}
+                    />
+                </ContainerButton>
+                )
+            }
         </SafeAreaView>
     )
 };

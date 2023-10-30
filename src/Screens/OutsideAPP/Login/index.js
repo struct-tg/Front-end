@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Input } from "../../../Components/Inputs";
 import { Button } from "../../../Components/Button";
 import { useNavigation } from '@react-navigation/native';
@@ -20,6 +20,10 @@ const ScreenLogin = () => {
     const { login } = useContext(AutenticacaoContext);
     const [toastVisible, setToastVisible] = useState(false);
     const navigation = useNavigation();
+
+    useEffect(() => {
+        setToastVisible(false);
+    }, [toastVisible]);
 
     const goToRegister = () => {
         navigation.navigate('Register');

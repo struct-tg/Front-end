@@ -4,7 +4,7 @@ import { ContainerIconButton, ContainerIconInput, ContainerIcons, StyledInput } 
 import { RFValue } from "react-native-responsive-fontsize";
 import deviceDimensions from "../../Device/DeviceInformation.js";
 
-export const Input = ({ secureText, text, value, onChangeText, type, formatNumber, formatPomodoro }) => {
+export const Input = ({ secureText, text, value, onChangeText, type, formatNumber, formatPomodoro, disabled }) => {
     const formatInputValue = (inputText) => {
         const numericValue = inputText.replace(/[^0-9]/g, '').replace(/^0+/, '');
         switch (numericValue.length) {
@@ -27,6 +27,7 @@ export const Input = ({ secureText, text, value, onChangeText, type, formatNumbe
             mode="flat"
             secureTextEntry={secureText}
             value={value}
+            disabled={disabled}
             onChangeText={(text) => {
                 if (formatNumber) {
                     const formattedValue = formatInputValue(text);

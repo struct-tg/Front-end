@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, Fragment } from 'react';
 import { View, Image } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
-import { ProgressChart } from "react-native-chart-kit";
+import { BarChart } from "react-native-chart-kit";
 import { AutenticacaoContext } from '../../../../../Contexts/UserContext';
 import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen';
 import { ContainerImageInitial, ContentContainer, Title, ViewContainer } from "../../../../../Styles/DefaultStyles/index.js";
@@ -16,7 +16,7 @@ const ChartToDo = () => {
     const { tokenJWT, username } = useContext(AutenticacaoContext);
     const isFocused = useIsFocused();
 
-    const desiredHeight = deviceDimensions.height * 0.3;
+    const desiredHeight = deviceDimensions.height * 0.35;
     const desiredWidth = deviceDimensions.width * 0.95;
     const imageWidth = widthPercentageToDP('100%');
     const imageHeight = heightPercentageToDP('50%');
@@ -27,7 +27,8 @@ const ChartToDo = () => {
                 const result = await chartResume(tokenJWT)
                 if (result) {
                     const percentData = result.map(item => item.percent);
-                    setChartData(percentData);
+                    const percentDataInPercentage = percentData.map(element => element * 100);
+                    setChartData(percentDataInPercentage);
                 } else {
                     console.log('Não há dados');
                 }
@@ -41,18 +42,22 @@ const ChartToDo = () => {
     }, [isFocused]);
 
     const data = {
-        labels: ['Feitas', 'À Fazer', 'Atrasada'],
-        data: [...chartData],
+        labels: ['Finalizadas', 'Pendentes', 'Atrasadas'],
+        datasets: [
+            {
+                data: [...chartData],
+            }
+        ]
     };
-
-    return (    
+   
+    return (
         <ContentContainer>
             {isLoading
                 ?
                 (<SpinnerComponent state={isLoading} text={'Carregando...'} />)
                 :
                 (<ViewContainer>
-                    {chartData[0] == null && chartData[1]  == null && chartData[2] == null
+                    {chartData[0] == 0 && chartData[1] == 0 && chartData[2] == 0
                         ?
                         (<Fragment>
                             <Title>{`Você ainda não tem tarefas cadastradas para usar este gráfico, ${username}!`}</Title>
@@ -70,10 +75,11 @@ const ChartToDo = () => {
                         (<ViewContainer>
                             <Title>{`Essas são as porcentagens dos status das suas tarefas, ${username}!`}</Title>
                             <View style={{ flexGrow: 1, alignItems: "center", justifyContent: "space-around" }}>
-                                <ProgressChart
+                                <BarChart
                                     data={data}
                                     width={desiredWidth}
                                     height={desiredHeight}
+                                    yAxisSuffix='%'
                                     chartConfig={{
                                         barPercentage: 1,
                                         backgroundGradientFrom: '#106482',

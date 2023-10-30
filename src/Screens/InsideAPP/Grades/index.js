@@ -4,20 +4,27 @@ import { ContentContainer, ViewContainer, Title, ViewSettings, ViewBlock, Contai
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { AutenticacaoContext } from "../../../Contexts/UserContext";
 import { Ionicons } from "@expo/vector-icons";
-import { deleteDiscipline, getAllDiscipline, getDisciplineByID } from "../../../Services/Requisicoes/Grades/index";
+import { deleteDiscipline, getAllDiscipline, getDisciplineByID, offDiscipline } from "../../../Services/Requisicoes/Grades/index";
 import { FlatList } from "react-native-gesture-handler";
 import CardGrades from "./ComponentsGrades/CardGradeGrades";
 import AlertComponent from "../../../Components/Alert";
 import SpinnerComponent from "../../../Components/Spinner";
+import * as Haptics from 'expo-haptics';
 
 const Grades = () => {
     const [grades, setGrades] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+
     const [alertVisible, setAlertVisible] = useState(false);
+    const [alertOffDiscipline, setAlertOffDiscipline] = useState(false);
+
     const [selectedDisciplineID, setSelectedDisciplineID] = useState(undefined);
+
     const [alertMessages, setAlertMessages] = useState([
         { titulo: 'Deseja mesmo excluir sua disciplina?', descricao: 'Essa ação é irreversível e não terá como você desfazer após a confirmação.' },
+        { titulo: 'Você tem certeza dessa ação?', descricao: 'Ao confirmar, você encerrará está disciplina e todas as suas atividades avaliativas.' }
     ]);
+
     const { tokenJWT, username } = useContext(AutenticacaoContext);
     const navigation = useNavigation();
     const isFocused = useIsFocused(false);
@@ -74,6 +81,38 @@ const Grades = () => {
         } else {
             console.log('Algo deu errado');
         }
+    }
+
+    const showAlertOffDiscipline = async (DisciplineID) => {
+        setSelectedDisciplineID(DisciplineID);
+        await handleLongPress();
+        setAlertOffDiscipline(true);
+    };
+
+    const handleLongPress = async () => {
+        try {
+            await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+        } catch (error) {
+            console.error('Erro ao acionar feedback tátil:', error);
+        }
+    };
+
+    const handleCancelOffDiscipline = () => {
+        setAlertOffDiscipline(false);
+    }
+
+    const handleConfirmOffDiscipline = async () => {
+        if (selectedDisciplineID !== null) {
+            const result = await offDiscipline(selectedDisciplineID, tokenJWT)
+            if (result) {
+                const updateDatas = await getAllDiscipline(tokenJWT)
+                setGrades(updateDatas);
+            } else {
+                console.log('Algo deu errado ao finalizar uma disciplina')
+            }
+            setSelectedDisciplineID(null);
+        }
+        setAlertOffDiscipline(false);
     }
 
     return (
@@ -135,7 +174,10 @@ const Grades = () => {
                                 renderItem={({ item }) =>
                                     <CardGrades
                                         titleGrades={item.name}
-                                        status={item.status}
+                                        status={item.dateEnd}
+                                        onOFF={() => item.dateEnd === null ? showAlertOffDiscipline(item.id) : null}
+                                        noteMin={item.noteMin}
+                                        noteCurrent={item.note}
                                         onEdit={() => fnGoToEdit(item.id)}
                                         isModify={true}
                                         onDelete={() => showAlertDeleteDiscipline(item.id)}
@@ -162,6 +204,15 @@ const Grades = () => {
                 message={alertMessages[0].descricao}
                 onCancel={handleCancelDeleteDiscipline}
                 onConfirm={handleConfirmDeleteDiscipline}
+            />
+
+            <AlertComponent
+                state={alertOffDiscipline}
+                setVisible={setAlertOffDiscipline}
+                title={alertMessages[1].titulo}
+                message={alertMessages[1].descricao}
+                onCancel={handleCancelOffDiscipline}
+                onConfirm={handleConfirmOffDiscipline}
             />
         </ContentContainer>
     );

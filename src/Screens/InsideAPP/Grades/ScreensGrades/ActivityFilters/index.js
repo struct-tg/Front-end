@@ -125,8 +125,12 @@ const ActivityFilters = () => {
                                     renderItem={({ item }) => (
                                         <CardGrades
                                             titleGrades={item.name}
-                                            status={item.status}
+                                            status={item.dateEnd}
+                                            onOFF={() => item.dateEnd === null ? showAlertOffDiscipline(item.id) : null}
+                                            noteMin={item.noteMin}
+                                            noteCurrent={item.note}
                                             onEdit={() => fnGoToEdit(item.id)}
+                                            onDelete={() => showAlertDeleteDiscipline(item.id)}
                                             activity={() => {
                                                 if (item.activity && item.activity.length > 0) {
                                                     return true;

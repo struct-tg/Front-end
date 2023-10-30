@@ -2,7 +2,7 @@ import api from "../../api";
 
 export async function getAllTasks(tokenJWT) {
     try {
-        const result = await api.get('/task?page=1&status', {
+        const result = await api.get('/task', {
             headers: {
                 Authorization: `Bearer ${tokenJWT}`,
             }

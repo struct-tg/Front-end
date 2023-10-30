@@ -23,10 +23,9 @@ export async function getAllDiscipline(tokenJWT) {
                 Authorization: `Bearer ${tokenJWT}`
             }
         })
-        
+
         const objData = result.data;
         const array = objData.data;
-
         return array;
     } catch (error) {
         console.log(error.response.data);
@@ -64,7 +63,6 @@ export async function updateDiscipline(tokenJWT, idDiscipline, objDiscipline) {
 };
 
 export async function deleteDiscipline(idDiscipline, tokenJWT) {
-    console.log(typeof idDiscipline)
     try {
         await api.delete(`/discipline/${parseInt(idDiscipline, 10)}`, {
             headers: {
@@ -76,5 +74,20 @@ export async function deleteDiscipline(idDiscipline, tokenJWT) {
     } catch (error) {
         console.log(error.response.data);
         return false;
+    }
+};
+
+export async function offDiscipline(idDiscipline, tokenJWT) {
+    try {
+        await api.patch(`/discipline/off/${idDiscipline}`, null, {
+            headers: {
+                Authorization: `Bearer ${tokenJWT}`
+            }
+
+        })
+        return true;
+    } catch (error) {
+        console.log(error.response.data);
+        return error;
     }
 };
