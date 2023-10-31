@@ -4,7 +4,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import deviceDimensions from "../../Device/DeviceInformation";
 
 const imageWidth = deviceDimensions.width * 0.8;
-const imageHeight =  deviceDimensions.width  * 0.3; 
+const imageHeight = deviceDimensions.width * 0.3;
 
 export const ContentContainer = styled(SafeAreaView)`   
     flex: 1;
@@ -103,4 +103,16 @@ export const ContainerCenter = styled.View`
 
 export const ContainerButton = styled.View`   
     align-items: center;
+`;
+
+export const ModalTextRadioButton = styled.View`
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+export const ModalPositionItens = styled.View`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 `;

@@ -85,10 +85,10 @@ const ActivityFilters = () => {
                         grades.length <= 0
                             ?
                             (<Fragment>
-                                <Title>{`Cadastre novas atividades avaliativas para filtrar, ${username}!`}</Title>
+                                <Title>{`Cadastre disciplinas para filtrar, ${username}!`}</Title>
                                 <ContainerImageInitial>
                                     <Image
-                                        source={require('./ActivityFilters-Image.png')}
+                                        source={require('./GradeFilters-Image.png')}
                                         style={{ width: "100%", height: "55%" }}
                                         resizeMode="cover"
                                     />

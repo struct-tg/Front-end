@@ -134,7 +134,7 @@ const Grades = () => {
                                 color={"white"}
                             />
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => { navigation.navigate('ActivityFilters') }}>
+                        <TouchableOpacity onPress={() => { navigation.navigate('ActivityGradeFilters') }}>
                             <Ionicons
                                 name={"options-outline"}
                                 size={35}
@@ -177,13 +177,7 @@ const Grades = () => {
                                         onEdit={() => fnGoToEdit(item.id)}
                                         isModify={true}
                                         onDelete={() => showAlertDeleteDiscipline(item.id)}
-                                        activity={() => {
-                                            if (item.activity && item.activity.length > 0) {
-                                                return true;
-                                            } else {
-                                                return false;
-                                            }
-                                        }}
+                                        onSelectActivity={() => navigation.navigate('ActivityList', {SelectId: item})}
                                     />
                                 }
                                 showsVerticalScrollIndicator={false}
