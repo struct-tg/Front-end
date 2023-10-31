@@ -16,9 +16,11 @@ import {
     ContainerImageInitial,
     TitleContainerScroll
 } from "../../../Styles/DefaultStyles/index.js";
+import useMocks from "../../../Mocks";
 import ModalPerfilSettings from "./Components/ModalPerfilHome";
 import CardsHome from "./Components/CardFinishedsHome";
 import SpinnerComponent from "../../../Components/Spinner";
+import ResponsiveImage from "react-native-responsive-image";
 
 const Home = () => {
     const [tasksFinisheds, setTasksFinisheds] = useState([]);
@@ -27,6 +29,7 @@ const Home = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [modalPerfilSettings, setModalPerfilSettings] = useState(false);
     const { tokenJWT, username } = useContext(AutenticacaoContext);
+    const { HomeMocks } = useMocks();
     const isFocused = useIsFocused(false);
     const navigation = useNavigation();
     const [tasksByID, setTasksByID] = useState([]);
@@ -66,10 +69,6 @@ const Home = () => {
         }
     }
 
-    const goToChart = () => {
-        navigation.navigate("ChartHome");
-    }
-
     return (
         <ContentContainer>
             <ViewContainer>
@@ -80,14 +79,6 @@ const Home = () => {
                             size={35}
                             color={"white"}
                             onPress={() => setModalPerfilSettings(true)}
-                        />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={goToChart}>
-                        <Ionicons
-                            name="bar-chart-outline"
-                            size={35}
-                            color={"white"}
                         />
                     </TouchableOpacity>
                 </ViewSettings>
@@ -136,12 +127,13 @@ const Home = () => {
                         :
                         (
                             <Fragment>
-                                <Title>{`Você ainda não tem dados cadastrados, ${username}!`}</Title>
+                                <Title>{HomeMocks.HomeScreen.title}</Title>
                                 <ContainerImageInitial>
-                                    <Image
-                                        source={require('./Home.png')}
-                                        style={{ width: "100%", height: "50%" }}
-                                        resizeMode="cover"
+                                    <ResponsiveImage
+                                        source={HomeMocks.HomeScreen.image.content}
+                                        initWidth={HomeMocks.HomeScreen.image.width}
+                                        initHeight={HomeMocks.HomeScreen.image.height}
+                                        resizeMode={HomeMocks.HomeScreen.image.rezide}
                                     />
                                 </ContainerImageInitial>
                             </Fragment>

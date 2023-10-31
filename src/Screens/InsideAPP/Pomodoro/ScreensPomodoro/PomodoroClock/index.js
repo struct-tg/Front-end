@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext, Fragment, useRef } from 'react';
 import { Audio } from 'expo-av';
-import { AutenticacaoContext } from "../../../../../Contexts/UserContext.js";
 import { PomodoroButtonAction, PomodoroButtonSettings } from "../../Components/ButtonsPomodoro/index.js";
 import { ContentContainer } from "../../../../../Styles/DefaultStyles/index.js";
 import { useIsFocused } from '@react-navigation/native';
@@ -10,15 +9,11 @@ import {
     SectionClock, CircleClock, NumberClock,
 } from "./StylesClockPomodoro";
 import AlertComponent from "../../../../../Components/Alert";
+import useMocks from '../../../../../Mocks/index.js';
 
 const PomodoroClock = ({ route }) => {
     const { cicloSelecionado } = route.params;
-    const { username } = useContext(AutenticacaoContext);
-    const [alertMessage, setAlertMessage] = useState([
-        { title: `Parabéns, ${username}!!! ✨🎉✨🎉`, message: 'Você concluiu todos os cinco ciclos de Pomodoro. Continue focado nos estudos, estamos com você.' },
-        { title: `Você tem certeza dessa ação, ${username}?`, message: 'Ao concluir esta ação, você perderá o tempo de pomodoro anterior para completar um ciclo.' },
-        { title: `Agora é o momento da sua pausa longa!`, message: `Pare por um momento e descanse, ${username}. Este é uns dos momentos mais importantes para a sua produtividade.` }
-    ]);
+    const { PomodoroMocks } = useMocks();
 
     const [controlAllPomodoro, setControlAllPomodoro] = useState({
         onEndOffTime: false, minutes: cicloSelecionado.timer, seconds: 0,
@@ -69,7 +64,7 @@ const PomodoroClock = ({ route }) => {
             setControlAllPomodoro((previousInfo) => ({ ...previousInfo, minutes: cicloSelecionado.timerPauseLong }));
             setControlAllPomodoro((previousInfo) => ({ ...previousInfo, seconds: 0 }));
             setDisabledTimesButtons({ buttonPomodoro: true, buttonShortPause: true, buttonLongPause: true });
-            
+
             if (controlAllPomodoro.startAutomaticPause) {
                 onPomodoro();
             } else {
@@ -134,7 +129,6 @@ const PomodoroClock = ({ route }) => {
                 setDisabledControlsButtons((previousInfo) => ({ ...previousInfo, buttonPlay: false }));
             }
         }
-
     };
 
     function handleButtonLongPause() {
@@ -178,9 +172,7 @@ const PomodoroClock = ({ route }) => {
         handleZeroCycles();
     };
 
-
     function handleCompleteCycle() {
-        console.log('Parabens, voce completou um ciclo de estudos');
         setControlAllPomodoro((previousInfo) => ({ ...previousInfo, cyclesFinished: previousInfo.cyclesFinished + 1 }))
 
         if (controlAllPomodoro.cyclesFinished === 4) {
@@ -258,12 +250,6 @@ const PomodoroClock = ({ route }) => {
                     setIsTimeRunning(false);
                     setIsTimeSelected(false);
                     playNotification();
-
-                    console.log('-----------------||--------------------\n\n\n');
-                    console.log('O seu tempo anterior: ', previousTypeTimerRef.current);
-                    console.log('O seu tempo atual finalizado: ', currentTypeTimer);
-                    console.log('O seu ciclo atual: ', controlAllPomodoro.cyclesFinished);
-                    console.log('-----------------||--------------------\n\n\n');
 
                     setControlAllPomodoro(prevData => ({ ...prevData, onEndOffTime: false }));
                     if (currentTypeTimer === "Pomodoro") {
@@ -355,20 +341,20 @@ const PomodoroClock = ({ route }) => {
 
             <AlertComponent
                 state={alerts.alertFinishedAllCycles} setVisible={setAlerts}
-                title={alertMessage[0].title} message={alertMessage[0].message}
+                title={PomodoroMocks.pomodoroClock.alerts.finishAllCycles.title} message={PomodoroMocks.pomodoroClock.alerts.finishAllCycles.description}
                 onConfirm={() => setAlerts((previousInfo) => ({ ...previousInfo, alertFinishedAllCycles: false }))}
                 isInformation={true}
             />
 
             <AlertComponent
                 state={alerts.alertDecisionLongPause} setVisible={setAlerts}
-                title={alertMessage[1].title} message={alertMessage[1].message}
+                title={PomodoroMocks.pomodoroClock.alerts.decisionLongPausa.title} message={PomodoroMocks.pomodoroClock.alerts.finishAllCycles.description}
                 onCancel={handleOnCancelAlertDecisionLongPause} onConfirm={handleOnConfirmAlertDecisionLongPause}
             />
 
             <AlertComponent
                 state={alerts.alertRequiredLongPause} setVisible={setAlerts}
-                title={alertMessage[2].title} message={alertMessage[2].message}
+                title={PomodoroMocks.pomodoroClock.alerts.requiredLongPause.title} message={PomodoroMocks.pomodoroClock.alerts.requiredLongPause.description}
                 onConfirm={() => setAlerts((previousInfo) => ({ ...previousInfo, alertRequiredLongPause: false }))}
                 isInformation={true}
             />

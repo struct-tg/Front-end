@@ -51,6 +51,8 @@ export const ViewSettings = styled.View`
 
 export const ViewBlock = styled.View`
     flex-direction: row;
+    align-items: center;
+    gap: 3px;
     justify-content: flex-end;
 `;
 

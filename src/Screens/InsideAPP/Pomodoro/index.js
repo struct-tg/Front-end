@@ -1,15 +1,20 @@
 import React, { useState, useContext, useEffect, Fragment } from "react";
 import { Image } from "react-native";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { ContentContainer, ViewBlock, ViewContainer, ViewSettings, Title, ContainerImageInitial } from "../../../Styles/DefaultStyles/index.js";
+import { ContentContainer, ViewContainer, ViewSettings, Title, ContainerImageInitial } from "../../../Styles/DefaultStyles/index.js";
 import { Ionicons } from "@expo/vector-icons";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { AutenticacaoContext } from "../../../Contexts/UserContext.js";
 import { getAllPomodoro, getPomodoroByID, deletePomodoro } from "../../../Services/Requisicoes/Pomodoro/index.js";
+import { AntDesign } from '@expo/vector-icons';
+import useMocks from "../../../Mocks/index.js";
+import structSpeak from "../../../Device/Speech.js";
 import SpinnerComponent from "../../../Components/Spinner";
 import ModalInformationPomodoro from "./Components/ModalInformationsPomodoro/index.js";
 import CardPomodoro from "../Pomodoro/Components/CardPomodoro/index.js";
 import AlertComponent from "../../../Components/Alert/index.js";
+import ResponsiveImage from "react-native-responsive-image";
+
 
 const Pomodoro = () => {
     const [pomodoros, setPomodoros] = useState([]);
@@ -18,16 +23,9 @@ const Pomodoro = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [pomodoroSelectedId, setPomodoroSelectedId] = useState(null);
     const { username, tokenJWT } = useContext(AutenticacaoContext);
+    const { PomodoroMocks } = useMocks();
     const navigation = useNavigation();
     const isFocused = useIsFocused();
-
-    const [alertMessages, setAlertMessages] = useState([
-        { titulo: 'Deseja mesmo excluir este Pomodoro?', descricao: 'Essa ação é irreversível e não terá como você desfazer após a confirmação.' },
-    ]);
-
-    const goToAddPomodoro = () => {
-        navigation.navigate('AddPomodoro');
-    }
 
     useEffect(() => {
         async function fetchPomodoros() {
@@ -89,16 +87,15 @@ const Pomodoro = () => {
                             name="add-circle-outline"
                             size={35}
                             color={"white"}
-                            onPress={goToAddPomodoro}
+                            onPress={() => navigation.navigate('AddPomodoro')}
                         />
                     </TouchableOpacity>
 
-                    <TouchableOpacity>
-                        <Ionicons
-                            name="help-circle-outline"
-                            size={35}
-                            color={"white"}
-                            onPress={() => setModalVisible(true)}
+                    <TouchableOpacity onPress={() => structSpeak(PomodoroMocks.PomodoroScreen.speech)}>
+                        <AntDesign
+                            name="aliwangwang-o1"
+                            size={30}
+                            color="white"
                         />
                     </TouchableOpacity>
                 </ViewSettings>
@@ -110,12 +107,13 @@ const Pomodoro = () => {
                     pomodoros.length <= 0
                         ?
                         (<Fragment>
-                            <Title>{`Adicione novos Pomodoros, ${username}!`}</Title>
+                            <Title>{PomodoroMocks.PomodoroScreen.title}</Title>
                             <ContainerImageInitial>
-                                <Image
-                                    source={require('./Pomodoro.png')}
-                                    style={{ width: "100%", height: "60%" }}
-                                    resizeMode="cover"
+                                <ResponsiveImage
+                                    source={PomodoroMocks.PomodoroScreen.image.content}
+                                    initWidth={PomodoroMocks.PomodoroScreen.image.width}
+                                    initHeight={PomodoroMocks.PomodoroScreen.image.height}
+                                    resizeMode={PomodoroMocks.PomodoroScreen.image.rezide}
                                 />
                             </ContainerImageInitial>
                         </Fragment>
@@ -149,8 +147,8 @@ const Pomodoro = () => {
             <AlertComponent
                 state={alertDelete}
                 setVisible={setAlertDelete}
-                title={alertMessages[0].titulo}
-                message={alertMessages[0].descricao}
+                title={PomodoroMocks.PomodoroScreen.alerts.deleteTask.title}
+                message={PomodoroMocks.PomodoroScreen.alerts.deleteTask.description}
                 onConfirm={handleConfirmDelete}
                 onCancel={handleCancelDelete}
             />

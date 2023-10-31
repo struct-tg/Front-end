@@ -2,20 +2,21 @@ import React, { Fragment, useEffect, useState, useContext } from "react";
 import { ContentContainer, ViewContainer, Title, ViewSettings, ViewBlock, ContainerImageInitial } from "../../../Styles/DefaultStyles/index.js";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
+import { AntDesign } from '@expo/vector-icons';
 import { useNavigation, useIsFocused } from "@react-navigation/native";
-import { Image } from "react-native";
 import { getAllTasks, deleteTask, getTaskById, finishTask } from "../../../Services/Requisicoes/Tasks";
 import { AutenticacaoContext } from "../../../Contexts/UserContext.js";
-import { convertDateISO8601 } from "../../../Utils/Date/index";
-import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen';
 import ModalComponent from "./ComponentsToDo/ModalInformationsToDo";
+import useMocks from "../../../Mocks/index.js";
 import CardTaskToDo from "./ComponentsToDo/CardTaskToDo";
 import AlertComponent from "../../../Components/Alert";
 import SpinnerComponent from "../../../Components/Spinner/index.js";
 import ResponsiveImage from "react-native-responsive-image";
+import structSpeak from "../../../Device/Speech.js";
 
 const ToDoList = () => {
-    const { tokenJWT, username } = useContext(AutenticacaoContext);
+    const { tokenJWT } = useContext(AutenticacaoContext);
+    const { ToDoMocks } = useMocks();
     const [tasks, setTasks] = useState([]);
     const [selectedTaskId, setSelectedTaskId] = useState(null);
 
@@ -28,15 +29,6 @@ const ToDoList = () => {
     const [alertDelete, setAlertDelete] = useState(false);
     const [alertFinish, setAlertFinish] = useState(false);
     const [alertFinished, setAlertFinished] = useState(false);
-
-    const imageWidth = widthPercentageToDP('100%');
-    const imageHeight = heightPercentageToDP('50%');
-
-    const [alertMessages, setAlertMessages] = useState([
-        { titulo: 'Deseja mesmo excluir sua tarefa?', descricao: 'Essa ação é irreversível e não terá como você desfazer após a confirmação.' },
-        { titulo: `Parabéns, ${username}!`, descricao: 'Você finalizou mais uma tarefa. Continue estudando, estamos com você na sua jornada.' },
-        { titulo: `Você já finalizou esta tarefa!`, descricao: `A partir de agora, só é possível visualizar o conteúdo adicionado nesta tarefa.` },
-    ]);
 
     useEffect(() => {
         async function fetchTasks(tokenJWT) {
@@ -96,7 +88,6 @@ const ToDoList = () => {
         setAlertFinish(false);
     }
 
-
     const showAlertFinished = () => {
         setAlertFinished(true);
     }
@@ -114,18 +105,6 @@ const ToDoList = () => {
         }
     }
 
-    const goToAddTodo = () => {
-        navigation.navigate('AddTodo');
-    }
-
-    const goToFiltersTodo = () => {
-        navigation.navigate('FiltersTodo');
-    }
-
-    const goToChartToDo = () => {
-        navigation.navigate('ChartTodo');
-    }
-
     const transformConvertDateISO8601 = (dateString) => {
         return new Date(dateString);
     };
@@ -134,40 +113,37 @@ const ToDoList = () => {
         <ContentContainer>
             <ViewContainer>
                 <ViewSettings>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => { navigation.navigate('AddTodo') }}>
                         <Ionicons
                             name={"add-circle-outline"}
                             size={35}
                             color={"white"}
-                            onPress={goToAddTodo}
                         />
                     </TouchableOpacity>
 
                     <ViewBlock>
                         <TouchableOpacity>
-                            <Ionicons
-                                name={"help-circle-outline"}
-                                size={35}
-                                color={"white"}
-                                onPress={() => setModalInformation(true)}
+                            <AntDesign
+                                name="aliwangwang-o1"
+                                size={30}
+                                color="white"
+                                onPress={() => structSpeak(ToDoMocks.ToDoScreen.speech)}
                             />
                         </TouchableOpacity>
 
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => { navigation.navigate('ChartTodo') }}>
                             <Ionicons
                                 name={"stats-chart-outline"}
                                 size={30}
                                 color={"white"}
-                                onPress={goToChartToDo}
                             />
                         </TouchableOpacity>
 
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => { navigation.navigate('FiltersTodo') }}>
                             <Ionicons
                                 name={"options-outline"}
                                 size={35}
                                 color={"white"}
-                                onPress={goToFiltersTodo}
                             />
                         </TouchableOpacity>
                     </ViewBlock>
@@ -181,13 +157,13 @@ const ToDoList = () => {
                     : tasks.length <= 0
                         ?
                         (<Fragment>
-                            <Title>{`Adicione novas tarefas, ${username}!`}</Title>
+                            <Title>{ToDoMocks.ToDoScreen.title}</Title>
                             <ContainerImageInitial>
                                 <ResponsiveImage
-                                    source={require('./ToDo-Image.png')}
-                                    initWidth={imageWidth}
-                                    initHeight={imageHeight}
-                                    resizeMode="cover"
+                                    source={ToDoMocks.ToDoScreen.image.content}
+                                    initWidth={ToDoMocks.ToDoScreen.image.width}
+                                    initHeight={ToDoMocks.ToDoScreen.image.height}
+                                    resizeMode={ToDoMocks.ToDoScreen.image.rezide}
                                 />
                             </ContainerImageInitial>
                         </Fragment>
@@ -235,8 +211,8 @@ const ToDoList = () => {
             <AlertComponent
                 state={alertDelete}
                 setVisible={setAlertDelete}
-                title={alertMessages[0].titulo}
-                message={alertMessages[0].descricao}
+                title={ToDoMocks.ToDoScreen.alerts.deleteTask.title}
+                message={ToDoMocks.ToDoScreen.alerts.deleteTask.description}
                 onConfirm={handleConfirmDelete}
                 onCancel={handleCancelDelete}
             />
@@ -244,9 +220,9 @@ const ToDoList = () => {
             <AlertComponent
                 state={alertFinish}
                 setVisible={setAlertFinish}
+                title={ToDoMocks.ToDoScreen.alerts.finishTask.title}
+                message={ToDoMocks.ToDoScreen.alerts.finishTask.description}
                 isInformation={true}
-                title={alertMessages[1].titulo}
-                message={alertMessages[1].descricao}
                 onConfirm={handleConfirmFinish}
             />
 
@@ -254,8 +230,8 @@ const ToDoList = () => {
                 state={alertFinished}
                 setVisible={setAlertFinished}
                 isInformation={true}
-                title={alertMessages[2].titulo}
-                message={alertMessages[2].descricao}
+                title={ToDoMocks.ToDoScreen.alerts.unfinishedTask.title}
+                message={ToDoMocks.ToDoScreen.alerts.unfinishedTask.description}
                 onConfirm={handleConfirmAlertFinished}
             />
         </ContentContainer >

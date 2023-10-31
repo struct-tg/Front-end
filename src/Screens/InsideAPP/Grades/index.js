@@ -1,11 +1,15 @@
 import React, { useState, Fragment, useContext, useEffect } from "react";
-import { TouchableOpacity, Image, View } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { ContentContainer, ViewContainer, Title, ViewSettings, ViewBlock, ContainerImageInitial } from "../../../Styles/DefaultStyles/index";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { AutenticacaoContext } from "../../../Contexts/UserContext";
 import { Ionicons } from "@expo/vector-icons";
 import { deleteDiscipline, getAllDiscipline, getDisciplineByID, offDiscipline } from "../../../Services/Requisicoes/Grades/index";
 import { FlatList } from "react-native-gesture-handler";
+import { AntDesign } from '@expo/vector-icons';
+import ResponsiveImage from "react-native-responsive-image";
+import structSpeak from "../../../Device/Speech.js";
+import useMocks from "../../../Mocks/index.js";
 import CardGrades from "./ComponentsGrades/CardGradeGrades";
 import AlertComponent from "../../../Components/Alert";
 import SpinnerComponent from "../../../Components/Spinner";
@@ -14,18 +18,13 @@ import * as Haptics from 'expo-haptics';
 const Grades = () => {
     const [grades, setGrades] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const { DisciplinesMocks } = useMocks();
 
     const [alertVisible, setAlertVisible] = useState(false);
     const [alertOffDiscipline, setAlertOffDiscipline] = useState(false);
-
     const [selectedDisciplineID, setSelectedDisciplineID] = useState(undefined);
 
-    const [alertMessages, setAlertMessages] = useState([
-        { titulo: 'Deseja mesmo excluir sua disciplina?', descricao: 'Essa ação é irreversível e não terá como você desfazer após a confirmação.' },
-        { titulo: 'Você tem certeza dessa ação?', descricao: 'Ao confirmar, você encerrará está disciplina e todas as suas atividades avaliativas.' }
-    ]);
-
-    const { tokenJWT, username } = useContext(AutenticacaoContext);
+    const { tokenJWT } = useContext(AutenticacaoContext);
     const navigation = useNavigation();
     const isFocused = useIsFocused(false);
 
@@ -42,14 +41,6 @@ const Grades = () => {
         }
         fetchDatas();
     }, [isFocused]);
-
-    const goToAddGrade = () => {
-        navigation.navigate('AddGrade');
-    };
-
-    const goToActivityFilters = () => {
-        navigation.navigate('ActivityFilters');
-    };
 
     const showAlertDeleteDiscipline = (DisciplineID) => {
         setSelectedDisciplineID(DisciplineID);
@@ -120,30 +111,34 @@ const Grades = () => {
             <ViewContainer>
 
                 <ViewSettings>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => { navigation.navigate('AddGrade') }}>
                         <Ionicons
                             name={"add-circle-outline"}
                             size={35}
                             color={"white"}
-                            onPress={goToAddGrade}
                         />
                     </TouchableOpacity>
 
                     <ViewBlock>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => { structSpeak(DisciplinesMocks.DisciplineScreen.speech) }}>
+                            <AntDesign
+                                name="aliwangwang-o1"
+                                size={30}
+                                color="white"
+                            />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => { navigation.navigate('DisciplinesFiltersToDo') }}>
                             <Ionicons
                                 name={"library-outline"}
                                 size={30}
                                 color={"white"}
-                                onPress={() => navigation.navigate('DisciplinesFiltersToDo')}
                             />
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => { navigation.navigate('ActivityFilters') }}>
                             <Ionicons
                                 name={"options-outline"}
                                 size={35}
                                 color={"white"}
-                                onPress={goToActivityFilters}
                             />
                         </TouchableOpacity>
                     </ViewBlock>
@@ -157,12 +152,13 @@ const Grades = () => {
                         ?
                         (
                             <Fragment>
-                                <Title>{`Adicione novas disciplinas, ${username}!`}</Title>
+                                <Title>{DisciplinesMocks.DisciplineScreen.title}</Title>
                                 <ContainerImageInitial>
-                                    <Image
-                                        source={require('./Grade-Image.png')}
-                                        style={{ width: "100%", height: "55%" }}
-                                        resizeMode="cover"
+                                    <ResponsiveImage
+                                        source={DisciplinesMocks.DisciplineScreen.image.content}
+                                        initWidth={DisciplinesMocks.DisciplineScreen.image.width}
+                                        initHeight={DisciplinesMocks.DisciplineScreen.image.height}
+                                        resizeMode={DisciplinesMocks.DisciplineScreen.image.rezide}
                                     />
                                 </ContainerImageInitial>
                             </Fragment>
@@ -192,7 +188,6 @@ const Grades = () => {
                                 }
                                 showsVerticalScrollIndicator={false}
                             />
-
                         )
                 }
             </ViewContainer>
@@ -200,8 +195,8 @@ const Grades = () => {
             <AlertComponent
                 state={alertVisible}
                 setVisible={setAlertVisible}
-                title={alertMessages[0].titulo}
-                message={alertMessages[0].descricao}
+                title={DisciplinesMocks.DisciplineScreen.alerts.deleteDiscipline.title}
+                message={DisciplinesMocks.DisciplineScreen.alerts.deleteDiscipline.description}
                 onCancel={handleCancelDeleteDiscipline}
                 onConfirm={handleConfirmDeleteDiscipline}
             />
@@ -209,8 +204,8 @@ const Grades = () => {
             <AlertComponent
                 state={alertOffDiscipline}
                 setVisible={setAlertOffDiscipline}
-                title={alertMessages[1].titulo}
-                message={alertMessages[1].descricao}
+                title={DisciplinesMocks.DisciplineScreen.alerts.finishDiscipline.title}
+                message={DisciplinesMocks.DisciplineScreen.alerts.finishDiscipline.description}
                 onCancel={handleCancelOffDiscipline}
                 onConfirm={handleConfirmOffDiscipline}
             />

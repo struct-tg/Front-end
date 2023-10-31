@@ -1,10 +1,12 @@
 import React, { Fragment, useState, useEffect, useContext } from 'react';
-import { View, FlatList, Image } from 'react-native'
+import { FlatList } from 'react-native'
 import { ContentContainer, ViewContainer, Title, ContainerImageInitial } from "../../../../../Styles/DefaultStyles/index";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { AutenticacaoContext } from "../../../../../Contexts/UserContext.js";
 import { getAllTasks, getTaskById } from "../../../../../Services/Requisicoes/Tasks/index.js";
-import { convertDateISO8601, convertISODateToSlashDateString } from "../../../../../Utils/Date/index";
+import { convertDateISO8601 } from "../../../../../Utils/Date/index";
+import useMocks from '../../../../../Mocks';
+import ResponsiveImage from "react-native-responsive-image";
 import SearchBarComponent from '../../../../../Components/SearchBar';
 import RadioButtonComponent from '../../../../../Components/RadioButton/index.js';
 import CardTaskToDo from "../../ComponentsToDo/CardTaskToDo";
@@ -15,8 +17,9 @@ const FiltersTasks = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedRadio, setSelectedRadio] = useState('');
     const [isLoading, setIsLoading] = useState(true);
+    const { tokenJWT } = useContext(AutenticacaoContext);
+    const { ToDoMocks } = useMocks();
 
-    const { tokenJWT, username } = useContext(AutenticacaoContext);
     const isFocused = useIsFocused(false);
     const navigation = useNavigation();
 
@@ -83,12 +86,13 @@ const FiltersTasks = () => {
                 (<ViewContainer>
                     {allTasks.length <= 0 ? (
                         <Fragment>
-                            <Title>{`Cadastre novas tarefas para filtrar, ${username}!`}</Title>
+                            <Title>{ToDoMocks.ToDoFiltersScreen.title}</Title>
                             <ContainerImageInitial>
-                                <Image
-                                    source={require('./Filter-Image.png')}
-                                    style={{ width: "100%", height: "55%" }}
-                                    resizeMode="cover"
+                                <ResponsiveImage
+                                    source={ToDoMocks.ToDoFiltersScreen.image.content}
+                                    initWidth={ToDoMocks.ToDoFiltersScreen.image.width}
+                                    initHeight={ToDoMocks.ToDoFiltersScreen.image.height}
+                                    resizeMode={ToDoMocks.ToDoFiltersScreen.image.rezide}
                                 />
                             </ContainerImageInitial>
                         </Fragment>

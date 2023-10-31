@@ -9,7 +9,6 @@ import ScreenRecoverPassword from "./Screens/OutsideAPP/RecoverPassword/index.js
 
 /*Telas internas ao APP: Home*/
 import ScreenHome from "./Screens/InsideAPP/Home/index.js";
-import ScreenChartHome from "./Screens/InsideAPP/Home/ScreensHome/ChartHome/index.js";
 
 /*Telas internas ao APP: ToDo*/
 import ScreenToDo from "./Screens/InsideAPP/ToDoList/index.js";
@@ -53,8 +52,6 @@ const Routes = () => {
                 <Stack.Screen name="ForgotPassword" component={ScreenForgotPassword} />
                 <Stack.Screen name="PasswordCode" component={ScreenPasswordCode} />
                 <Stack.Screen name="RecoverPassword" component={ScreenRecoverPassword} />
-
-                <Stack.Screen name="ChartHome" component={ScreenChartHome} />
 
                 <Stack.Screen name="AddTodo" component={ScreenAddTodo} />
                 <Stack.Screen name="EditTodo" component={ScreenEditTodo} />

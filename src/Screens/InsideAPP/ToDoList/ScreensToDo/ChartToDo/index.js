@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext, Fragment } from 'react';
-import { View, Image } from 'react-native';
+import { View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { BarChart } from "react-native-chart-kit";
 import { AutenticacaoContext } from '../../../../../Contexts/UserContext';
-import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen';
 import { ContainerImageInitial, ContentContainer, Title, ViewContainer } from "../../../../../Styles/DefaultStyles/index.js";
+import useMocks from '../../../../../Mocks';
 import chartResume from "../../../../../Services/Requisicoes/Tasks/Charts/index.js";
 import deviceDimensions from '../../../../../Device/DeviceInformation';
 import SpinnerComponent from "../../../../../Components/Spinner/index.js";
@@ -13,13 +13,12 @@ import ResponsiveImage from "react-native-responsive-image";
 const ChartToDo = () => {
     const [chartData, setChartData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const { tokenJWT, username } = useContext(AutenticacaoContext);
+    const { tokenJWT } = useContext(AutenticacaoContext);
+    const { ToDoMocks } = useMocks();
     const isFocused = useIsFocused();
 
     const desiredHeight = deviceDimensions.height * 0.35;
     const desiredWidth = deviceDimensions.width * 0.95;
-    const imageWidth = widthPercentageToDP('100%');
-    const imageHeight = heightPercentageToDP('50%');
 
     useEffect(() => {
         async function fetchDatas() {
@@ -49,7 +48,7 @@ const ChartToDo = () => {
             }
         ]
     };
-   
+
     return (
         <ContentContainer>
             {isLoading
@@ -60,20 +59,20 @@ const ChartToDo = () => {
                     {chartData[0] == 0 && chartData[1] == 0 && chartData[2] == 0
                         ?
                         (<Fragment>
-                            <Title>{`Você ainda não tem tarefas cadastradas para usar este gráfico, ${username}!`}</Title>
+                            <Title>{ToDoMocks.ToDoChartScreen.title}</Title>
                             <ContainerImageInitial>
                                 <ResponsiveImage
-                                    source={require('./ChartToDo.png')}
-                                    initWidth={imageWidth}
-                                    initHeight={imageHeight}
-                                    resizeMode='cover'
+                                    source={ToDoMocks.ToDoChartScreen.image.content}
+                                    initWidth={ToDoMocks.ToDoChartScreen.image.width}
+                                    initHeight={ToDoMocks.ToDoChartScreen.image.height}
+                                    resizeMode={ToDoMocks.ToDoChartScreen.image.rezide}
                                 />
                             </ContainerImageInitial>
                         </Fragment>
                         )
                         :
                         (<ViewContainer>
-                            <Title>{`Essas são as porcentagens dos status das suas tarefas, ${username}!`}</Title>
+                            <Title>{ToDoMocks.ToDoChartScreen.titleDatas}</Title>
                             <View style={{ flexGrow: 1, alignItems: "center", justifyContent: "space-around" }}>
                                 <BarChart
                                     data={data}
@@ -97,7 +96,6 @@ const ChartToDo = () => {
                         )
                     }
                 </ViewContainer>
-
                 )
             }
 
