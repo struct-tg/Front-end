@@ -159,7 +159,7 @@ const FormsToDo = ({ aoSubmitar, initialValues, isEdit, interactions }) => {
                         <DropdownComponent
                             state={field.value}
                             fnSetValue={field.onChange}
-                            text={namesDisciplines.length === 0 ? "Você ainda não tem disciplinas cadastradas." : "Associe a uma disciplina."}
+                            text={namesDisciplines.length === 0 ? "Não há disciplinas cadastradas." : "Associe a uma disciplina."}
                             arrObjInformation={namesDisciplines}
                             disable={namesDisciplines.length === 0 || isEdit === true && initialValues.dateEnd !== null ? true : false}
                         />

@@ -348,7 +348,7 @@ const PomodoroClock = ({ route }) => {
 
             <AlertComponent
                 state={alerts.alertDecisionLongPause} setVisible={setAlerts}
-                title={PomodoroMocks.pomodoroClock.alerts.decisionLongPausa.title} message={PomodoroMocks.pomodoroClock.alerts.finishAllCycles.description}
+                title={PomodoroMocks.pomodoroClock.alerts.decisionLongPausa.title} message={PomodoroMocks.pomodoroClock.alerts.decisionLongPausa.description}
                 onCancel={handleOnCancelAlertDecisionLongPause} onConfirm={handleOnConfirmAlertDecisionLongPause}
             />
 

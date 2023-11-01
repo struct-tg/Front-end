@@ -14,18 +14,19 @@ import SpinnerComponent from "../../../../../Components/Spinner";
 
 const FiltersTasks = () => {
     const [allTasks, setAllTasks] = useState([]);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [selectedRadio, setSelectedRadio] = useState('');
+    const [searchQuery, setSearchQuery] = useState(null);
+    const [selectedRadio, setSelectedRadio] = useState(undefined);
     const [isLoading, setIsLoading] = useState(false);
     const { tokenJWT } = useContext(AutenticacaoContext);
     const { ToDoMocks } = useMocks();
 
-    const isFocused = useIsFocused(false);
+    const isFocused = useIsFocused();
     const navigation = useNavigation();
 
     useEffect(() => {
+        console.log('bati no effect');
         async function fetchDatas() {
-            const result = await getAllFilterTasks(tokenJWT, { status: 'COMPLETED', partialName: '' });
+            const result = await getAllFilterTasks(tokenJWT, { status: selectedRadio, partialName: searchQuery });
             setAllTasks(result);
         }
         fetchDatas();
@@ -73,8 +74,8 @@ const FiltersTasks = () => {
 
                             <RadioButtonComponent
                                 title={'Todas as tarefas.'}
-                                id={'all'}
-                                selected={selectedRadio === 'all'}
+                                id={undefined}
+                                selected={selectedRadio === undefined}
                                 onSelect={handleRadioSelect}
                             />
 

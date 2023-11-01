@@ -93,12 +93,31 @@ export async function deleteTask(idTask, tokenJWT) {
 };
 
 export async function getAllFilterTasks(tokenJWT, { status, partialName }) {
+    let queryStatus = "";
+    let queryPartialName = "";
+
     try {
-        const result = await api.get(`/task?status=${status}&partialName=${partialName}`, {
+        console.log(`Status: ${status}`);
+        console.log(`PartialName: ${partialName}`);
+        if(status){
+            queryStatus = `status=${status}`
+        }
+        if(partialName){
+            queryPartialName = `partialName=${partialName}`
+        }
+        const result = await api.get(`/task?${queryStatus}&${queryPartialName}`, {
             headers: {
                 Authorization: `Bearer ${tokenJWT}`,
             }
-        });
+        
+        }).catch(error => {
+            console.log(`\n\nError`);
+            console.log(JSON.stringify(error.response.data));
+            console.log(JSON.stringify(error.response));
+        }).then(datas => {console.log('\n\nSucesso') 
+            console.log(JSON.stringify(datas));
+            return datas;
+        })
         const objData = result.data;
         const array = objData.data;
         return array;
