@@ -24,12 +24,17 @@ import ScreenEditPomodoro from "./Screens/InsideAPP/Pomodoro/ScreensPomodoro/Edi
 import ScreenClockPomodoro from "./Screens/InsideAPP/Pomodoro/ScreensPomodoro/PomodoroClock/index.js";
 
 /*Telas internas ao APP: Disciplinas*/
-import ScreenGrades from "./Screens/InsideAPP/Grades/index.js";
-import ScreenAddGrade from "./Screens/InsideAPP/Grades/ScreensGrades/AddGrade/index.js";
-import ScreenEditGrade from "./Screens/InsideAPP/Grades/ScreensGrades/EditGrade/index.js";
-import ScreenEvaluativeActivity from "./Screens/InsideAPP/Grades/ScreensGrades/EvaluativeActivity/index.js";
-import ScreenActivityFilters from "./Screens/InsideAPP/Grades/ScreensGrades/ActivityFilters/index.js";
-import ScreenActivityFiltersToDo from "./Screens/InsideAPP/Grades/ScreensGrades/DisciplinesFiltersToDo/index.js";
+import ScreenDiscipline from "./Screens/InsideAPP/Disciplines/index.js";
+import ScreenAddDisciplines from "./Screens/InsideAPP/Disciplines/ScreensDisciplines/AddDisciplines/index.js";
+import ScreenEditDisciplines from "./Screens/InsideAPP/Disciplines/ScreensDisciplines/EditDisciplines/index.js";
+import ScreenDisciplinesFilters from "./Screens/InsideAPP/Disciplines/ScreensDisciplines/DisciplinesFilters";
+import ScreenDisciplinesFiltersToDo from "./Screens/InsideAPP/Disciplines/ScreensDisciplines/DisciplinesFiltersToDo/index.js";
+
+/*Telas internas ao APP: Atividades avaliativas*/
+import ScreenActivity from "./Screens/InsideAPP/Activity/index.js";
+import ScreenAddActivity from "./Screens/InsideAPP/Activity/ScreensActivity/AddActivity/index.js";
+import ScreenEditActivity from "./Screens/InsideAPP/Activity/ScreensActivity/EditActivity/index.js";
+import ScreenFilterActivity from "./Screens/InsideAPP/Activity/ScreensActivity/FiltersActivity/index.js";
 
 /*Telas internas ao APP: Calendario*/
 import ScreenCalendar from "./Screens/InsideAPP/Calendar/index.js";
@@ -62,11 +67,15 @@ const Routes = () => {
                 <Stack.Screen name="EditPomodoro" component={ScreenEditPomodoro} />
                 <Stack.Screen name="ClockPomodoro" component={ScreenClockPomodoro} />
 
-                <Stack.Screen name='AddGrade' component={ScreenAddGrade} />
-                <Stack.Screen name='EditGrade' component={ScreenEditGrade} />
-                <Stack.Screen name='EvaluativeActivity' component={ScreenEvaluativeActivity} />
-                <Stack.Screen name='ActivityFilters' component={ScreenActivityFilters} />
-                <Stack.Screen name='DisciplinesFiltersToDo' component={ScreenActivityFiltersToDo} />
+                <Stack.Screen name='AddDiscipline' component={ScreenAddDisciplines} />
+                <Stack.Screen name='EditDiscipline' component={ScreenEditDisciplines} />
+                <Stack.Screen name='DisciplineFilters' component={ScreenDisciplinesFilters} />
+                <Stack.Screen name='DisciplinesFiltersToDo' component={ScreenDisciplinesFiltersToDo} />
+
+                <Stack.Screen name="Activity" component={ScreenActivity} />
+                <Stack.Screen name="AddActivity" component={ScreenAddActivity} />
+                <Stack.Screen name="EditActivity" component={ScreenEditActivity} />
+                <Stack.Screen name='FilterActivity' component={ScreenFilterActivity} />
 
                 <Stack.Screen name="RoutesApp" component={RoutesApp} />
             </Stack.Navigator>
@@ -88,7 +97,7 @@ function RoutesApp() {
             />
             <Tab.Screen
                 name="Disciplinas"
-                component={ScreenGrades}
+                component={ScreenDiscipline}
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="book-outline" color={"white"} size={30} />

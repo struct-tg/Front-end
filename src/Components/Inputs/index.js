@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { TextInput, IconButton } from 'react-native-paper';
 import { ContainerIconButton, ContainerIconInput, ContainerIcons, StyledInput } from "../../Components/Inputs/StylesInputs.js";
-import { RFValue } from "react-native-responsive-fontsize";
-import deviceDimensions from "../../Device/DeviceInformation.js";
 
 export const Input = ({ secureText, text, value, onChangeText, type, formatNumber, formatPomodoro, disabled }) => {
     const formatInputValue = (inputText) => {

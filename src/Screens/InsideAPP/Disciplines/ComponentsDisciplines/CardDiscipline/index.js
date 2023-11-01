@@ -9,9 +9,9 @@ import {
     LineBlock,
     TitleNotesGrades,
     BotoesCardGrades
-} from "./StylesCardGrades";
+} from "./StylesCardDiscipline";
 
-const CardGradesComponent = ({ titleGrades, status, onDelete, onOFF, onEdit, onSelectActivity, isModify, noteMin, noteCurrent }) => {
+const CardDisciplineComponent = ({ titleGrades, status, onDelete, onOFF, onEdit, onSelectActivity, isModify, noteMin, noteCurrent }) => {
 
     return (
         <CardGrades onPress={onEdit} onLongPress={onOFF}>
@@ -51,4 +51,4 @@ const CardGradesComponent = ({ titleGrades, status, onDelete, onOFF, onEdit, onS
     );
 }
 
-export default CardGradesComponent;
+export default CardDisciplineComponent;

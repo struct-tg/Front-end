@@ -4,13 +4,12 @@ import { ContentContainer, ViewContainer, Title, ViewSettings, ViewBlock, Contai
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { AutenticacaoContext } from "../../../Contexts/UserContext";
 import { Ionicons } from "@expo/vector-icons";
-import { deleteDiscipline, getAllDiscipline, getDisciplineByID, offDiscipline } from "../../../Services/Requisicoes/Grades/index";
+import { deleteDiscipline, getAllDiscipline, getDisciplineByID, offDiscipline } from "../../../Services/Requests/Disciplines/index";
 import { FlatList } from "react-native-gesture-handler";
-import { AntDesign } from '@expo/vector-icons';
 import ResponsiveImage from "react-native-responsive-image";
 import structSpeak from "../../../Device/Speech.js";
 import useMocks from "../../../Mocks/index.js";
-import CardGrades from "./ComponentsGrades/CardGradeGrades";
+import CardDiscipline from "./ComponentsDisciplines/CardDiscipline";
 import AlertComponent from "../../../Components/Alert";
 import SpinnerComponent from "../../../Components/Spinner";
 import * as Haptics from 'expo-haptics';
@@ -68,7 +67,7 @@ const Grades = () => {
     const fnGoToEdit = async (idDiscipline) => {
         const result = await getDisciplineByID(tokenJWT, idDiscipline);
         if (result) {
-            navigation.navigate('EditGrade', { objGrade: result });
+            navigation.navigate('EditDiscipline', { objGrade: result });
         } else {
             console.log('Algo deu errado');
         }
@@ -111,7 +110,7 @@ const Grades = () => {
             <ViewContainer>
 
                 <ViewSettings>
-                    <TouchableOpacity onPress={() => { navigation.navigate('AddGrade') }}>
+                    <TouchableOpacity onPress={() => { navigation.navigate('AddDiscipline') }}>
                         <Ionicons
                             name={"add-circle-outline"}
                             size={35}
@@ -120,13 +119,6 @@ const Grades = () => {
                     </TouchableOpacity>
 
                     <ViewBlock>
-                        <TouchableOpacity onPress={() => { structSpeak(DisciplinesMocks.DisciplineScreen.speech) }}>
-                            <AntDesign
-                                name="aliwangwang-o1"
-                                size={30}
-                                color="white"
-                            />
-                        </TouchableOpacity>
                         <TouchableOpacity onPress={() => { navigation.navigate('DisciplinesFiltersToDo') }}>
                             <Ionicons
                                 name={"library-outline"}
@@ -134,7 +126,7 @@ const Grades = () => {
                                 color={"white"}
                             />
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => { navigation.navigate('ActivityFilters') }}>
+                        <TouchableOpacity onPress={() => { navigation.navigate('DisciplineFilters') }}>
                             <Ionicons
                                 name={"options-outline"}
                                 size={35}
@@ -168,7 +160,7 @@ const Grades = () => {
                             <FlatList
                                 data={grades}
                                 renderItem={({ item }) =>
-                                    <CardGrades
+                                    <CardDiscipline
                                         titleGrades={item.name}
                                         status={item.dateEnd}
                                         onOFF={() => item.dateEnd === null ? showAlertOffDiscipline(item.id) : null}
@@ -177,6 +169,7 @@ const Grades = () => {
                                         onEdit={() => fnGoToEdit(item.id)}
                                         isModify={true}
                                         onDelete={() => showAlertDeleteDiscipline(item.id)}
+                                        onSelectActivity={() => navigation.navigate('Activity')}
                                         activity={() => {
                                             if (item.activity && item.activity.length > 0) {
                                                 return true;

@@ -33,7 +33,7 @@ export const TitleCardGrades = styled.Text`
 `;
 
 export const SituationCardGrades = styled.Text`
-    font-size: ${RFValue(24, deviceDimensions.height)}px;
+    font-size: ${RFValue(20, deviceDimensions.height)}px;
     color: #fff;
     font-weight: bold;
 `;

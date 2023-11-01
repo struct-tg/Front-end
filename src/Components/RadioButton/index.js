@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { RadioButton } from 'react-native-paper';
 import { AlignRadioButton, TextRadioButton } from "./StylesRadioButton";
 
-const RadioButtonComponent = ({ id, title, selected, onSelect }) => {
+const RadioButtonComponent = ({ id, title, selected, onSelect, disabled }) => {
     return (
         <AlignRadioButton>
             <RadioButton
                 value={id}
-                status={selected ? 'checked' : 'unchecked'} // Define o status com base na prop 'selected'
-                onPress={() => onSelect(id)} // Chama a função de seleção quando pressionado
+                status={selected ? 'checked' : 'unchecked'} 
+                onPress={() => onSelect(id)}
+                disabled={disabled}
             />
             <TextRadioButton>{title}</TextRadioButton>
         </AlignRadioButton>

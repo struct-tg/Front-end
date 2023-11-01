@@ -2,16 +2,17 @@ import React, { useState, useContext, useEffect, Fragment } from "react";
 import { ContentContainer, ViewContainer, Title, ContainerImageInitial } from "../../../../../Styles/DefaultStyles/index";
 import { AutenticacaoContext } from "../../../../../Contexts/UserContext";
 import { Image, View } from "react-native";
-import { getAllDiscipline, getDisciplineByID } from "../../../../../Services/Requisicoes/Grades/index";
+import { getAllDiscipline, getDisciplineByID } from "../../../../../Services/Requests/Disciplines/index.js";
 import { useIsFocused } from "@react-navigation/native";
 import { FlatList } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+import useMocks from "../../../../../Mocks/index.js";
 import SpinnerComponent from "../../../../../Components/Spinner";
-import CardGrades from "../../ComponentsGrades/CardGradeGrades";
+import CardGrades from "../../ComponentsDisciplines/CardDiscipline";
 import SearchBarComponent from "../../../../../Components/SearchBar/index";
 import RadioButtonComponent from "../../../../../Components/RadioButton/index";
 
-const ActivityFilters = () => {
+const DisciplineFilters = () => {
     const [grades, setGrades] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedRadio, setSelectedRadio] = useState('');
@@ -86,13 +87,7 @@ const ActivityFilters = () => {
                             ?
                             (<Fragment>
                                 <Title>{`Cadastre novas atividades avaliativas para filtrar, ${username}!`}</Title>
-                                <ContainerImageInitial>
-                                    <Image
-                                        source={require('./ActivityFilters-Image.png')}
-                                        style={{ width: "100%", height: "55%" }}
-                                        resizeMode="cover"
-                                    />
-                                </ContainerImageInitial>
+                                
                             </Fragment>
                             )
                             :
@@ -152,4 +147,4 @@ const ActivityFilters = () => {
     )
 };
 
-export default ActivityFilters;
+export default DisciplineFilters;

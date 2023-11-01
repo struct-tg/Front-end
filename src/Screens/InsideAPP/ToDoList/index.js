@@ -4,7 +4,7 @@ import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation, useIsFocused } from "@react-navigation/native";
-import { getAllTasks, deleteTask, getTaskById, finishTask } from "../../../Services/Requisicoes/Tasks";
+import { getAllTasks, deleteTask, getTaskById, finishTask } from "../../../Services/Requests/Tasks";
 import { AutenticacaoContext } from "../../../Contexts/UserContext.js";
 import ModalComponent from "./ComponentsToDo/ModalInformationsToDo";
 import useMocks from "../../../Mocks/index.js";
@@ -122,12 +122,11 @@ const ToDoList = () => {
                     </TouchableOpacity>
 
                     <ViewBlock>
-                        <TouchableOpacity>
-                            <AntDesign
-                                name="aliwangwang-o1"
-                                size={30}
-                                color="white"
-                                onPress={() => structSpeak(ToDoMocks.ToDoScreen.speech)}
+                        <TouchableOpacity onPress={() => { setModalInformation(true) }}>
+                            <Ionicons
+                                name={"help-circle-outline"}
+                                size={35}
+                                color={"white"}
                             />
                         </TouchableOpacity>
 

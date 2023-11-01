@@ -3,9 +3,9 @@ import { ContentContainer, ViewContainer, Title, ContainerImageInitial } from ".
 import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen';
 import { AutenticacaoContext } from '../../../../../Contexts/UserContext.js';
 import { useNavigation, useIsFocused } from "@react-navigation/native";
-import { getTaskById } from '../../../../../Services/Requisicoes/Tasks/index.js';
-import { getAllNamesDiscipline, getAllTasksByDiscipline } from "../../../../../Services/Requisicoes/Grades/Filters/index.js";
-import { getAllTasks } from '../../../../../Services/Requisicoes/Tasks/index.js';
+import { getTaskById } from '../../../../../Services/Requests/Tasks/index.js';
+import { getAllNamesDiscipline, getAllTasksByDiscipline } from "../../../../../Services/Requests/Disciplines/Filters/index.js";
+import { getAllTasks } from '../../../../../Services/Requests/Tasks/index.js';
 import { FlatList } from 'react-native-gesture-handler';
 import { convertDateISO8601 } from '../../../../../Utils/Date/index.js';
 import CardToDo from "../../../ToDoList/ComponentsToDo/CardTaskToDo/index.js";
@@ -98,14 +98,7 @@ const DisciplineFiltersToDo = () => {
                             ?
                             (<Fragment>
                                 <Title>{`Você ainda não tem tarefas relacionadas a disciplinas, ${username}!`}</Title>
-                                <ContainerImageInitial>
-                                    <ResponsiveImage
-                                        source={require('./DisciplinesFiltersToDo.png')}
-                                        initHeight={imageHeight}
-                                        initWidth={imageWidth}
-                                        resizeMode='cover'
-                                    />
-                                </ContainerImageInitial>
+                                
                             </Fragment>
                             )
                             :

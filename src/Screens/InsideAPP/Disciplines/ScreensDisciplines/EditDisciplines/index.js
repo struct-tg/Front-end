@@ -1,11 +1,11 @@
 import React, { Fragment, useContext, useState } from 'react';
 import { AutenticacaoContext } from "../../../../../Contexts/UserContext";
-import { updateDiscipline } from "../../../../../Services/Requisicoes/Grades/index";
+import { updateDiscipline } from "../../../../../Services/Requests/Disciplines/index";
 import { useNavigation } from "@react-navigation/native";
-import FormsGrades from "../../ComponentsGrades/FormsGrades/index";
+import FormsDisciplines from "../../ComponentsDisciplines/FormsDisciplines";
 import ToastComponent from "../../../../../Components/Toast";
 
-const EditGrade = ({ route }) => {
+const EditDiscipline = ({ route }) => {
     const { tokenJWT } = useContext(AutenticacaoContext);
 
     const navigation = useNavigation();
@@ -36,7 +36,7 @@ const EditGrade = ({ route }) => {
 
     return (
         <Fragment>
-            <FormsGrades
+            <FormsDisciplines
                 aoSubmitar={fnEditSubmitForm}
                 initialValues={objGrade}
                 isEdit={true}
@@ -54,4 +54,4 @@ const EditGrade = ({ route }) => {
     );
 };
 
-export default EditGrade;
+export default EditDiscipline;

@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useContext } from 'react';
-import { updatePomodoro } from "../../../../../Services/Requisicoes/Pomodoro/index.js";
+import { updatePomodoro } from "../../../../../Services/Requests/Pomodoro/index.js";
 import { useNavigation } from '@react-navigation/native';
 import { AutenticacaoContext } from "../../../../../Contexts/UserContext.js";
 import FormsPomodoro from "../../Components/FormsPomodoro/index.js";

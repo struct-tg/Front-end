@@ -1,4 +1,4 @@
-import { getAllDiscipline } from "../../Grades/index";
+import { getAllDiscipline } from "../../Disciplines/index";
 import { getAllTasks } from "../../Tasks";
 
 export async function getAllDisciplineReproved(tokenJWT) {

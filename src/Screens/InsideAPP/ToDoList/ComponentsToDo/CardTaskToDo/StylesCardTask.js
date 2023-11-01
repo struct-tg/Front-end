@@ -16,7 +16,7 @@ export const Card = styled.TouchableOpacity`
 `;
 
 export const TituloCard = styled.Text`
-    font-size: ${RFValue(20, deviceDimensions.height)}px;
+    font-size: ${RFValue(18, deviceDimensions.height)}px;
     font-weight: bold;
     text-transform: uppercase;
     color: white;

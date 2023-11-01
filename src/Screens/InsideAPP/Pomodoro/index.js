@@ -5,7 +5,7 @@ import { ContentContainer, ViewContainer, ViewSettings, Title, ContainerImageIni
 import { Ionicons } from "@expo/vector-icons";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { AutenticacaoContext } from "../../../Contexts/UserContext.js";
-import { getAllPomodoro, getPomodoroByID, deletePomodoro } from "../../../Services/Requisicoes/Pomodoro/index.js";
+import { getAllPomodoro, getPomodoroByID, deletePomodoro } from "../../../Services/Requests/Pomodoro/index.js";
 import { AntDesign } from '@expo/vector-icons';
 import useMocks from "../../../Mocks/index.js";
 import structSpeak from "../../../Device/Speech.js";
@@ -91,11 +91,11 @@ const Pomodoro = () => {
                         />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => structSpeak(PomodoroMocks.PomodoroScreen.speech)}>
-                        <AntDesign
-                            name="aliwangwang-o1"
-                            size={30}
-                            color="white"
+                    <TouchableOpacity onPress={() => setModalVisible(true)}>
+                        <Ionicons
+                            name="help-circle-outline"
+                            size={35}
+                            color={"white"}
                         />
                     </TouchableOpacity>
                 </ViewSettings>

@@ -8,9 +8,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import SwitchComponent from "../../../../../Components/Switch";
 import RadioButtonComponent from "../../../../../Components/RadioButton";
 import HelperTextComponent from "../../../../../Components/HelperText";
-import TitleNote from "./StylesFormsGrades";
+import TitleNote from "./StylesFormsDiscipline";
 
-const FormsGrades = ({ aoSubmitar, initialValues, isEdit, interactions }) => {
+const FormsDiscipline = ({ aoSubmitar, initialValues, isEdit, interactions }) => {
     const [selectedRadio, setSelectedRadio] = useState(isEdit ? initialValues.typeAv : 'SIMPLE');
     const { control, handleSubmit, formState: { errors } } = useForm({
         mode: "onChange",
@@ -105,6 +105,7 @@ const FormsGrades = ({ aoSubmitar, initialValues, isEdit, interactions }) => {
                 id={'SIMPLE'}
                 selected={selectedRadio === 'SIMPLE'}
                 onSelect={() => setSelectedRadio('SIMPLE')}
+                disabled={isEdit === true && initialValues.dateEnd !== null ? true : false}
             />
 
             <RadioButtonComponent
@@ -112,6 +113,7 @@ const FormsGrades = ({ aoSubmitar, initialValues, isEdit, interactions }) => {
                 id={'WEIGHTED'}
                 selected={selectedRadio === 'WEIGHTED'}
                 onSelect={() => setSelectedRadio('WEIGHTED')}
+                disabled={isEdit === true && initialValues.dateEnd !== null ? true : false}
             />
             {!interactions
                 &&
@@ -127,4 +129,4 @@ const FormsGrades = ({ aoSubmitar, initialValues, isEdit, interactions }) => {
     )
 };
 
-export default FormsGrades;
+export default FormsDiscipline;

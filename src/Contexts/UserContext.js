@@ -1,6 +1,6 @@
 import React from "react";
 import { createContext, useState } from "react";
-import { realizaLogin, getUserName } from "../Services/Requisicoes/Users";
+import { realizaLogin, getUserName } from "../Services/Requests/Users";
 
 export const AutenticacaoContext = createContext();
 

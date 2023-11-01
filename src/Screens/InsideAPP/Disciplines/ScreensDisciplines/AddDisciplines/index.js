@@ -1,10 +1,10 @@
 import React, { Fragment, useContext } from 'react';
-import FormsGrades from "../../ComponentsGrades/FormsGrades";
-import { insertNewDiscipline } from "../../../../../Services/Requisicoes/Grades/index";
+import FormsDisciplines from "../../ComponentsDisciplines/FormsDisciplines";
+import { insertNewDiscipline } from "../../../../../Services/Requests/Disciplines/index";
 import { AutenticacaoContext } from "../../../../../Contexts/UserContext";
 import { useNavigation } from '@react-navigation/native';
 
-const AddGrade = () => {
+const AddDiscipline = () => {
     const { tokenJWT } = useContext(AutenticacaoContext)
     const navigation = useNavigation();
 
@@ -30,7 +30,7 @@ const AddGrade = () => {
 
     return (
         <Fragment>
-            <FormsGrades
+            <FormsDisciplines
                 aoSubmitar={handleAddNewDiscipline}
                 isEdit={false}
             />
@@ -38,4 +38,4 @@ const AddGrade = () => {
     )
 }
 
-export default AddGrade;
+export default AddDiscipline;

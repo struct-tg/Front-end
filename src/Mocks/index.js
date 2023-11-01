@@ -7,13 +7,21 @@ import ToDoImage from "../../assets/images/ToDoImages/ToDo-InitialImage.png";
 import ToDoFilterImage from "../../assets/images/ToDoImages/Filter-InitialImage.png";
 import ToDoChartImage from "../../assets/images/ToDoImages/Chart-InitialImage.png";
 import ToDoModalImage from "../../assets/images/ToDoImages/Modal-InitialImage.png";
-import HomeImage from "../../assets/images/ToDoImages/Home-InitialImage.png";
+
+/*Home Images*/
+import HomeImage from "../../assets/images/HomeImages/Home-InitialImage.png";
 
 /* Pomodoro Images */
 import PomodoroImage from "../../assets/images/PomodoroImages/Pomodoro.png";
 
 /* Disciplinas Images */
 import DisciplinesImage from "../../assets/images/DisciplinesImages/Disciplines-InitialImage.png";
+import DisciplineFiltersImage from "../../assets/images/DisciplinesImages/DisciplinesFilters-InitialImage.png"
+import DisciplinesFiltersToDoImage from "../../assets/images/DisciplinesImages/DisciplinesFiltersToDo-InitialImage.png";
+
+/* Atividades Images */
+import ActivityImage from "../../assets/images/ActivityImages/Activity-InitialImage.png";
+import ActivityFilterImage from "../../assets/images/ActivityImages/ActivityFilters-InitialImage.png";
 
 const useMocks = () => {
     const { username } = useContext(AutenticacaoContext);
@@ -29,6 +37,27 @@ const useMocks = () => {
                 height: imageHeight,
                 rezide: 'cover'
             }
+        }
+    }
+
+    const ActivityMocks = {
+        ActivityScreen: {
+            title: `Adicione novas atividades para esta disciplina, ${username}!`,
+            image: {
+                content: ActivityImage,
+                width: imageWidth,
+                height: imageHeight,
+                rezide: 'cover'
+            },
+        },
+        ActivityFiltersScreen: {
+            title: `Você não tem atividades para filtar, ${username}!`,
+            image: {
+                content: ActivityFilterImage,
+                width: imageWidth,
+                height: imageHeight,
+                rezide: 'cover'
+            },
         }
     }
 
@@ -53,6 +82,24 @@ const useMocks = () => {
                 }
             }
         },
+        DisciplineFiltersScreen: {
+            title: `Cadastre novas atividades avaliativas para filtrar, ${username}!`,
+            image: {
+                content: DisciplineFiltersImage,
+                width: imageWidth,
+                height: imageHeight,
+                rezide: 'cover'
+            }
+        },
+        DisciplineFiltersToDo: {
+            title: `Cadastre novas atividades avaliativas para filtrar, ${username}!`,
+            image: {
+                content: DisciplinesFiltersToDoImage,
+                width: imageWidth,
+                height: imageHeight,
+                rezide: 'cover'
+            }
+        }
     }
 
     const ToDoMocks = {
@@ -154,7 +201,7 @@ const useMocks = () => {
         }
     }
 
-    return { HomeMocks, DisciplinesMocks, PomodoroMocks, ToDoMocks };
+    return { HomeMocks, DisciplinesMocks, PomodoroMocks, ToDoMocks, ActivityMocks };
 }
 
 export default useMocks;

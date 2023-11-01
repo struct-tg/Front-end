@@ -11,7 +11,7 @@ import {
     ContainerButton,
     LinkNavigators
 } from "../../../Styles/DefaultStyles";
-import { VerifyOTP } from "../../../Services/Requisicoes/OTP";
+import { VerifyOTP } from "../../../Services/Requests/OTP";
 import HelperTextComponent from "../../../Components/HelperText";
 import ToastComponent from "../../../Components/Toast/index.js";
 

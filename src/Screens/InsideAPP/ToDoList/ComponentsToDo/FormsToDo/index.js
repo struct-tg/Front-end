@@ -7,7 +7,7 @@ import { InputForm } from '../../../../../Components/Inputs';
 import { ContainerButton } from '../../../../../Styles/DefaultStyles';
 import { Button } from '../../../../../Components/Button';
 import { convertDateISO8601, convertISODateToSlashDateString, convertISODateToTraceDateString } from '../../../../../Utils/Date/index';
-import { getAllNamesDiscipline } from "../../../../../Services/Requisicoes/Grades/Filters";
+import { getAllNamesDiscipline } from "../../../../../Services/Requests/Disciplines/Filters";
 import { useIsFocused } from '@react-navigation/native';
 import { AutenticacaoContext } from "../../../../../Contexts/UserContext";
 import ToastComponent from "../../../../../Components/Toast";
@@ -116,7 +116,7 @@ const FormsToDo = ({ aoSubmitar, initialValues, isEdit, interactions }) => {
                     control={control}
                     name='name'
                     defaultValue=""
-                    rules={{ required: 'Campo obrigatório!', maxLength: { value: 20, message: "Nome muito grande!" }, minLength: { value: 3, message: "Nome muito pequeno" } }}
+                    rules={{ required: 'Campo obrigatório!', maxLength: { value: 25, message: "Nome muito grande!" }, minLength: { value: 3, message: "Nome muito pequeno" } }}
                     render={({ field }) => (
                         <View>
                             <InputForm

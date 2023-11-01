@@ -62,6 +62,7 @@ const FormsPomodoro = ({ aoSubmitar, initialValues, isEdit }) => {
                                 value={String(field.value)}
                                 onChangeText={field.onChange}
                                 type={'numeric'}
+                                formatPomodoro={true}
                             />
                             {errors.timerPauseShort && (<HelperTextComponent helperType="error" helperText={errors.timerPauseShort.message} />)}
                         </View>
@@ -80,6 +81,7 @@ const FormsPomodoro = ({ aoSubmitar, initialValues, isEdit }) => {
                                 value={String(field.value)}
                                 onChangeText={field.onChange}
                                 type={'numeric'}
+                                formatPomodoro={true}
                             />
                             {errors.timerPauseLong && (<HelperTextComponent helperType="error" helperText={errors.timerPauseLong.message} />)}
                         </View>

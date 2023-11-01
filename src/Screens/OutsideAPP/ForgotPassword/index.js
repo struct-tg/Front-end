@@ -10,7 +10,7 @@ import {
     UppercaseTitle,
     ContainerButton,
 } from "../../../Styles/DefaultStyles";
-import { generateOTP } from "../../../Services/Requisicoes/OTP";
+import { generateOTP } from "../../../Services/Requests/OTP";
 import HelperTextComponent from "../../../Components/HelperText";
 
 const ForgotPassword = () => {

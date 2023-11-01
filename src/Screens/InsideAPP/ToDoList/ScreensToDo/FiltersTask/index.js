@@ -3,7 +3,7 @@ import { FlatList } from 'react-native'
 import { ContentContainer, ViewContainer, Title, ContainerImageInitial } from "../../../../../Styles/DefaultStyles/index";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { AutenticacaoContext } from "../../../../../Contexts/UserContext.js";
-import { getAllTasks, getTaskById } from "../../../../../Services/Requisicoes/Tasks/index.js";
+import { getAllTasks, getTaskById } from "../../../../../Services/Requests/Tasks/index.js";
 import { convertDateISO8601 } from "../../../../../Utils/Date/index";
 import useMocks from '../../../../../Mocks';
 import ResponsiveImage from "react-native-responsive-image";

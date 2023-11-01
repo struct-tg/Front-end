@@ -5,7 +5,7 @@ import { BarChart } from "react-native-chart-kit";
 import { AutenticacaoContext } from '../../../../../Contexts/UserContext';
 import { ContainerImageInitial, ContentContainer, Title, ViewContainer } from "../../../../../Styles/DefaultStyles/index.js";
 import useMocks from '../../../../../Mocks';
-import chartResume from "../../../../../Services/Requisicoes/Tasks/Charts/index.js";
+import chartResume from "../../../../../Services/Requests/Tasks/Charts/index.js";
 import deviceDimensions from '../../../../../Device/DeviceInformation';
 import SpinnerComponent from "../../../../../Components/Spinner/index.js";
 import ResponsiveImage from "react-native-responsive-image";

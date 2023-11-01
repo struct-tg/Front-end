@@ -4,7 +4,7 @@ import { Input, InputPassword } from "../../../Components/Inputs";
 import { Button } from "../../../Components/Button";
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
-import { cadastraUsuario } from "../../../Services/Requisicoes/Users/index.js";
+import { cadastraUsuario } from "../../../Services/Requests/Users/index.js";
 import {
     ContentContainer,
     ViewContainer,

@@ -3,9 +3,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { Image } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { AutenticacaoContext } from "../../../Contexts/UserContext";
-import { getAllTasksPendings } from "../../../Services/Requisicoes/Tasks/Filters/index";
-import { getTaskById } from "../../../Services/Requisicoes/Tasks/index";
-import { getDisciplineByID, getAllDiscipline } from "../../../Services/Requisicoes/Grades/index";
+import { getAllTasksPendings } from "../../../Services/Requests/Tasks/Filters/index";
+import { getTaskById } from "../../../Services/Requests/Tasks/index";
+import { getDisciplineByID, getAllDiscipline } from "../../../Services/Requests/Disciplines/index.js";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import {
     ContentContainer,

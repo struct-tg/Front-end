@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ContainerButton, LinkNavigators, UppercaseTitle } from "../../../../../Styles/DefaultStyles";
 import { View, TouchableOpacity } from 'react-native';
 import { AutenticacaoContext } from "../../../../../Contexts/UserContext";
-import { deleteUser, updateUser } from "../../../../../Services/Requisicoes/Users";
+import { deleteUser, updateUser } from "../../../../../Services/Requests/Users";
 import { Ionicons } from '@expo/vector-icons';
 import { Controller, useForm } from "react-hook-form";
 import ModalComponent from "../../../../../Components/Modal";

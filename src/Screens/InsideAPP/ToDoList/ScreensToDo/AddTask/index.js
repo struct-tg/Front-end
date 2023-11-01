@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useContext } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { AutenticacaoContext } from "../../../../../Contexts/UserContext";
-import { insertNewTask } from "../../../../../Services/Requisicoes/Tasks";
+import { insertNewTask } from "../../../../../Services/Requests/Tasks/index.js";
 import FormsToDo from "../../ComponentsToDo/FormsToDo";
 import ToastComponent from "../../../../../Components/Alert";
 

@@ -11,7 +11,7 @@ import {
     ContainerButton,
 } from "../../../Styles/DefaultStyles";
 import { AutenticacaoContext } from "../../../Contexts/UserContext";
-import { ChangePassword } from "../../../Services/Requisicoes/OTP/index";
+import { ChangePassword } from "../../../Services/Requests/OTP/index";
 import HelperTextComponent from "../../../Components/HelperText";
 import ToastComponent from "../../../Components/Toast/index.js";
 

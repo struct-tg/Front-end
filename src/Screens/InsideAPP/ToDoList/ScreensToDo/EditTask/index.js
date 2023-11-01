@@ -1,6 +1,6 @@
 import React, { useState, useContext, Fragment } from 'react'
 import { useNavigation } from '@react-navigation/native';
-import { updateTask } from "../../../../../Services/Requisicoes/Tasks";
+import { updateTask } from "../../../../../Services/Requests/Tasks";
 import { AutenticacaoContext } from "../../../../../Contexts/UserContext";
 import { convertDateISO8601, convertISODateToSlashDateString, convertISODateToTraceDateString } from '../../../../../Utils/Date';
 import FormsToDo from "../../ComponentsToDo/FormsToDo";
