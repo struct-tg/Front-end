@@ -91,3 +91,20 @@ export async function deleteTask(idTask, tokenJWT) {
         return false;
     }
 };
+
+export async function getAllFilterTasks(tokenJWT, { status, partialName }) {
+    try {
+        const result = await api.get(`/task?status=${status}&partialName=${partialName}`, {
+            headers: {
+                Authorization: `Bearer ${tokenJWT}`,
+            }
+        });
+        const objData = result.data;
+        const array = objData.data;
+        return array;
+    }
+    catch (error) {
+        console.log('O erro na função getAllFilterTasks: ', error);
+        return error;
+    }
+}

@@ -3,7 +3,7 @@ import { FlatList } from 'react-native'
 import { ContentContainer, ViewContainer, Title, ContainerImageInitial } from "../../../../../Styles/DefaultStyles/index";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { AutenticacaoContext } from "../../../../../Contexts/UserContext.js";
-import { getAllTasks, getTaskById } from "../../../../../Services/Requests/Tasks/index.js";
+import { getAllTasks, getTaskById, getAllFilterTasks } from "../../../../../Services/Requests/Tasks/index.js";
 import { convertDateISO8601 } from "../../../../../Utils/Date/index";
 import useMocks from '../../../../../Mocks';
 import ResponsiveImage from "react-native-responsive-image";
@@ -16,52 +16,20 @@ const FiltersTasks = () => {
     const [allTasks, setAllTasks] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedRadio, setSelectedRadio] = useState('');
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const { tokenJWT } = useContext(AutenticacaoContext);
     const { ToDoMocks } = useMocks();
 
     const isFocused = useIsFocused(false);
     const navigation = useNavigation();
 
-    const loadTasks = async (tokenJWT) => {
-        try {
-            const tasks = await getAllTasks(tokenJWT);
-            setAllTasks(tasks);
-        } catch (error) {
-            console.log('Erro ao carregar dados:', error);
-        } finally {
-            setIsLoading(false);
-        }
-    }
-
-    const filterAndSearchTasks = () => {
-        let filteredTasks = allTasks;
-
-        if (selectedRadio === 'finished') {
-            filteredTasks = filteredTasks.filter(item => item.dateEnd !== null);
-        } else if (selectedRadio === 'lates') {
-            filteredTasks = filteredTasks.filter(item =>
-                item.dateEnd !== null && convertDateISO8601(item.dateEnd) > convertDateISO8601(item.dateWishEnd)
-            );
-        } else if (selectedRadio === 'pending') {
-            filteredTasks = filteredTasks.filter(item => item.dateEnd === null);
-        }
-
-        const query = searchQuery.toLowerCase();
-        if (query) {
-            filteredTasks = filteredTasks.filter(item => item.name.toLowerCase().includes(query));
-        }
-        return filteredTasks;
-    }
-
     useEffect(() => {
         async function fetchDatas() {
-            if (isFocused) {
-                await loadTasks(tokenJWT);
-            }
+            const result = await getAllFilterTasks(tokenJWT, { status: 'COMPLETED', partialName: '' });
+            setAllTasks(result);
         }
-        fetchDatas()
-    }, [isFocused, tokenJWT]);
+        fetchDatas();
+    }, [isFocused, searchQuery, selectedRadio]);
 
     const handleRadioSelect = (radioId) => {
         setSelectedRadio(radioId);
@@ -112,27 +80,27 @@ const FiltersTasks = () => {
 
                             <RadioButtonComponent
                                 title={'Tarefas concluídas.'}
-                                id={'finished'}
-                                selected={selectedRadio === 'finished'}
+                                id={'COMPLETED'}
+                                selected={selectedRadio === 'COMPLETED'}
                                 onSelect={handleRadioSelect}
                             />
 
                             <RadioButtonComponent
                                 title={'Tarefas Atrasadas.'}
-                                id={'lates'}
-                                selected={selectedRadio === 'lates'}
+                                id={'LATE'}
+                                selected={selectedRadio === 'LATE'}
                                 onSelect={handleRadioSelect}
                             />
 
                             <RadioButtonComponent
                                 title={'Tarefas pendentes.'}
-                                id={'pending'}
-                                selected={selectedRadio === 'pending'}
+                                id={'NOTCOMPLETED'}
+                                selected={selectedRadio === 'NOTCOMPLETED'}
                                 onSelect={handleRadioSelect}
                             />
 
                             <FlatList
-                                data={filterAndSearchTasks()}
+                                data={allTasks}
                                 renderItem={({ item }) => <CardTaskToDo
                                     title={item.name}
                                     state={item.dateEnd === null
