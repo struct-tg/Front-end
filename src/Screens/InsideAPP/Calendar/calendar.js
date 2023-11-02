@@ -47,6 +47,10 @@ const CalendarTeste = () => {
     const [selected, setSelected] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
 
+    const vacation = { key: 'vacation', color: 'red', selectedDotColor: 'red' };
+    const massage = { key: 'massage', color: 'ligth-blue', selectedDotColor: 'green' };
+    const workout = { key: 'workout', color: 'green' };
+
     return (
         <ContentContainer>
             <ViewSettings>
@@ -62,10 +66,14 @@ const CalendarTeste = () => {
             <Calendar
                 onDayPress={day => {
                     setSelected(day.dateString);
+                    console.log('dia', day);
                 }}
+                markingType={'multi-dot'}
                 markedDates={{
-                    [selected]: { selected: true, disableTouchEvent: true, selectedDotColor: 'orange' }
-                }}
+                    [selected]: {selected: true, disableTouchEvent: true, selectedDotColor: 'orange'},
+                    '2023-11-02': {dots: [vacation, massage, workout], selectedColor: 'blue'},
+                    '2023-11-03': {dots: [massage, workout]}
+                  }}
             />
 
             <ModalInformationCalendar

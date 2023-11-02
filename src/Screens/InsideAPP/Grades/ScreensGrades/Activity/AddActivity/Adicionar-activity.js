@@ -1,24 +1,36 @@
-import React, { useState, useContext, Fragment } from 'react';
+import React, { useContext, Fragment } from 'react';
+import FormsActivity from '../Components/FormsActivity/FormsActivity';
+
+import { insertNewActivity } from "../../../../../../Services/Requisicoes/Activity/activity-service";
+import { AutenticacaoContext } from "../../../../../../Contexts/UserContext";
 import { useNavigation } from '@react-navigation/native';
 
-import { AutenticacaoContext } from "../../../../../../Contexts/UserContext";
-import { insertNewActivity } from "../../../../../../Services/Requisicoes/Activity/activity-service";
-import FormsActivity from '../Components/FormsActivity/ActivityFoms';
-
-const AddActivity = ({ route }) => {
+const AddActivity = () => {
     const { tokenJWT } = useContext(AutenticacaoContext);
-    const { entidadeId } = route.params;
     const navigation = useNavigation();
 
+    console.log('chega aqui');
+
     const handleAddNewActivity = async (dadosFormulario) => {
-        dadosFormulario.discipline = Strimg(entidadeId.name.value);
+        console.log('0');
+        dadosFormulario.discipline = Strimg(dadosFormulario.name);
+        console.log('1');
         dadosFormulario.nameActivity = String(dadosFormulario.nameActivity);
+        console.log('2');
         dadosFormulario.typeAc = Strimg(dadosFormulario.typeAc);
-        dadosFormulario.date = String(dadosFormulario.date);
-        dadosFormulario.weight = parseFloat(dadosFormulario.weight);
-        dadosFormulario.note = parseFloat(dadosFormulario.note);
+        console.log('3');
+        dadosFormulario.date = new Date(dadosFormulario.date);
+        console.log('4');
+        dadosFormulario.weight = parseFloat(dadosFormulario.weight.toFixed(2));
+        console.log('5');
+        dadosFormulario.note = parseFloat(dadosFormulario.note.toFixed(2));
+        console.log('6');
         dadosFormulario.comment = String(dadosFormulario.comment);
+        console.log('7');
         dadosFormulario.description = String(dadosFormulario.description);
+        console.log('8');
+
+        console.log('dadosFormulario', dadosFormulario);
 
         try {
             const result = await insertNewActivity(tokenJWT, dadosFormulario);
@@ -34,7 +46,7 @@ const AddActivity = ({ route }) => {
     return (
         <Fragment>
             <FormsActivity
-                save={handleAddNewActivity}
+                aoSubmitar={handleAddNewActivity}
                 isEdit={false}
             />
         </Fragment>

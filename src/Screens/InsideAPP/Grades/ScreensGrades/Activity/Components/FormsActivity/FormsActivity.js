@@ -15,7 +15,7 @@ import DropdownComponent from "../../../../../../../Components/DropDown";
 import Calendar from '../CalendarAvtivity/Calendar-activity';
 import HelperTextComponent from "../../../../../../../Components/HelperText";
 
-const FormsActivity = ({ save, initialValues, isEdit, interactions }) => {
+const FormsActivity = ({ aoSubmitar, initialValues, isEdit, interactions }) => {
     const { tokenJWT } = useContext(AutenticacaoContext);
     const [namesDisciplines, setNamesDisciplines] = useState([]);
     const isFocused = useIsFocused();
@@ -54,13 +54,13 @@ const FormsActivity = ({ save, initialValues, isEdit, interactions }) => {
         const formData = {
             ...data
         };
-        save(formData);
+        aoSubmitar(formData);
     }
 
     const data = [
-        { label: 'EXAMINATION', value: 1 },
-        { label: 'WORK', value: 2 },
-        { label: 'ACTIVITY', value: 3 }
+        { label: 'Prova', value: 1 },
+        { label: 'Trabalho', value: 2 },
+        { label: 'Atividade', value: 3 }
     ]
 
     return (
@@ -192,7 +192,7 @@ const FormsActivity = ({ save, initialValues, isEdit, interactions }) => {
                 render={({ field }) => (
                     <View>
                         <Input
-                            text={'Comntário: '}
+                            text={'Comentário: '}
                             disabled={isEdit === true}
                             secureText={false}
                             value={field.value}
@@ -227,7 +227,7 @@ const FormsActivity = ({ save, initialValues, isEdit, interactions }) => {
                 &&
                 (<ContainerButton>
                     <Button
-                        text={'Salvar Atividade.'}
+                        text={'Salvar atividade.'}
                         onPress={handleSubmit(onSubmit)}
                     />
                 </ContainerButton>

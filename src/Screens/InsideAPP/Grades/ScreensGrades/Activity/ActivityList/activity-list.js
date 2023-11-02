@@ -10,7 +10,7 @@ import SpinnerComponent from "../../../../../../Components/Spinner/index.js";
 
 const Activity = ({ route }) => {
     const [activitys, setActivity] = useState([]);
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(true);
     const isFocused = useIsFocused();
     const { tokenJWT, username } = useContext(AutenticacaoContext);
     const { SelectId } = route.params;

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { Input } from "../../../../../Components/Inputs";
 import { Button } from "../../../../../Components/Button";
 import { ContainerButton, Text, InlineTextSwitch } from "../../../../../Styles/DefaultStyles";
-import { SafeAreaView } from 'react-native-safe-area-context';
 import SwitchComponent from "../../../../../Components/Switch";
 import RadioButtonComponent from "../../../../../Components/RadioButton";
 import HelperTextComponent from "../../../../../Components/HelperText";

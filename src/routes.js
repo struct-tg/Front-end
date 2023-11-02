@@ -32,7 +32,7 @@ import ScreenGradeFiltersToDo from "./Screens/InsideAPP/Grades/ScreensGrades/Dis
 
 /*Telas internas ao APP: Atividades*/
 import ScreenActivityList from "./Screens/InsideAPP/Grades/ScreensGrades/Activity/ActivityList/activity-list.js";
-import ScreenAddActivity from "./Screens/InsideAPP/Grades/ScreensGrades/Activity/AddActivity/Adiconar-activity.js";
+import ScreenAddActivity from "./Screens/InsideAPP/Grades/ScreensGrades/Activity/AddActivity/Adicionar-activity.js";
 // import ScreenActivityFilters from "./Screens/InsideAPP/Grades/ScreensGrades/ActivityFilters/activity-filter.js"
 
 /*Telas internas ao APP: Calendario*/
