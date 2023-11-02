@@ -1,20 +1,18 @@
 import React from 'react';
-import { TextInput } from 'react-native-paper';
-import { View } from 'react-native';
+import StyledInput from "./StylesTextArea.js";
 
-const TextArea = ({ text, value, onChangeText }) => {
+const TextArea = ({ text, value, onChangeText, disabled }) => {
     return (
-        <View>
-            <TextInput
-                label={text}
-                mode="flat"
-                multiline
-                numberOfLines={3}
-                value={value}
-                onChangeText={onChangeText}
-                style={{ minHeight: 80 }}
-            />
-        </View>
+        <StyledInput
+            label={text}
+            mode="flat"
+            disabled={disabled}
+            multiline
+            numberOfLines={3}
+            value={value}
+            onChangeText={onChangeText}
+            style={{ minHeight: 80 }}
+        />
     );
 }
 

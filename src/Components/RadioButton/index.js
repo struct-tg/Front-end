@@ -2,24 +2,17 @@ import React, { useState } from 'react';
 import { RadioButton } from 'react-native-paper';
 import { AlignRadioButton, TextRadioButton } from "./StylesRadioButton";
 
-const RadioButtonComponent = () => {
-    const [value, setValue] = useState('first');
-
+const RadioButtonComponent = ({ id, title, selected, onSelect, disabled }) => {
     return (
-        <RadioButton.Group onValueChange={newValue => setValue(newValue)} value={value}>
-            <AlignRadioButton>
-                <RadioButton value="first" />
-                <TextRadioButton>Tarefas concluidas.</TextRadioButton>
-            </AlignRadioButton>
-            <AlignRadioButton>
-                <RadioButton value="second" />
-                <TextRadioButton>Tarefas não concluidas.</TextRadioButton>
-            </AlignRadioButton>
-            <AlignRadioButton>
-                <RadioButton value="third" />
-                <TextRadioButton>Tarefas atrasadas.</TextRadioButton>
-            </AlignRadioButton>
-        </RadioButton.Group>
+        <AlignRadioButton>
+            <RadioButton
+                value={id}
+                status={selected ? 'checked' : 'unchecked'} 
+                onPress={() => onSelect(id)}
+                disabled={disabled}
+            />
+            <TextRadioButton>{title}</TextRadioButton>
+        </AlignRadioButton>
     );
 };
 
