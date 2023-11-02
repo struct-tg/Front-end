@@ -12,9 +12,9 @@ export async function getAllActivityExamination(tokenJWT) {
     }
 };
 
-export async function getAllActivity(tokenJWT) {
+export async function getAllActivityActivity(tokenJWT) {
     try {
-        const allActivity = await getAllActivity(tokenJWT);
+        const allActivity = await getAllActivityActivity(tokenJWT);
         const allActivityActivity = allActivity.filter((activity) => activity.status == "ACTIVITY");
 
         return allActivityActivity;

@@ -2,11 +2,11 @@ import React, { useState, useEffect, useContext, Fragment } from "react";
 import { Image } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { getAllActivity } from "../../../../../Services/Requisicoes/Activity/activity-service.js";
-import { AutenticacaoContext } from "../../../../../Contexts/UserContext";
-import { ContentContainer, ViewContainer, ViewSettings, ViewBlock, ContainerImageInitial, Title } from "../../../../../Styles/DefaultStyles";
+import { getAllActivity } from "../../../../../../Services/Requisicoes/Activity/activity-service.js";
+import { AutenticacaoContext } from "../../../../../../Contexts/UserContext.js";
+import { ContentContainer, ViewContainer, ViewSettings, ViewBlock, ContainerImageInitial, Title } from "../../../../../../Styles/DefaultStyles/index.js";
 import { Ionicons } from "@expo/vector-icons";
-import SpinnerComponent from "../../../../../Components/Spinner";
+import SpinnerComponent from "../../../../../../Components/Spinner/index.js";
 
 const Activity = ({ route }) => {
     const [activitys, setActivity] = useState([]);
@@ -35,7 +35,7 @@ const Activity = ({ route }) => {
     }, [isFocused])
 
 
-    const navigate = useNavigation();
+    const navigation = useNavigation();
 
 
     return (
@@ -47,7 +47,7 @@ const Activity = ({ route }) => {
                             name={"add-circle-outline"}
                             size={35}
                             color={"white"}
-                            onPress={() => console.log('rotas')}
+                            onPress={() => navigation.navigate('AddActivity', {entidadeId: SelectId})}
                         />
                     </TouchableOpacity>
 

@@ -63,7 +63,7 @@ export async function updateActivity(tokenJWT, idDiscipline, objActivity) {
     }
 };
 
-export async function deleteDiscipline(tokenJWT, DisciplineId, ActivityId) {
+export async function deleteActivity(tokenJWT, DisciplineId, ActivityId) {
     console.log(typeof DisciplineId)
     try {
         await api.delete(`/discipline/${parseInt(DisciplineId, 10)}/${ActivityId}`, {

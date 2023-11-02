@@ -29,7 +29,10 @@ import ScreenAddGrade from "./Screens/InsideAPP/Grades/ScreensGrades/AddGrade/in
 import ScreenEditGrade from "./Screens/InsideAPP/Grades/ScreensGrades/EditGrade/index.js";
 import ScreenGradeFilters from "./Screens/InsideAPP/Grades/ScreensGrades/GradeFilters/index.js";
 import ScreenGradeFiltersToDo from "./Screens/InsideAPP/Grades/ScreensGrades/DisciplinesFiltersToDo/index.js";
-import ScreenActivityList from "./Screens/InsideAPP/Grades/ScreensGrades/ActivityList/activity-list.js"
+
+/*Telas internas ao APP: Atividades*/
+import ScreenActivityList from "./Screens/InsideAPP/Grades/ScreensGrades/Activity/ActivityList/activity-list.js";
+import ScreenAddActivity from "./Screens/InsideAPP/Grades/ScreensGrades/Activity/AddActivity/Adiconar-activity.js";
 // import ScreenActivityFilters from "./Screens/InsideAPP/Grades/ScreensGrades/ActivityFilters/activity-filter.js"
 
 /*Telas internas ao APP: Calendario*/
@@ -67,7 +70,9 @@ const Routes = () => {
                 <Stack.Screen name='EditGrade' component={ScreenEditGrade} />
                 <Stack.Screen name='ActivityGradeFilters' component={ScreenGradeFilters} />
                 <Stack.Screen name='DisciplinesFiltersToDo' component={ScreenGradeFiltersToDo} />
+
                 <Stack.Screen name='ActivityList' component={ScreenActivityList} />
+                <Stack.Screen name='AddActivity' component={ScreenAddActivity} />
                 {/* <Stack.Screen name='ActivityFilters' component={ScreenActivityFilters} /> */}
 
                 <Stack.Screen name="RoutesApp" component={RoutesApp} />
