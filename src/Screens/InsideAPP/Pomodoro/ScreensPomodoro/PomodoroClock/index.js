@@ -255,6 +255,7 @@ const PomodoroClock = ({ route }) => {
                     if (currentTypeTimer === "Pomodoro") {
                         previousTypeTimerRef.current = "Pomodoro";
                         if (controlAllPomodoro.whenStartPauseLong === controlAllPomodoro.cyclesFinished) {
+                            setAlerts((previousInfo) => ({ ...previousInfo, alertRequiredLongPause: true }));
                             setCurrentTypeTimer("Pausa Longa");
                             setPauseLongRequired(true);
                         }

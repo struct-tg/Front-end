@@ -44,7 +44,7 @@ const CardDisciplineComponent = ({ titleGrades, status, onDelete, onOFF, onEdit,
             <BottomBlock>
                 <LineBlock>
                     <TitleNotesGrades>{`Nota Minima: ${noteMin.toFixed(2)}`}</TitleNotesGrades>
-                    <TitleNotesGrades>{`Nota Atual: ${noteCurrent === null ? '0.00' : noteMin.toFixed(2)}`}</TitleNotesGrades>
+                    <TitleNotesGrades>{`Nota Atual: ${noteCurrent === null ? '0.00' : noteCurrent.toFixed(2)}`}</TitleNotesGrades>
                 </LineBlock>
             </BottomBlock>
         </CardGrades>

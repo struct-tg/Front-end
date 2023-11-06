@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useContext, Fragment } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { Image } from "react-native";
+import { View } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { AutenticacaoContext } from "../../../Contexts/UserContext";
-import { getAllTasksPendings } from "../../../Services/Requests/Tasks/Filters/index";
-import { getTaskById } from "../../../Services/Requests/Tasks/index";
+import { getTaskById, getAllFilterTasks } from "../../../Services/Requests/Tasks/index";
 import { getDisciplineByID, getAllDiscipline } from "../../../Services/Requests/Disciplines/index.js";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import {
@@ -18,13 +17,13 @@ import {
 } from "../../../Styles/DefaultStyles/index.js";
 import useMocks from "../../../Mocks";
 import ModalPerfilSettings from "./Components/ModalPerfilHome";
-import CardsHome from "./Components/CardFinishedsHome";
+import CardsHome from "./Components/CardHome/index.js";
 import SpinnerComponent from "../../../Components/Spinner";
 import ResponsiveImage from "react-native-responsive-image";
 
 const Home = () => {
-    const [tasksFinisheds, setTasksFinisheds] = useState([]);
     const [grades, setGrades] = useState([]);
+    const [tasks, setTasks] = useState([]);
     const [calendar, setCalendar] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [modalPerfilSettings, setModalPerfilSettings] = useState(false);
@@ -37,8 +36,13 @@ const Home = () => {
     useEffect(() => {
         async function fetchDatas() {
             try {
-                setTasksFinisheds(await getAllTasksPendings(tokenJWT));
-                setGrades(await getAllDiscipline(tokenJWT));
+                const [disciplines, tasks] = await Promise.all([
+                    getAllDiscipline(tokenJWT),
+                    getAllFilterTasks(tokenJWT, { status: 'NOTCOMPLETED' })
+                ]);
+
+                setGrades(disciplines);
+                setTasks(tasks);
             } catch (error) {
                 console.log('Erro ao obter tarefas em home: ', error);
             } finally {
@@ -63,7 +67,7 @@ const Home = () => {
     const fnGoToEditGrade = async (idGrade) => {
         const result = await getDisciplineByID(tokenJWT, idGrade);
         if (result) {
-            navigation.navigate('EditGrade', { objGrade: result })
+            navigation.navigate('EditDiscipline', { objGrade: result })
         } else {
             console.log('Algo deu errado');
         }
@@ -86,43 +90,43 @@ const Home = () => {
                 {isLoading ? (
                     <SpinnerComponent state={isLoading} text={'Carregando...'} />
                 ) : (
-                    tasksFinisheds.length > 0 || grades.length > 0 || calendar.length > 0 ? (
-                        <Fragment>
-                            <TitleContainerScroll>Suas tarefas.</TitleContainerScroll>
-                            <ContainerScroll>
-                                <FlatList
-                                    data={tasksFinisheds}
-                                    renderItem={({ item }) => (
-                                        <CardsHome
-                                            name={item.name}
-                                            onOpen={() => fnGoToEditTask(item.id)}
-                                            isTask={true}
-                                        />
-                                    )}
-                                    showsVerticalScrollIndicator={false}
-                                />
-                            </ContainerScroll>
+                    grades.length > 0 && tasks.length > 0 ? (
+                        <ViewContainer>
+                            <View>
+                                <TitleContainerScroll>Suas tarefas.</TitleContainerScroll>
+                                <ContainerScroll>
+                                    <FlatList
+                                        data={tasks}
+                                        renderItem={({ item }) => (
+                                            <CardsHome
+                                                name={item.name}
+                                                isTask={true}
+                                                onOpen={() => fnGoToEditTask(item.id)}
+                                            />
+                                        )}
+                                        showsVerticalScrollIndicator={false}
+                                    />
+                                </ContainerScroll>
+                            </View>
 
-                            <TitleContainerScroll>Suas matérias.</TitleContainerScroll>
-                            <ContainerScroll>
-                                <FlatList
-                                    data={grades}
-                                    renderItem={({ item }) => (
-                                        <CardsHome
-                                            name={item.name}
-                                            note={item.noteMin.toFixed(2)}
-                                            isTask={false}
-                                            onOpen={() => fnGoToEditGrade(item.id)}
-                                        />
-                                    )}
-                                    showsVerticalScrollIndicator={false}
-                                />
-                            </ContainerScroll>
-
-                            <TitleContainerScroll>Seus compromissos.</TitleContainerScroll>
-                            <ContainerScroll>
-                            </ContainerScroll>
-                        </Fragment>
+                            <View>
+                                <TitleContainerScroll>Suas matérias.</TitleContainerScroll>
+                                <ContainerScroll>
+                                    <FlatList
+                                        data={grades}
+                                        renderItem={({ item }) => (
+                                            <CardsHome
+                                                name={item.name}
+                                                note={item.noteMin.toFixed(2)}
+                                                isTask={false}
+                                                onOpen={() => fnGoToEditGrade(item.id)}
+                                            />
+                                        )}
+                                        showsVerticalScrollIndicator={false}
+                                    />
+                                </ContainerScroll>
+                            </View>
+                        </ViewContainer>
                     )
                         :
                         (

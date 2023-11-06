@@ -12,6 +12,24 @@ import ResponsiveImage from "react-native-responsive-image";
 
 const ChartToDo = () => {
     const [chartData, setChartData] = useState([]);
+
+    const formatDate = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+    const currentDate = new Date();
+    currentDate.setMonth(currentDate.getMonth() - 6);
+
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+
+    const formattedDate = `${year}-${month}-${day}`;
+    const [dateStart, setDateStart] = useState(formattedDate);
+    const [dateEnd, setDateEnd] = useState(formatDate(new Date()));
+
     const [isLoading, setIsLoading] = useState(true);
     const { tokenJWT } = useContext(AutenticacaoContext);
     const { ToDoMocks } = useMocks();
@@ -23,7 +41,8 @@ const ChartToDo = () => {
     useEffect(() => {
         async function fetchDatas() {
             try {
-                const result = await chartResume(tokenJWT)
+                const result = await chartResume(tokenJWT, dateStart, dateEnd)
+                console.log(result);
                 if (result) {
                     const percentData = result.map(item => item.percent);
                     const percentDataInPercentage = percentData.map(element => element * 100);

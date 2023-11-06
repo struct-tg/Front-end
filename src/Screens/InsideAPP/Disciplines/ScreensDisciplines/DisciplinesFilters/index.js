@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect, Fragment } from "react";
-import { ContentContainer, ViewContainer, Title, ContainerImageInitial } from "../../../../../Styles/DefaultStyles/index";
+import { ContentContainer, ViewContainer, Title, ContainerImageInitial, ContainerDatasNotFound, TextFiltersNotFound } from "../../../../../Styles/DefaultStyles/index";
 import { AutenticacaoContext } from "../../../../../Contexts/UserContext";
-import { Image, View } from "react-native";
-import { getAllDiscipline, getDisciplineByID } from "../../../../../Services/Requests/Disciplines/index.js";
+import { getDisciplineByID } from "../../../../../Services/Requests/Disciplines/index.js";
+import { getAllFilterDiscipline } from "../../../../../Services/Requests/Disciplines/Filters/index.js";
 import { useIsFocused } from "@react-navigation/native";
 import { FlatList } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
@@ -11,50 +11,43 @@ import SpinnerComponent from "../../../../../Components/Spinner";
 import CardGrades from "../../ComponentsDisciplines/CardDiscipline";
 import SearchBarComponent from "../../../../../Components/SearchBar/index";
 import RadioButtonComponent from "../../../../../Components/RadioButton/index";
+import ResponsiveImage from "react-native-responsive-image";
 
 const DisciplineFilters = () => {
     const [grades, setGrades] = useState([]);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [selectedRadio, setSelectedRadio] = useState('');
+    const [searchQuery, setSearchQuery] = useState(null);
+    const [selectedRadio, setSelectedRadio] = useState(null);
+    const [hasData, setHasData] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const { tokenJWT, username } = useContext(AutenticacaoContext);
+    const { DisciplinesMocks } = useMocks();
     const isFocused = useIsFocused(false);
     const navigation = useNavigation();
 
     useEffect(() => {
         async function fetchDatas() {
             try {
-                const result = await getAllDiscipline(tokenJWT)
-                if (result) {
-                    setGrades(result)
+                const datas = await getAllFilterDiscipline(tokenJWT, { status: selectedRadio, partialName: searchQuery });
+                if (selectedRadio === null && searchQuery === null) {
+                    if (datas.length > 0) {
+                        setHasData(true);
+                        setGrades(datas);
+                    }
+                } else if (selectedRadio !== null || searchQuery !== null) {
+                    if (datas.length > 0) {
+                        setGrades(datas);
+                    } else {
+                        setGrades([]);
+                    }
                 }
             } catch (error) {
-                console.log(error)
+                console.log(error);
             } finally {
                 setIsLoading(false);
             }
         }
-
         fetchDatas();
-    }, [isFocused])
-
-    const filterAndSearchDisciplines = () => {
-        let filteredDisciplines = grades;
-
-        if (selectedRadio === 'allDisciplines') {
-            return filteredDisciplines;
-        } else if (selectedRadio === 'DISAPPROVED') {
-            filteredDisciplines = filteredDisciplines.filter((item) => item.status === 'DISAPPROVED');
-        } else if (selectedRadio === 'APPROVED') {
-            filteredDisciplines = filteredDisciplines.filter((item) => item.status === 'APPROVED');
-        }
-
-        const query = searchQuery.toLowerCase();
-        if (query) {
-            filteredDisciplines = filteredDisciplines.filter((item) => item.name.toLowerCase().includes(query));
-        }
-        return filteredDisciplines;
-    }
+    }, [isFocused, hasData, selectedRadio, searchQuery]);
 
     const handleRadioSelect = (radioId) => {
         setSelectedRadio(radioId);
@@ -62,9 +55,8 @@ const DisciplineFilters = () => {
 
     const fnGoToEdit = async (idDiscipline) => {
         const result = await getDisciplineByID(tokenJWT, idDiscipline);
-        console.log(result);
         if (result) {
-            navigation.navigate('EditGrade', { objGrade: result });
+            navigation.navigate('EditDiscipline', { objGrade: result });
         } else {
             console.log('Algo deu errado');
         }
@@ -72,51 +64,53 @@ const DisciplineFilters = () => {
 
     return (
         <ContentContainer>
-            {isLoading
-                ?
-                (<SpinnerComponent
-                    state={isLoading}
-                    text={'Carregando...'}
-                />
-                )
-                :
-                (<ViewContainer>
-                    {
+            <ViewContainer>
+                {isLoading
+                    &&
+                    (<SpinnerComponent state={isLoading} text={'Carregando...'} />)
+                }
+                {hasData
+                    ?
+                    (
+                        <ViewContainer>
+                            <SearchBarComponent title={'Pesquise suas disciplinas!'} setSearchQuery={setSearchQuery} />
 
-                        grades.length <= 0
-                            ?
-                            (<Fragment>
-                                <Title>{`Cadastre novas atividades avaliativas para filtrar, ${username}!`}</Title>
-                                
-                            </Fragment>
-                            )
-                            :
-                            (<ViewContainer>
-                                <SearchBarComponent title={'Pesquise suas disciplinas!'} setSearchQuery={setSearchQuery} />
+                            <RadioButtonComponent
+                                title={'Todas disciplinas.'}
+                                id={null} selected={selectedRadio === null}
+                                onSelect={handleRadioSelect}
+                            />
 
-                                <RadioButtonComponent
-                                    title={'Todas disciplinas.'}
-                                    id={'allDisciplines'}
-                                    selected={selectedRadio === 'allDisciplines'}
-                                    onSelect={handleRadioSelect}
-                                />
+                            <RadioButtonComponent
+                                title={'Disciplinas em curso.'}
+                                id={'STUDYING'}
+                                selected={selectedRadio === 'STUDYING'}
+                                onSelect={handleRadioSelect}
+                            />
 
-                                <RadioButtonComponent
-                                    title={'Disciplinas aprovadas.'}
-                                    id={'APPROVED'}
-                                    selected={selectedRadio === 'APPROVED'}
-                                    onSelect={handleRadioSelect}
-                                />
+                            <RadioButtonComponent
+                                title={'Disciplinas aprovadas.'}
+                                id={'APPROVED'}
+                                selected={selectedRadio === 'APPROVED'}
+                                onSelect={handleRadioSelect}
+                            />
 
-                                <RadioButtonComponent
-                                    title={'Disciplinas reprovadas.'}
-                                    id={'DISAPPROVED'}
-                                    selected={selectedRadio === 'DISAPPROVED'}
-                                    onSelect={handleRadioSelect}
-                                />
+                            <RadioButtonComponent
+                                title={'Disciplinas reprovadas.'}
+                                id={'DISAPPROVED'}
+                                selected={selectedRadio === 'DISAPPROVED'}
+                                onSelect={handleRadioSelect}
+                            />
+                            {hasData === true && grades.length === 0
+                                ?
+                                (<ContainerDatasNotFound>
+                                    <TextFiltersNotFound>Não existem disciplinas para esses filtros.</TextFiltersNotFound>
+                                </ContainerDatasNotFound>
 
-                                <FlatList
-                                    data={filterAndSearchDisciplines()}
+                                )
+                                :
+                                (<FlatList
+                                    data={grades}
                                     renderItem={({ item }) => (
                                         <CardGrades
                                             titleGrades={item.name}
@@ -137,12 +131,26 @@ const DisciplineFilters = () => {
                                     )}
                                     showsVerticalScrollIndicator={false}
                                 />
-                            </ViewContainer>
-                            )
-                    }
-                </ViewContainer>
-                )
-            }
+                                )
+                            }
+                        </ViewContainer>
+                    )
+                    :
+                    (<Fragment>
+                        <Title>{DisciplinesMocks.DisciplineFiltersScreen.title}</Title>
+                        <ContainerImageInitial>
+                            <ResponsiveImage
+                                source={DisciplinesMocks.DisciplineFiltersScreen.image.content}
+                                initWidth={DisciplinesMocks.DisciplineFiltersScreen.image.width}
+                                initHeight={DisciplinesMocks.DisciplineFiltersScreen.image.height}
+                                resizeMode={DisciplinesMocks.DisciplineFiltersScreen.image.rezide}
+                            />
+                        </ContainerImageInitial>
+                    </Fragment>
+
+                    )
+                }
+            </ViewContainer>
         </ContentContainer>
     )
 };

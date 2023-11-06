@@ -1,8 +1,8 @@
 import api from "../../../api.js";
 
-export default async function chartResume(tokenJWT) {
+export default async function chartResume(tokenJWT, dateStart, dateEnd) {
     try {
-        const result = await api.get('/task/resume', {
+        const result = await api.get(`/task/resume?dateStart=${dateStart}&dateEnd=${dateEnd}`, {
             headers: {
                 Authorization: `Bearer ${tokenJWT}`
             }

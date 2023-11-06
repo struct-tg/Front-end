@@ -38,6 +38,12 @@ export const Text = styled.Text`
     font-size: ${RFValue(18, deviceDimensions.height)}px;
 `;
 
+export const TextFiltersNotFound = styled.Text`
+    color: white;
+    font-size: ${RFValue(24, deviceDimensions.height)}px;
+    font-weight: bold;
+`;
+
 export const TextModal = styled.Text`
     font-size: ${RFValue(18, deviceDimensions.height)}px;
     text-align: justify;
@@ -62,8 +68,7 @@ export const LinkNavigators = styled.Text`
 `;
 
 export const ContainerScroll = styled.View`
-    min-height: 25%;
-    max-height: 25%;
+    min-height: ${deviceDimensions.height * 0.35}px;
     border-radius: 10px;
     padding: 5px 10px;
     border: 3px solid #FFFFFF; 
@@ -102,5 +107,11 @@ export const ContainerCenter = styled.View`
 `;
 
 export const ContainerButton = styled.View`   
+    align-items: center;
+`;
+
+export const ContainerDatasNotFound = styled.View`
+    flex-grow: 1;
+    justify-content: center;
     align-items: center;
 `;

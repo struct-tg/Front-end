@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "react-native";
-import { DataInput } from "../../../../../Components/Inputs";
-import { convertISODateToSlashDateString } from "../../../../../Utils/Date/index";
+import { DataInput } from "../../Components/Inputs";
+import { convertISODateToSlashDateString } from "../../Utils/Date/index.js";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const Calendar = ({ state, setCalendarVisible, data, setData, disabled, interactions }) => {

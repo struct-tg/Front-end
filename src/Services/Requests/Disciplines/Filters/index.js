@@ -1,29 +1,5 @@
+import api from "../../../api.js";
 import { getAllDiscipline } from "../../Disciplines/index";
-import { getAllTasks } from "../../Tasks";
-
-export async function getAllDisciplineReproved(tokenJWT) {
-    try {
-        const allDiscipline = await getAllDiscipline(tokenJWT);
-        const allDisciplineReproved = allDiscipline.filter((discipline) => discipline.status == "DISAPPROVED");
-
-        return allDisciplineReproved;
-    } catch (error) {
-        console.log(error.response.data);
-        return [];
-    }
-};
-
-export async function getAllDisciplineApproved(tokenJWT) {
-    try {
-        const allDiscipline = await getAllDiscipline(tokenJWT);
-        const allDisciplineApproved = allDiscipline.filter((discipline) => discipline.status != "DISAPPROVED");
-
-        return allDisciplineApproved;
-    } catch (error) {
-        console.log(error.response.data);
-        return [];
-    }
-};
 
 export async function getAllNamesDiscipline(tokenJWT) {
     try {
@@ -40,14 +16,38 @@ export async function getAllNamesDiscipline(tokenJWT) {
     }
 };
 
-export async function getAllTasksByDiscipline(tokenJWT, idDiscipline) {
-    try {
-        const allTasks = await getAllTasks(tokenJWT);
-        const allTasksByDiscipline = allTasks.filter((task) => task.disciplineId === idDiscipline)
+export async function getAllFilterDiscipline(tokenJWT, { status, partialName }) {
+    let queryStatus = "";
+    let queryPartialName = "";
 
-        return allTasksByDiscipline;
+    try {
+        if (status) {
+            queryStatus = `status=${status}`
+        }
+        if (partialName) {
+            queryPartialName = `partialName=${partialName}`
+        }
+
+        const result = await api.get(`/discipline/?${queryStatus}&${queryPartialName}`, {
+            headers: {
+                Authorization: `Bearer ${tokenJWT}`,
+            }
+
+        }).catch(error => {
+            console.log(`\n\nError`);
+            console.log(JSON.stringify(error.response.data));
+            console.log(JSON.stringify(error.response));
+        }).then(datas => {
+            console.log('\n\nSucesso')
+            console.log(JSON.stringify(datas));
+            return datas;
+        })
+
+        const objData = result.data;
+        const array = objData.data;
+        return array;
     } catch (error) {
         console.log(error);
-        return null;
+        return error;
     }
 };

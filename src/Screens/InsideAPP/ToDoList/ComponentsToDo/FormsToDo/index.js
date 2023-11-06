@@ -10,11 +10,11 @@ import { convertDateISO8601, convertISODateToSlashDateString, convertISODateToTr
 import { getAllNamesDiscipline } from "../../../../../Services/Requests/Disciplines/Filters";
 import { useIsFocused } from '@react-navigation/native';
 import { AutenticacaoContext } from "../../../../../Contexts/UserContext";
+import Calendar from '../../../../../Components/Calendar/index.js';
 import ToastComponent from "../../../../../Components/Toast";
 import TextArea from "../../../../../Components/TextArea";
 import ScrollBlock from '../ScrollBlockToDo';
 import HelperTextComponent from "../../../../../Components/HelperText";
-import Calendar from '../CalendarToDo';
 import DropdownComponent from '../../../../../Components/DropDown';
 
 const FormsToDo = ({ aoSubmitar, initialValues, isEdit, interactions }) => {

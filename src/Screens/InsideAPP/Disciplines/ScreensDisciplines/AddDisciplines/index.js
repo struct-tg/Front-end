@@ -1,10 +1,13 @@
-import React, { Fragment, useContext } from 'react';
+import React, { Fragment, useContext, useState } from 'react';
 import FormsDisciplines from "../../ComponentsDisciplines/FormsDisciplines";
 import { insertNewDiscipline } from "../../../../../Services/Requests/Disciplines/index";
 import { AutenticacaoContext } from "../../../../../Contexts/UserContext";
 import { useNavigation } from '@react-navigation/native';
+import ToastComponent from '../../../../../Components/Toast';
 
 const AddDiscipline = () => {
+    const [toastVisible, setToastVisible] = useState(false);
+
     const { tokenJWT } = useContext(AutenticacaoContext)
     const navigation = useNavigation();
 
@@ -21,6 +24,7 @@ const AddDiscipline = () => {
             const result = await insertNewDiscipline(tokenJWT, dadosFormulario);
             if (result) {
                 navigation.navigate('Disciplinas');
+                setToastVisible(true);
             }
         }
         catch (error) {
@@ -34,6 +38,15 @@ const AddDiscipline = () => {
                 aoSubmitar={handleAddNewDiscipline}
                 isEdit={false}
             />
+            {toastVisible
+                &&
+                (<ToastComponent
+                    ToastType={'success'}
+                    Title={'Disciplina adicionada com sucesso!'}
+                    Description={'Você tem uma nova disciplina, Estudante.'}
+                />
+                )
+            }
         </Fragment>
     )
 }

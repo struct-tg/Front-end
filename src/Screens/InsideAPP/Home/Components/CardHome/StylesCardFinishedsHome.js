@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import deviceDimensions from '../../../../../Device/DeviceInformation.js';
 
 export const CardFinishedHome = styled.TouchableOpacity`
     display: flex;
@@ -8,7 +9,7 @@ export const CardFinishedHome = styled.TouchableOpacity`
     background-color: #168B9D;
     justify-content: space-between;
     align-items: center;
-    height: 40px;
+    height: ${deviceDimensions.height * 0.075}px;
     margin: 3px 0;
     padding: 0 5px;    
 `;

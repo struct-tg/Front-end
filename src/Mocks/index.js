@@ -30,7 +30,7 @@ const useMocks = () => {
 
     const HomeMocks = {
         HomeScreen: {
-            title: `Você ainda não tem dados cadastrados, ${username}!`,
+            title: `Você ainda não tem dados suficientes cadastrados, ${username}!`,
             image: {
                 content: HomeImage,
                 width: imageWidth,
@@ -49,6 +49,12 @@ const useMocks = () => {
                 height: imageHeight,
                 rezide: 'cover'
             },
+            alerts: {
+                deleteActivity: {
+                    title: 'Deseja mesmo excluir sua atividade?',
+                    description: 'Essa ação é irreversível e não terá como você desfazer após a confirmação',
+                },
+            }
         },
         ActivityFiltersScreen: {
             title: `Você não tem atividades para filtar, ${username}!`,
@@ -83,7 +89,7 @@ const useMocks = () => {
             }
         },
         DisciplineFiltersScreen: {
-            title: `Cadastre novas atividades avaliativas para filtrar, ${username}!`,
+            title: `Cadastre novas disciplinas para filtrar, ${username}!`,
             image: {
                 content: DisciplineFiltersImage,
                 width: imageWidth,
@@ -92,7 +98,7 @@ const useMocks = () => {
             }
         },
         DisciplineFiltersToDo: {
-            title: `Cadastre novas atividades avaliativas para filtrar, ${username}!`,
+            title: `Cadastre novas tarefas relacionadas com disciplinas para filtrar, ${username}!`,
             image: {
                 content: DisciplinesFiltersToDoImage,
                 width: imageWidth,

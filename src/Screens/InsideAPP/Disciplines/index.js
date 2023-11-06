@@ -7,7 +7,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { deleteDiscipline, getAllDiscipline, getDisciplineByID, offDiscipline } from "../../../Services/Requests/Disciplines/index";
 import { FlatList } from "react-native-gesture-handler";
 import ResponsiveImage from "react-native-responsive-image";
-import structSpeak from "../../../Device/Speech.js";
 import useMocks from "../../../Mocks/index.js";
 import CardDiscipline from "./ComponentsDisciplines/CardDiscipline";
 import AlertComponent from "../../../Components/Alert";
@@ -169,14 +168,7 @@ const Grades = () => {
                                         onEdit={() => fnGoToEdit(item.id)}
                                         isModify={true}
                                         onDelete={() => showAlertDeleteDiscipline(item.id)}
-                                        onSelectActivity={() => navigation.navigate('Activity')}
-                                        activity={() => {
-                                            if (item.activity && item.activity.length > 0) {
-                                                return true;
-                                            } else {
-                                                return false;
-                                            }
-                                        }}
+                                        onSelectActivity={() => navigation.navigate('Activity', { disciplineID: item.id, typeAc: item.typeAv, isFinished: item.dateEnd, disciplineName: item.name })}
                                     />
                                 }
                                 showsVerticalScrollIndicator={false}

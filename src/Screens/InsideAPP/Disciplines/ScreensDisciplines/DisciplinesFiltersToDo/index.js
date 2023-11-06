@@ -1,78 +1,57 @@
-import React, { Fragment, useState, useEffect, useContext } from 'react';
-import { ContentContainer, ViewContainer, Title, ContainerImageInitial } from "../../../../../Styles/DefaultStyles/index.js";
-import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen';
+import React, { useState, useEffect, useContext } from 'react';
+import { ContentContainer, ViewContainer, Title, ContainerImageInitial, ContainerDatasNotFound, TextFiltersNotFound } from "../../../../../Styles/DefaultStyles/index.js";
 import { AutenticacaoContext } from '../../../../../Contexts/UserContext.js';
 import { useNavigation, useIsFocused } from "@react-navigation/native";
-import { getTaskById } from '../../../../../Services/Requests/Tasks/index.js';
-import { getAllNamesDiscipline, getAllTasksByDiscipline } from "../../../../../Services/Requests/Disciplines/Filters/index.js";
-import { getAllTasks } from '../../../../../Services/Requests/Tasks/index.js';
+import { getTaskById, getAllFilterTasks } from '../../../../../Services/Requests/Tasks/index.js';
+import { getAllNamesDiscipline } from "../../../../../Services/Requests/Disciplines/Filters/index.js";
 import { FlatList } from 'react-native-gesture-handler';
 import { convertDateISO8601 } from '../../../../../Utils/Date/index.js';
+import useMocks from '../../../../../Mocks/index.js';
 import CardToDo from "../../../ToDoList/ComponentsToDo/CardTaskToDo/index.js";
 import DropDownComponent from "../../../../../Components/DropDown/index.js";
 import SpinnerComponent from "../../../../../Components/Spinner/index.js";
 import ResponsiveImage from 'react-native-responsive-image';
 
 const DisciplineFiltersToDo = () => {
-    const [isLoading, setIsLoading] = useState(true);
-    const [dropDown, setDropDown] = useState(0);
-    
-    const [tasks, setTasks] = useState([]);
-    const [listTask, setListTask] = useState([]);
     const [disciplinesNames, setDisciplinesNames] = useState([]);
-
-    const { username, tokenJWT } = useContext(AutenticacaoContext);
-    const isFocused = useIsFocused();   
+    const [allTasks, setAllTasks] = useState([]);
+    const [hasData, setHasData] = useState(false);
+    const [dropDown, setDropDown] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
+    const { DisciplinesMocks } = useMocks();
+    const { tokenJWT } = useContext(AutenticacaoContext);
+    const isFocused = useIsFocused();
     const navigation = useNavigation();
-
-    const imageWidth = widthPercentageToDP('100%');
-    const imageHeight = heightPercentageToDP('50%');
 
     useEffect(() => {
         async function fetchDatas() {
             try {
-                const result = await getAllNamesDiscipline(tokenJWT)
-                if (result) {
-                    const data = result.map((item) => ({
-                        label: item.name,
-                        value: item.disciplineId
-                    }))
+                const [disciplines, tasksByDisciplines] = await Promise.all([getAllNamesDiscipline(tokenJWT), getAllFilterTasks(tokenJWT, { disciplineId: dropDown })]);
+                if (disciplines) {
+                    const data = disciplines.map((item) => ({ label: item.name, value: item.disciplineId }))
                     const defaultValue = [{ label: 'Todas as tarefas', value: 0 }]
                     setDisciplinesNames([...defaultValue, ...data]);
-
-                    setListTask(result);
                 }
-
-                const resultTasks = await getAllTasks(tokenJWT);
-                if (resultTasks) {
-                    setTasks(resultTasks)
+                if (dropDown === 0) {
+                    if (tasksByDisciplines.length > 0) {
+                        setAllTasks(tasksByDisciplines);
+                        setHasData(true);
+                    } else {
+                        setAllTasks([]);
+                        setHasData(false);
+                    }
+                } else {
+                    setAllTasks(tasksByDisciplines);
                 }
             } catch (error) {
-                console.log('Algo deu errado na captura de dados em filters de tarefas por disciplina', JSON.stringify(error));
-            }
-            finally {
-                setIsLoading(false);
+                console.log(error);
+            } finally {
+                setIsLoading(false)
             }
         }
+
         fetchDatas();
-    }, [isFocused]);
-
-    async function filterTasks(idDiscipline) {
-        try {
-            if (idDiscipline === 0) {
-                setTasks(await getAllTasks(tokenJWT));
-            }
-            else {
-                setTasks(await getAllTasksByDiscipline(tokenJWT, idDiscipline));
-            }
-        } catch (error) {
-            console.log('Algo deu errado no filtro de tarefas por disciplinas.');
-        }
-    }
-
-    useEffect(() => {
-        filterTasks(dropDown);
-    }, [dropDown]);
+    }, [isFocused, dropDown]);
 
     const fnGoToEdit = async (idTask) => {
         const result = await getTaskById(idTask, tokenJWT);
@@ -86,62 +65,81 @@ const DisciplineFiltersToDo = () => {
     const transformConvertDateISO8601 = (dateString) => {
         return new Date(dateString);
     };
+
     return (
         <ContentContainer>
-            {isLoading
-                ?
-                (<SpinnerComponent state={isLoading} text={'Carregando...'} />)
-                :
-                (
-                    <ViewContainer>
-                        {listTask.length <= 0
-                            ?
-                            (<Fragment>
-                                <Title>{`Você ainda não tem tarefas relacionadas a disciplinas, ${username}!`}</Title>
-                                
-                            </Fragment>
-                            )
-                            :
-                            (<ViewContainer>
-                                <Title>{`Filtre as suas tarefas por disciplinas, ${username}!`}</Title>
-                                <DropDownComponent
-                                    arrObjInformation={disciplinesNames}
-                                    text={'Selecione a disciplina.'}
-                                    state={dropDown}
-                                    fnSetValue={(value) => setDropDown(value)}
-                                />
-                                <FlatList
-                                    data={tasks}
-                                    renderItem={({ item }) => {
-                                        const dateEnd = item.dateEnd ? transformConvertDateISO8601(item.dateEnd) : null;
-                                        const dateWishEnd = item.dateWishEnd ? transformConvertDateISO8601(item.dateWishEnd) : null;
-                                        let state = 0;
-                                        if (dateEnd) {
-                                            if (dateWishEnd) {
-                                                if (dateEnd > dateWishEnd) {
-                                                    state = 3;
-                                                } else {
-                                                    state = 1;
+            <ViewContainer>
+                {isLoading
+                    &&
+                    (
+                        <SpinnerComponent state={isLoading} text={'Carregando...'} />
+                    )
+                }
+
+                {hasData
+                    ?
+                    (<ViewContainer>
+                        <Title>Filtre as suas tarefas relacionadas por disciplina.</Title>
+                        <DropDownComponent
+                            text={'Selecione a disciplina'}
+                            arrObjInformation={disciplinesNames}
+                            fnSetValue={(state) => setDropDown(state)}
+                            state={dropDown}
+                        />
+                        {
+                            hasData === true && allTasks.length === 0
+                                ?
+                                (<ContainerDatasNotFound>
+                                    <TextFiltersNotFound>Não existem tarefas para esta disciplina.</TextFiltersNotFound>
+                                </ContainerDatasNotFound>
+                                )
+                                :
+                                (
+                                    <FlatList
+                                        data={allTasks}
+                                        renderItem={({ item }) => {
+                                            const dateEnd = item.dateEnd ? transformConvertDateISO8601(item.dateEnd) : null;
+                                            const dateWishEnd = item.dateWishEnd ? transformConvertDateISO8601(item.dateWishEnd) : null;
+                                            let state = 0;
+                                            if (dateEnd) {
+                                                if (dateWishEnd) {
+                                                    if (dateEnd > dateWishEnd) {
+                                                        state = 3;
+                                                    } else {
+                                                        state = 1;
+                                                    }
                                                 }
                                             }
-                                        }
-                                        return (
-                                            <CardToDo
-                                                title={item.name}
-                                                state={state}
-                                                date={convertDateISO8601(item.dateWishEnd)}
-                                                onOpen={() => fnGoToEdit(item.id)}
-                                                isModify={false}
-                                            />
-                                        );
-                                    }}
-                                />
-                            </ViewContainer>
-                            )
+                                            return (
+                                                <CardToDo
+                                                    title={item.name}
+                                                    state={state}
+                                                    date={convertDateISO8601(item.dateWishEnd)}
+                                                    onOpen={() => fnGoToEdit(item.id)}
+                                                    isModify={false}
+                                                />
+                                            );
+                                        }}
+                                    />
+                                )
                         }
                     </ViewContainer>
-                )
-            }
+                    )
+                    :
+                    (<ViewContainer>
+                        <Title>{DisciplinesMocks.DisciplineFiltersToDo.title}</Title>
+                        <ContainerImageInitial>
+                            <ResponsiveImage
+                                source={DisciplinesMocks.DisciplineFiltersToDo.image.content}
+                                initWidth={DisciplinesMocks.DisciplineFiltersToDo.image.width}
+                                initHeight={DisciplinesMocks.DisciplineFiltersToDo.image.height}
+                                resizeMode={DisciplinesMocks.DisciplineFiltersToDo.image.rezide}
+                            />
+                        </ContainerImageInitial>
+                    </ViewContainer>
+                    )
+                }
+            </ViewContainer>
         </ContentContainer>
     )
 }
