@@ -82,7 +82,7 @@ const DisciplineFilters = () => {
                             />
 
                             <RadioButtonComponent
-                                title={'Disciplinas em curso.'}
+                                title={'Disciplinas em andamento.'}
                                 id={'STUDYING'}
                                 selected={selectedRadio === 'STUDYING'}
                                 onSelect={handleRadioSelect}

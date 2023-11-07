@@ -4,7 +4,7 @@ import { DataInput } from "../../Components/Inputs";
 import { convertISODateToSlashDateString } from "../../Utils/Date/index.js";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
-const Calendar = ({ state, setCalendarVisible, data, setData, disabled, interactions }) => {
+const Calendar = ({ state, setCalendarVisible, data, setData, disabled, interactions, text }) => {
     const showDatePicker = () => {
         setCalendarVisible(true);
     };
@@ -23,7 +23,7 @@ const Calendar = ({ state, setCalendarVisible, data, setData, disabled, interact
         <View>
             <DataInput
                 edit={false}
-                value={data ? data : "Previsão de término:"}
+                value={data ? data : text}
                 fnModal={() => {
                     if (interactions === false) {
                         return;

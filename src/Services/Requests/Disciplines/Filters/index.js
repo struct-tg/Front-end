@@ -32,19 +32,13 @@ export async function getAllFilterDiscipline(tokenJWT, { status, partialName }) 
             headers: {
                 Authorization: `Bearer ${tokenJWT}`,
             }
-
-        }).catch(error => {
-            console.log(`\n\nError`);
-            console.log(JSON.stringify(error.response.data));
-            console.log(JSON.stringify(error.response));
         }).then(datas => {
-            console.log('\n\nSucesso')
-            console.log(JSON.stringify(datas));
             return datas;
         })
 
         const objData = result.data;
         const array = objData.data;
+        
         return array;
     } catch (error) {
         console.log(error);

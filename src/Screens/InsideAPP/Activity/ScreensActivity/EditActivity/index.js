@@ -13,6 +13,7 @@ const EditActivity = ({ route }) => {
 
     const fnEditSubmitFormActivity = async (datasForm) => {
         const { comment, description, ...objEnvio } = datasForm;
+
         const result = await updateActivity(tokenJWT, objEdit.id, objEnvio);
         if (result) {
             navigation.navigate('Activity')
@@ -31,6 +32,7 @@ const EditActivity = ({ route }) => {
                 typeCalc={route.params.typeCalculator}
                 isFinishedDiscipline={route.params.isFinishedDiscipline}
                 interactions={!route.params.isFinishedDiscipline}
+                discipline={route.params.objEdit.disciplineId}
             />
             {toastVisible && (
                 <ToastComponent

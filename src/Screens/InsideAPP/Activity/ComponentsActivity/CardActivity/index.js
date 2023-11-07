@@ -1,5 +1,6 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Ionicons } from "@expo/vector-icons";
+import { View } from "react-native";
 import {
     CardActivity,
     SituationCardActivity,
@@ -10,8 +11,8 @@ import {
     TitleNotesActivity,
     BotoesCardActivity
 } from "./StylesCardActivity";
-import { View } from "react-native";
-const CardActivityComponent = ({ titleActivity, type, onDelete, onEdit, isModify, data, note, weight }) => {
+
+const CardActivityComponent = ({ titleActivity, typeAc, isFinishedActivity, type, onDelete, onEdit, isModify, data, note, weight }) => {
 
     const verifyTypeAc = (type) => {
         switch (type) {
@@ -30,10 +31,10 @@ const CardActivityComponent = ({ titleActivity, type, onDelete, onEdit, isModify
                 <TitleCardActivity>{titleActivity}</TitleCardActivity>
                 <LineBlock>
                     <View>
-                        <SituationCardActivity>{`Tipo: ${verifyTypeAc(type)}`}</SituationCardActivity>
+                        <SituationCardActivity>{`Tipo de atividade: ${verifyTypeAc(type)}.`}</SituationCardActivity>
                         <SituationCardActivity>{`Data: ${data}`}</SituationCardActivity>
                     </View>
-                    {isModify
+                    {isModify && isFinishedActivity
                         &&
                         (<BotoesCardActivity>
                             <BotaoCardActivity onPress={onDelete}>
@@ -51,7 +52,11 @@ const CardActivityComponent = ({ titleActivity, type, onDelete, onEdit, isModify
             <BottomBlock>
                 <LineBlock>
                     <TitleNotesActivity>{`Nota: ${note.toFixed(2)}`}</TitleNotesActivity>
-                    <TitleNotesActivity>{`Peso: ${weight === null ? '0.00' : weight.toFixed(2)}%`}</TitleNotesActivity>
+
+                    {typeAc
+                        &&
+                        (<TitleNotesActivity>{`Peso: ${weight === null ? '0.00' : weight.toFixed(2)}%`}</TitleNotesActivity>)
+                    }
                 </LineBlock>
             </BottomBlock>
         </CardActivity>

@@ -28,6 +28,7 @@ const AddActivity = ({ route }) => {
                 isEdit={false}
                 interactions={true}
                 typeCalc={typeCalcActivity}
+                discipline={route.params.disciplineIDContext}
             />
             {toastVisible && (
                 <ToastComponent

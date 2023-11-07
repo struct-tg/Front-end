@@ -20,6 +20,7 @@ const FilterActivity = ({ route }) => {
     const [selectedRadio, setSelectedRadio] = useState(null);
     const [hasData, setHasData] = useState(false);
     const [contextID, setContextID] = useState(route.params.DisciplineContext);
+    const [objRoute, setObjRoute] = useState(route.params);
     const [isLoading, setIsLoading] = useState(false);
 
     const navigation = useNavigation();
@@ -33,6 +34,7 @@ const FilterActivity = ({ route }) => {
             console.log('Algo deu errado');
         }
     }
+
 
     useEffect(() => {
         async function fetchDatas() {
@@ -129,6 +131,8 @@ const FilterActivity = ({ route }) => {
                                                 weight={item.weight}
                                                 note={item.note}
                                                 type={item.typeAc}
+                                                isFinishedActivity={objRoute.isFinished !== null ? false : true}
+                                                typeAc={objRoute.typeCalculator === 'SIMPLE' ? false : true}
                                             />
                                         )}
                                         showsVerticalScrollIndicator={false}

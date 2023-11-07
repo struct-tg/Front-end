@@ -42,7 +42,6 @@ const ChartToDo = () => {
         async function fetchDatas() {
             try {
                 const result = await chartResume(tokenJWT, dateStart, dateEnd)
-                console.log(result);
                 if (result) {
                     const percentData = result.map(item => item.percent);
                     const percentDataInPercentage = percentData.map(element => element * 100);

@@ -13,7 +13,7 @@ import Calendar from "../../../../../Components/Calendar/index.js";
 import HelperTextComponent from "../../../../../Components/HelperText";
 import DropdownComponent from "../../../../../Components/DropDown";
 
-const FormsActivity = ({ aoSubmitar, typeCalc, isEdit, initialValues, interactions, isFinishedDiscipline }) => {
+const FormsActivity = ({ aoSubmitar, discipline, typeCalc, isEdit, initialValues, interactions, isFinishedDiscipline }) => {
     const { tokenJWT } = useContext(AutenticacaoContext);
     const [namesDisciplines, setNamesDisciplines] = useState([]);
     const [dateError, setDateError] = useState(false);
@@ -22,7 +22,7 @@ const FormsActivity = ({ aoSubmitar, typeCalc, isEdit, initialValues, interactio
     const [toastVisible, setToastVisible] = useState(false);
     const isFocused = useIsFocused();
     const typeActivities = [{ label: 'Prova', value: 'EXAMINATION' }, { label: 'Atividade', value: 'ACTIVITY' }, { label: 'Trabalho', value: 'WORK' }];
-    
+
     const { control, handleSubmit, formState: { errors } } = useForm({
         mode: "onChange",
         defaultValues: {
@@ -61,6 +61,8 @@ const FormsActivity = ({ aoSubmitar, typeCalc, isEdit, initialValues, interactio
         objEnvio.comment = null;
         objEnvio.description = null;
 
+        objEnvio.disciplineId = discipline;
+
         const selectedDate = objEnvio.date;
         const currentDateFormatada = convertISODateToTraceDateString(currentDate);
 
@@ -69,6 +71,8 @@ const FormsActivity = ({ aoSubmitar, typeCalc, isEdit, initialValues, interactio
         } else {
             objEnvio.weight = parseFloat(objEnvio.weight);
         }
+
+        console.log(objEnvio);
 
         if (selectedDate < currentDateFormatada) {
             setDateError(true);
@@ -85,7 +89,7 @@ const FormsActivity = ({ aoSubmitar, typeCalc, isEdit, initialValues, interactio
                     control={control}
                     name='name'
                     defaultValue=""
-                    rules={{ required: 'Campo obrigatório!', maxLength: { value: 25, message: "Nome muito grande!" }, minLength: { value: 3, message: "Nome muito pequeno" } }}
+                    rules={{ required: 'Campo obrigatório!', maxLength: { value: 30, message: "Nome muito grande!" }, minLength: { value: 3, message: "Nome muito pequeno" } }}
                     render={({ field }) => (
                         <View>
                             <Input
@@ -110,27 +114,13 @@ const FormsActivity = ({ aoSubmitar, typeCalc, isEdit, initialValues, interactio
                                 state={calendarVisible}
                                 setCalendarVisible={setCalendarVisible}
                                 data={field.value}
+                                text={'Informe a data: '}
                                 setData={(newValue) => field.onChange(newValue)}
                                 disabled={isEdit === true && isFinishedDiscipline}
                                 interactions={interactions}
                             />
                             {errors.date && (<HelperTextComponent helperType={'error'} helperText={errors.date.message} />)}
                         </View>
-                    )}
-                />
-
-                <Controller
-                    control={control}
-                    name="disciplineId"
-                    defaultValue={null}
-                    render={({ field }) => (
-                        <DropdownComponent
-                            state={field.value}
-                            fnSetValue={field.onChange}
-                            text={'Selecione a disciplina: '}
-                            arrObjInformation={namesDisciplines}
-                            disable={isEdit === true && isFinishedDiscipline === true}
-                        />
                     )}
                 />
 
@@ -167,6 +157,7 @@ const FormsActivity = ({ aoSubmitar, typeCalc, isEdit, initialValues, interactio
                         </View>
                     )}
                 />
+
                 {typeCalc !== 'SIMPLE'
                     &&
                     (<Controller

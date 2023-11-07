@@ -141,6 +141,7 @@ const FormsToDo = ({ aoSubmitar, initialValues, isEdit, interactions }) => {
                             <Calendar
                                 state={calendarVisible}
                                 setCalendarVisible={setCalendarVisible}
+                                text={'Previsão de término: '}
                                 data={field.value}
                                 setData={(newValue) => field.onChange(newValue)}
                                 disabled={isEdit === true && initialValues.dateEnd !== null ? true : false}

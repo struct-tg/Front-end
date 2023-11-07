@@ -36,9 +36,6 @@ import ScreenAddActivity from "./Screens/InsideAPP/Activity/ScreensActivity/AddA
 import ScreenEditActivity from "./Screens/InsideAPP/Activity/ScreensActivity/EditActivity/index.js";
 import ScreenFilterActivity from "./Screens/InsideAPP/Activity/ScreensActivity/FiltersActivity/index.js";
 
-/*Telas internas ao APP: Calendario*/
-import ScreenCalendar from "./Screens/InsideAPP/Calendar/index.js";
-
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -105,15 +102,6 @@ function RoutesApp() {
                 }}
             />
             <Tab.Screen
-                name="Pomodoro"
-                component={ScreenPomodoro}
-                options={{
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="stopwatch-outline" color={"white"} size={30} />
-                    )
-                }}
-            />
-            <Tab.Screen
                 name="Tarefas"
                 component={ScreenToDo}
                 options={{
@@ -122,12 +110,13 @@ function RoutesApp() {
                     )
                 }}
             />
+
             <Tab.Screen
-                name="Calendario"
-                component={ScreenCalendar}
+                name="Pomodoro"
+                component={ScreenPomodoro}
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="calendar-outline" color={"white"} size={30} />
+                        <Ionicons name="stopwatch-outline" color={"white"} size={30} />
                     )
                 }}
             />

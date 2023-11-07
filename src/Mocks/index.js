@@ -89,7 +89,7 @@ const useMocks = () => {
             }
         },
         DisciplineFiltersScreen: {
-            title: `Cadastre novas disciplinas para filtrar, ${username}!`,
+            title: `Adicione novas disciplinas para filtrar, ${username}!`,
             image: {
                 content: DisciplineFiltersImage,
                 width: imageWidth,
@@ -98,7 +98,7 @@ const useMocks = () => {
             }
         },
         DisciplineFiltersToDo: {
-            title: `Cadastre novas tarefas relacionadas com disciplinas para filtrar, ${username}!`,
+            title: `Adicione novas tarefas relacionadas com disciplinas para filtrar, ${username}!`,
             image: {
                 content: DisciplinesFiltersToDoImage,
                 width: imageWidth,
@@ -150,7 +150,7 @@ const useMocks = () => {
             }
         },
         ToDoFiltersScreen: {
-            title: `Cadastre novas tarefas para filtrar, ${username}!`,
+            title: `Adicione novas tarefas para filtrar, ${username}!`,
             image: {
                 content: ToDoFilterImage,
                 width: imageWidth,

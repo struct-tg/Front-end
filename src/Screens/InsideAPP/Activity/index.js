@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect, useContext } from "react"
 import { ContentContainer, ViewContainer, ViewSettings, ContainerImageInitial, Title } from "../../../Styles/DefaultStyles/index.js";
 import { FlatList } from "react-native-gesture-handler";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { getAllActivity, getActivityById, deleteActivity } from "../../../Services/Requests/Activity";
@@ -75,21 +75,27 @@ const Activity = ({ route }) => {
         <ContentContainer>
             <ViewContainer>
                 <ViewSettings>
-                    <TouchableOpacity onPress={() => navigation.navigate('AddActivity', { typeCalculator: objRoute.typeAc })}>
-                        <Ionicons
-                            name={"add-circle-outline"}
-                            size={35}
-                            color={"white"}
-                        />
-                    </TouchableOpacity>
+                    {objRoute.isFinished === null
+                        &&
+                        (<TouchableOpacity onPress={() => navigation.navigate('AddActivity', { typeCalculator: objRoute.typeAc, disciplineIDContext: objRoute.disciplineID })}>
+                            <Ionicons
+                                name={"add-circle-outline"}
+                                size={35}
+                                color={"white"}
+                            />
+                        </TouchableOpacity>
+                        )
+                    }
 
-                    <TouchableOpacity onPress={() => navigation.navigate('FilterActivity', { DisciplineContext: objRoute.disciplineID, typeCalculator: objRoute.typeAc, isFinishedDiscipline: objRoute.isFinished !== null ? true : false })}>
-                        <Ionicons
-                            name={"options-outline"}
-                            size={35}
-                            color={"white"}
-                        />
-                    </TouchableOpacity>
+                    <View style={{ flexGrow: 1 }} >
+                        <TouchableOpacity style={{ alignSelf: 'flex-end' }} onPress={() => navigation.navigate('FilterActivity', { DisciplineContext: objRoute.disciplineID, typeCalculator: objRoute.typeAc, isFinishedDiscipline: objRoute.isFinished !== null ? true : false })}>
+                            <Ionicons
+                                name={"options-outline"}
+                                size={35}
+                                color={"white"}
+                            />
+                        </TouchableOpacity>
+                    </View>
                 </ViewSettings>
 
                 {isLoading
@@ -125,6 +131,8 @@ const Activity = ({ route }) => {
                                         weight={item.weight}
                                         note={item.note}
                                         type={item.typeAc}
+                                        isFinishedActivity={objRoute.isFinished !== null ? false : true}
+                                        typeAc={objRoute.typeAc === 'SIMPLE' ? false : true}
                                     />
                                 )}
                                 showsVerticalScrollIndicator={false}
