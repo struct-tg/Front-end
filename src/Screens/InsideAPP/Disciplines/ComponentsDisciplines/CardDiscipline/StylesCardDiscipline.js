@@ -27,7 +27,7 @@ export const LineBlock = styled.View`
 `;
 
 export const TitleCardGrades = styled.Text`
-    font-size: ${RFValue(25, deviceDimensions.height)}px;
+    font-size: ${RFValue(21, deviceDimensions.height)}px;
     color: #fff;
     font-weight: 500;
 `;

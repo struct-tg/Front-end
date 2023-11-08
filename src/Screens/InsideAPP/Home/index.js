@@ -50,10 +50,8 @@ const Home = () => {
             }
 
         }
-        if (isFocused) {
-            fetchDatas()
-        }
-    }, [isFocused, tokenJWT])
+        fetchDatas()
+    }, [isFocused])
 
     const fnGoToEditTask = async (idTask) => {
         const result = await getTaskById(idTask, tokenJWT);

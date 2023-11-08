@@ -2,17 +2,16 @@ import React, { Fragment, useEffect, useState, useContext } from "react";
 import { ContentContainer, ViewContainer, Title, ViewSettings, ViewBlock, ContainerImageInitial } from "../../../Styles/DefaultStyles/index.js";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
-import { AntDesign } from '@expo/vector-icons';
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { getAllTasks, deleteTask, getTaskById, finishTask } from "../../../Services/Requests/Tasks";
 import { AutenticacaoContext } from "../../../Contexts/UserContext.js";
+import { convertDateISO8601 } from "../../../Utils/Date/index.js";
 import ModalComponent from "./ComponentsToDo/ModalInformationsToDo";
 import useMocks from "../../../Mocks/index.js";
-import CardTaskToDo from "./ComponentsToDo/CardTaskToDo";
 import AlertComponent from "../../../Components/Alert";
 import SpinnerComponent from "../../../Components/Spinner/index.js";
 import ResponsiveImage from "react-native-responsive-image";
-import structSpeak from "../../../Device/Speech.js";
+import CardTask from "./ComponentsToDo/CardTask";
 
 const ToDoList = () => {
     const { tokenJWT } = useContext(AutenticacaoContext);
@@ -108,7 +107,9 @@ const ToDoList = () => {
     const transformConvertDateISO8601 = (dateString) => {
         return new Date(dateString);
     };
-
+    /* 
+        
+    */
     return (
         <ContentContainer>
             <ViewContainer>
@@ -122,13 +123,14 @@ const ToDoList = () => {
                     </TouchableOpacity>
 
                     <ViewBlock>
-                        <TouchableOpacity onPress={() => { setModalInformation(true) }}>
+                        {/*<TouchableOpacity onPress={() => { setModalInformation(true) }}>
                             <Ionicons
                                 name={"help-circle-outline"}
                                 size={35}
                                 color={"white"}
                             />
                         </TouchableOpacity>
+                        */}
 
                         <TouchableOpacity onPress={() => { navigation.navigate('ChartTodo') }}>
                             <Ionicons
@@ -185,13 +187,14 @@ const ToDoList = () => {
                                         }
                                     }
                                     return (
-                                        <CardTaskToDo
+                                        <CardTask
                                             title={item.name}
-                                            state={state}
+                                            isModify={true}
                                             onDelete={() => showDeleteAlert(item.id)}
                                             onOpen={() => fnGoToEdit(item.id)}
                                             onFinish={() => item.dateEnd ? showAlertFinished() : showFinishAlert(item.id)}
-                                            isModify={true}
+                                            date={convertDateISO8601(item.dateWishEnd)}
+                                            situation={state}
                                         />
                                     );
                                 }}

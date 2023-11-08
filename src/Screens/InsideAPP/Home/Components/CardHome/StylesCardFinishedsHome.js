@@ -10,7 +10,7 @@ export const CardFinishedHome = styled.TouchableOpacity`
     justify-content: space-between;
     align-items: center;
     height: ${deviceDimensions.height * 0.075}px;
-    margin: 3px 0;
+    margin: 7px 0;
     padding: 0 5px;    
 `;
 

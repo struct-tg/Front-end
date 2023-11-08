@@ -68,7 +68,8 @@ export const LinkNavigators = styled.Text`
 `;
 
 export const ContainerScroll = styled.View`
-    min-height: ${deviceDimensions.height * 0.35}px;
+    min-height: ${deviceDimensions.height * 0.30}px;
+    max-height: ${deviceDimensions.height * 0.25}px;
     border-radius: 10px;
     padding: 5px 10px;
     border: 3px solid #FFFFFF; 

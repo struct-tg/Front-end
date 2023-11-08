@@ -2,12 +2,12 @@ import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import deviceDimensions from "../../../../../Device/DeviceInformation";
 
-export const CardPomodoro = styled.TouchableOpacity`
+export const CardTask = styled.TouchableOpacity`
     display: flex;
     border-radius: 15px;
     border: 3px solid #fff;
     background-color: #168B9D;
-    height: ${RFValue(200, deviceDimensions.height)}px;
+    height: 200px;
     padding: 10px;
     margin-bottom: 5%;
 `;
@@ -26,23 +26,23 @@ export const LineBlock = styled.View`
     align-items: center;
 `;
 
-export const TitleCardPomodoro = styled.Text`
+export const TitleCardTask = styled.Text`
     font-size: ${RFValue(21, deviceDimensions.height)}px;
     color: #fff;
     font-weight: 500;
 `;
 
-export const TimeCardPomodoro = styled.Text`
-    font-size: ${RFValue(40, deviceDimensions.height)}px;
+export const SituationCardTask = styled.Text`
+    font-size: ${RFValue(20, deviceDimensions.height)}px;
     color: #fff;
     font-weight: bold;
 `;
 
-export const BotaoCardPomodoro = styled.TouchableOpacity`
+export const BotaoCardTask = styled.TouchableOpacity`
     justify-content: flex-end;
 `;
 
-export const BotoesCardPomodoro = styled.View`
+export const BotoesCardTask = styled.View`
     display: flex;
     justify-content: space-between;
     flex-direction: row;
@@ -54,7 +54,7 @@ export const BottomBlock = styled.View`
     justify-content: center;
 `;
 
-export const TitleStopsPomodoro = styled.Text`
-    font-size: ${RFValue(18, deviceDimensions.height)}px;
+export const TitleNotesTask = styled.Text`
+    font-size:  ${RFValue(18, deviceDimensions.height)}px;
     color: #fff;
 `;

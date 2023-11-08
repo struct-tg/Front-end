@@ -9,7 +9,7 @@ import useMocks from '../../../../../Mocks';
 import ResponsiveImage from "react-native-responsive-image";
 import SearchBarComponent from '../../../../../Components/SearchBar';
 import RadioButtonComponent from '../../../../../Components/RadioButton/index.js';
-import CardTaskToDo from "../../ComponentsToDo/CardTaskToDo";
+import CardTask from "../../ComponentsToDo/CardTask";
 import SpinnerComponent from "../../../../../Components/Spinner";
 
 const FiltersTasks = () => {
@@ -62,6 +62,10 @@ const FiltersTasks = () => {
             console.log('Algo deu errado');
         }
     }
+
+    const transformConvertDateISO8601 = (dateString) => {
+        return new Date(dateString);
+    };
 
     return (
         <ContentContainer>
@@ -120,21 +124,31 @@ const FiltersTasks = () => {
                                         (
                                             <FlatList
                                                 data={allTasks}
-                                                renderItem={({ item }) => (
-                                                    <CardTaskToDo
-                                                        title={item.name}
-                                                        state={item.dateEnd === null ? 0
-                                                            : item.dateEnd !== null
-                                                                ? convertDateISO8601(item.dateEnd) > convertDateISO8601(item.dateWishEnd)
-                                                                    ? 3
-                                                                    : 1
-                                                                : null
+                                                renderItem={({ item }) => {
+                                                    const dateEnd = item.dateEnd ? transformConvertDateISO8601(item.dateEnd) : null;
+                                                    const dateWishEnd = item.dateWishEnd ? transformConvertDateISO8601(item.dateWishEnd) : null;
+                                                    let state = 0;
+                                                    if (dateEnd) {
+                                                        if (dateWishEnd) {
+                                                            if (dateEnd > dateWishEnd) {
+                                                                state = 3;
+                                                            } else {
+                                                                state = 1;
+                                                            }
                                                         }
-                                                        isModify={false}
-                                                        onOpen={() => fnGoToEdit(item.id)}
-                                                        date={convertDateISO8601(item.dateWishEnd)}
-                                                    />
-                                                )}
+                                                    }
+                                                    return (
+                                                        <CardTask
+                                                            title={item.name}
+                                                            isModify={false}
+                                                            onDelete={() => showDeleteAlert(item.id)}
+                                                            onOpen={() => fnGoToEdit(item.id)}
+                                                            onFinish={() => item.dateEnd ? showAlertFinished() : showFinishAlert(item.id)}
+                                                            date={convertDateISO8601(item.dateWishEnd)}
+                                                            situation={state}
+                                                        />
+                                                    );
+                                                }}
                                                 keyExtractor={(item, index) => index.toString()}
                                                 showsVerticalScrollIndicator={false}
                                             />

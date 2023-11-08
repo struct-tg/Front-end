@@ -7,7 +7,7 @@ import { getAllNamesDiscipline } from "../../../../../Services/Requests/Discipli
 import { FlatList } from 'react-native-gesture-handler';
 import { convertDateISO8601 } from '../../../../../Utils/Date/index.js';
 import useMocks from '../../../../../Mocks/index.js';
-import CardToDo from "../../../ToDoList/ComponentsToDo/CardTaskToDo/index.js";
+import CardTask from "../../../ToDoList/ComponentsToDo/CardTask";
 import DropDownComponent from "../../../../../Components/DropDown/index.js";
 import SpinnerComponent from "../../../../../Components/Spinner/index.js";
 import ResponsiveImage from 'react-native-responsive-image';
@@ -97,6 +97,7 @@ const DisciplineFiltersToDo = () => {
                                 (
                                     <FlatList
                                         data={allTasks}
+                                        style={{ marginTop: 15 }}
                                         renderItem={({ item }) => {
                                             const dateEnd = item.dateEnd ? transformConvertDateISO8601(item.dateEnd) : null;
                                             const dateWishEnd = item.dateWishEnd ? transformConvertDateISO8601(item.dateWishEnd) : null;
@@ -111,15 +112,19 @@ const DisciplineFiltersToDo = () => {
                                                 }
                                             }
                                             return (
-                                                <CardToDo
+                                                <CardTask
                                                     title={item.name}
-                                                    state={state}
-                                                    date={convertDateISO8601(item.dateWishEnd)}
-                                                    onOpen={() => fnGoToEdit(item.id)}
                                                     isModify={false}
+                                                    onDelete={() => showDeleteAlert(item.id)}
+                                                    onOpen={() => fnGoToEdit(item.id)}
+                                                    onFinish={() => item.dateEnd ? showAlertFinished() : showFinishAlert(item.id)}
+                                                    date={convertDateISO8601(item.dateWishEnd)}
+                                                    situation={state}
                                                 />
                                             );
                                         }}
+                                        keyExtractor={(item, index) => index.toString()}
+                                        showsVerticalScrollIndicator={false}
                                     />
                                 )
                         }
