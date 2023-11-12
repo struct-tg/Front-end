@@ -160,7 +160,7 @@ const useMocks = () => {
         },
         ToDoChartScreen: {
             title: `Você ainda não tem tarefas cadastradas para usar este gráfico, ${username}!`,
-            titleDatas: `Essas são as porcentagens dos status das suas tarefas, ${username}!`,
+            titleDatas: `Essas são as porcentagens dos status das suas tarefas dos últimos 6 meses, ${username}!`,
             image: {
                 content: ToDoChartImage,
                 width: imageWidth,

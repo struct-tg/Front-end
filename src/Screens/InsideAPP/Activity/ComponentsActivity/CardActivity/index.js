@@ -51,7 +51,7 @@ const CardActivityComponent = ({ titleActivity, typeAc, isFinishedActivity, type
             </TopBlock>
             <BottomBlock>
                 <LineBlock>
-                    <TitleNotesActivity>{`Nota: ${note.toFixed(2)}`}</TitleNotesActivity>
+                    <TitleNotesActivity>{`Nota: ${note === null ? '0.00' : note.toFixed(2)}`}</TitleNotesActivity>
 
                     {typeAc
                         &&

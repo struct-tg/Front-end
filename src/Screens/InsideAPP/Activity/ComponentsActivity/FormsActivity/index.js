@@ -30,7 +30,7 @@ const FormsActivity = ({ aoSubmitar, discipline, typeCalc, isEdit, initialValues
             date: isEdit ? convertDateISO8601(initialValues.date) : "",
             disciplineId: isEdit ? initialValues.disciplineId : "",
             typeAc: isEdit ? initialValues.typeAc : "",
-            note: isEdit ? String(initialValues.note.toFixed(2)) : "",
+            note: isEdit && initialValues.note !== null ? String(initialValues.note.toFixed(2)) : "",
             weight: isEdit ? String(initialValues.weight.toFixed(2)) : ""
         }
     });
@@ -143,7 +143,6 @@ const FormsActivity = ({ aoSubmitar, discipline, typeCalc, isEdit, initialValues
                     control={control}
                     name='note'
                     defaultValue=""
-                    rules={{ required: 'Campo obrigatório!' }}
                     render={({ field }) => (
                         <View>
                             <Input
@@ -164,7 +163,6 @@ const FormsActivity = ({ aoSubmitar, discipline, typeCalc, isEdit, initialValues
                         control={control}
                         name='weight'
                         defaultValue=""
-                        rules={{ required: 'Campo obrigatório!' }}
                         render={({ field }) => (
                             <View>
                                 <Input
