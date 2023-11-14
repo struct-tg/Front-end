@@ -24,7 +24,7 @@ const ModalInformationPomodoro = ({ state, setModalInformation }) => {
                 <ContainerImageInitial>
                     <Image
                         source={require('./ModalPomodoro-Image.png')}
-                        style={{ width: "100%", height: "40%" }}
+                        style={{ width: "100%", height: "50%" }}
                         resizeMode="cover"
                     />
                 </ContainerImageInitial>

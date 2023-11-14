@@ -1,4 +1,6 @@
 import styled from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
+import deviceDimensions from "../../Device/DeviceInformation.js";
 
 export const Overlay = styled.View`
   flex: 1;
@@ -15,12 +17,12 @@ export const AlertContainer = styled.View`
 `;
 
 export const AlertTitle = styled.Text`
-  font-size: 18px;
+  font-size: ${RFValue(18, deviceDimensions.height)}px;
   font-weight: bold;
 `;
 
 export const AlertMessage = styled.Text`
-  font-size: 16px;
+  font-size: ${RFValue(14, deviceDimensions.height)}px;
   text-align: justify;
   margin: 5px 0;
   color: gray;
