@@ -1,4 +1,6 @@
 import { SuccessToast, ErrorToast, InfoToast } from 'react-native-toast-message';
+import { RFValue } from 'react-native-responsive-fontsize';
+import deviceDimensions from "../../Device/DeviceInformation.js";
 
 const toastConfig = {
     success: (props) => (
@@ -6,11 +8,11 @@ const toastConfig = {
             {...props}
             contentContainerStyle={{ paddingHorizontal: 15 }}
             text1Style={{
-                fontSize: 18,
+                fontSize: RFValue(16, deviceDimensions.height),
                 fontWeight: '400'
             }}
             text2Style={{
-                fontSize: 16,
+                fontSize: RFValue(14, deviceDimensions.height),
                 fontWeight: '400'
             }}
         />
@@ -20,11 +22,11 @@ const toastConfig = {
             {...props}
             contentContainerStyle={{ paddingHorizontal: 15 }}
             text1Style={{
-                fontSize: 18,
+                fontSize: RFValue(16, deviceDimensions.height),
                 fontWeight: '400'
             }}
             text2Style={{
-                fontSize: 16,
+                fontSize: RFValue(14, deviceDimensions.height),
                 fontWeight: '400'
             }}
         />
@@ -34,11 +36,11 @@ const toastConfig = {
             {...props}
             contentContainerStyle={{ paddingHorizontal: 15 }}
             text1Style={{
-                fontSize: 18,
+                fontSize: RFValue(16, deviceDimensions.height),
                 fontWeight: '400'
             }}
             text2Style={{
-                fontSize: 16,
+                fontSize: RFValue(14, deviceDimensions.height),
                 fontWeight: '400'
             }}
         />

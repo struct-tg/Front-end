@@ -3,7 +3,8 @@ import { View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { BarChart } from "react-native-chart-kit";
 import { AutenticacaoContext } from '../../../../../Contexts/UserContext';
-import { ContainerImageInitial, ContentContainer, Title, ViewContainer } from "../../../../../Styles/DefaultStyles/index.js";
+import { ContainerImageInitial, ContentContainer, Title, ViewContainer, Text } from "../../../../../Styles/DefaultStyles/index.js";
+import { convertDateISO8601 } from "../../../../../Utils/Date/index.js";
 import useMocks from '../../../../../Mocks';
 import chartResume from "../../../../../Services/Requests/Tasks/Charts/index.js";
 import deviceDimensions from '../../../../../Device/DeviceInformation';
@@ -92,22 +93,25 @@ const ChartToDo = () => {
                         (<ViewContainer>
                             <Title>{ToDoMocks.ToDoChartScreen.titleDatas}</Title>
                             <View style={{ flexGrow: 1, alignItems: "center", justifyContent: "space-around" }}>
-                                <BarChart
-                                    data={data}
-                                    width={desiredWidth}
-                                    height={desiredHeight}
-                                    yAxisSuffix='%'
-                                    chartConfig={{
-                                        barPercentage: 1,
-                                        backgroundGradientFrom: '#106482',
-                                        backgroundGradientTo: '#106482',
-                                        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                                    }}
-                                    strokeWidth={15}
-                                    style={{
-                                        borderRadius: 10,
-                                    }}
-                                />
+                                <View>
+                                    <BarChart
+                                        data={data}
+                                        width={desiredWidth}
+                                        height={desiredHeight}
+                                        yAxisSuffix='%'
+                                        chartConfig={{
+                                            barPercentage: 1,
+                                            backgroundGradientFrom: '#106482',
+                                            backgroundGradientTo: '#106482',
+                                            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                                        }}
+                                        strokeWidth={15}
+                                        style={{
+                                            borderRadius: 10,
+                                        }}
+                                    />
+                                    <Text style={{ textAlign: 'center' }}>{`Período: ${convertDateISO8601(dateStart)} até ${convertDateISO8601(dateEnd)}.`}</Text>
+                                </View>
                             </View>
                         </ViewContainer>
 

@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState } from 'react';
+import React, { Fragment, useContext, useState, useEffect } from 'react';
 import FormsDisciplines from "../../ComponentsDisciplines/FormsDisciplines";
 import { insertNewDiscipline } from "../../../../../Services/Requests/Disciplines/index";
 import { AutenticacaoContext } from "../../../../../Contexts/UserContext";
@@ -6,7 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 import ToastComponent from '../../../../../Components/Toast';
 
 const AddDiscipline = () => {
-    const [toastVisible, setToastVisible] = useState(false);
+    const [firstToastVisible, setFirstToastVisible] = useState(false);
+    const [secondToastVisible, setSecondToastVisible] = useState(false);
 
     const { tokenJWT } = useContext(AutenticacaoContext)
     const navigation = useNavigation();
@@ -23,8 +24,7 @@ const AddDiscipline = () => {
         try {
             const result = await insertNewDiscipline(tokenJWT, dadosFormulario);
             if (result) {
-                navigation.navigate('Disciplinas');
-                setToastVisible(true);
+                setFirstToastVisible(true);
             }
         }
         catch (error) {
@@ -32,21 +32,48 @@ const AddDiscipline = () => {
         }
     }
 
+    useEffect(() => {
+        if (firstToastVisible) {
+            const timeout = setTimeout(() => {
+                setFirstToastVisible(false);
+                setSecondToastVisible(true);
+            }, 400);
+
+            return () => clearTimeout(timeout);
+        }
+    }, [firstToastVisible]);
+
+    useEffect(() => {
+        if (secondToastVisible) {
+            const timeout = setTimeout(() => {
+                setSecondToastVisible(false);
+                navigation.navigate('Disciplinas');
+            }, 400);
+
+            return () => clearTimeout(timeout);
+        }
+    }, [secondToastVisible, navigation]);
+
     return (
         <Fragment>
             <FormsDisciplines
                 aoSubmitar={handleAddNewDiscipline}
                 isEdit={false}
             />
-            {toastVisible
-                &&
-                (<ToastComponent
+            {firstToastVisible && (
+                <ToastComponent
                     ToastType={'success'}
                     Title={'Disciplina adicionada com sucesso!'}
                     Description={'Você tem uma nova disciplina, Estudante.'}
                 />
-                )
-            }
+            )}
+            {secondToastVisible && (
+                <ToastComponent
+                    ToastType={'info'}
+                    Title={'Finalize uma disciplina!'}
+                    Description={'Pressione a disciplina para finalizar.'}
+                />
+            )}
         </Fragment>
     )
 }
