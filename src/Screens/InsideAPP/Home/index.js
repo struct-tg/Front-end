@@ -73,8 +73,7 @@ const Home = () => {
 
     return (
         <ContentContainer>
-            <ViewContainer>
-                <ViewSettings>
+            <ViewSettings>
                     <TouchableOpacity>
                         <Ionicons
                             name="person-outline"
@@ -84,7 +83,7 @@ const Home = () => {
                         />
                     </TouchableOpacity>
                 </ViewSettings>
-
+            <ViewContainer style={{justifyContent: 'space-between'}}>
                 {isLoading ? (
                     <SpinnerComponent state={isLoading} text={'Carregando...'} />
                 ) : (
