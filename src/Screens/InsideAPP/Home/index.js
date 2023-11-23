@@ -115,7 +115,7 @@ const Home = () => {
                                         renderItem={({ item }) => (
                                             <CardsHome
                                                 name={item.name}
-                                                note={item.note.toFixed(2)}
+                                                note={item.note}
                                                 isTask={false}
                                                 onOpen={() => fnGoToEditGrade(item.id)}
                                             />

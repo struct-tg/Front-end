@@ -151,7 +151,7 @@ const ModalPerfilSettings = ({ state, setModalPerfilSettings }) => {
                     render={({ field }) => (
                         <View>
                             <Input
-                                text={'Digite a sua senha: '}
+                                text={'Confirme a sua senha: '}
                                 secureText={true}
                                 value={field.value}
                                 onChangeText={field.onChange}
