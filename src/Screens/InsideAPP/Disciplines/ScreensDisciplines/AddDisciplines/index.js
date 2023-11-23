@@ -35,9 +35,8 @@ const AddDiscipline = () => {
     useEffect(() => {
         if (firstToastVisible) {
             const timeout = setTimeout(() => {
-                setFirstToastVisible(false);
                 setSecondToastVisible(true);
-            }, 400);
+            }, 1500);
 
             return () => clearTimeout(timeout);
         }
@@ -45,12 +44,8 @@ const AddDiscipline = () => {
 
     useEffect(() => {
         if (secondToastVisible) {
-            const timeout = setTimeout(() => {
-                setSecondToastVisible(false);
-                navigation.navigate('Disciplinas');
-            }, 400);
-
-            return () => clearTimeout(timeout);
+            setSecondToastVisible(false);
+            navigation.navigate('Disciplinas');
         }
     }, [secondToastVisible, navigation]);
 
