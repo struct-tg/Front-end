@@ -105,7 +105,7 @@ const FormsDiscipline = ({ aoSubmitar, initialValues, isEdit, interactions }) =>
                 id={'SIMPLE'}
                 selected={selectedRadio === 'SIMPLE'}
                 onSelect={() => setSelectedRadio('SIMPLE')}
-                disabled={isEdit === true && initialValues.dateEnd !== null ? true : false}
+                disabled={isEdit === true || isEdit === true && initialValues.dateEnd !== null ? true : false}
             />
 
             <RadioButtonComponent
@@ -113,7 +113,7 @@ const FormsDiscipline = ({ aoSubmitar, initialValues, isEdit, interactions }) =>
                 id={'WEIGHTED'}
                 selected={selectedRadio === 'WEIGHTED'}
                 onSelect={() => setSelectedRadio('WEIGHTED')}
-                disabled={isEdit === true && initialValues.dateEnd !== null ? true : false}
+                disabled={isEdit === true || isEdit === true && initialValues.dateEnd !== null ? true : false}
             />
             {!interactions
                 &&

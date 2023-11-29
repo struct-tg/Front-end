@@ -13,7 +13,7 @@ const CardsHome = ({ name, note, onOpen, isTask }) => {
                     color={"white"}
                 />
             </BotaoCard> :
-                <NoteCard>{`Nota: ${note === null ? '0.00' : note.toFixed(2)}`}</NoteCard>
+                <NoteCard>{`Nota atual: ${note === null ? '0.00' : note.toFixed(2)}`}</NoteCard>
             }
         </CardFinishedHome>
     )

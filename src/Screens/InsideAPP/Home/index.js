@@ -107,7 +107,7 @@ const Home = () => {
                             </View>
 
                             <View>
-                                <TitleContainerScroll>Suas matérias.</TitleContainerScroll>
+                                <TitleContainerScroll>Suas disciplinas.</TitleContainerScroll>
                                 <ContainerScroll>
                                     <FlatList
                                         data={grades}
